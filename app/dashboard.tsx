@@ -127,7 +127,7 @@ export default function dashboard() {
                 </View>
 
                 {/* Work Orders list */}
-                <View style={[tw`px-4 mt-3 mb-6`]}>
+                <View style={[tw`px-4 mt-3 mb-26`]}>
                     {(showAll ? [
                         { id: 1, title: 'Fresh Kitchen Room', subtitle: 'Shelf and Cabinet', status: 'Not Cleaned', color: '#E74C3C' },
                         { id: 2, title: 'Fresh Kitchen Room', subtitle: 'Shelf and Cabinet', status: 'Not Cleaned', color: '#E74C3C' },

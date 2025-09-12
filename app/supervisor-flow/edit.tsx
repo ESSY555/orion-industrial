@@ -26,7 +26,7 @@ export default function SupervisorEditScreen() {
     return (
         <>
             <StatusBar style="dark" backgroundColor="#FFFFFF" />
-            <ScrollView style={[tw`h-full`, { backgroundColor: '#F7F7F7' }]} showsVerticalScrollIndicator={false}>
+            <ScrollView style={[tw`h-full mb-26`, { backgroundColor: '#F7F7F7' }]} showsVerticalScrollIndicator={false}>
                 {/* Header */}
                 <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                     <CircleButton onPress={() => navigation.goBack()}>
@@ -70,7 +70,8 @@ export default function SupervisorEditScreen() {
                                     <View style={tw`flex-row items-center`}>
                                         <Text style={[tw`text-gray-800`, { marginRight: row.icon ? 8 : 0 }]}>{row.value}</Text>
                                         {!!row.icon && (
-                                            <Ionicons name={row.icon as any} size={16} color="#9CA3AF" />
+                                            <Image source={require('../../assets/images/calendar-2.png')} style={[tw`w-8 h-8`]} />
+                                            // <Ionicons name={row.icon as any} size={16} color="#9CA3AF" />
                                         )}
                                     </View>
                                 </View>

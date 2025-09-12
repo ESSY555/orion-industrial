@@ -4,6 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import WorkOrders from '@/app/WorkOrders';
 import SelectedItemsScreen from '@/app/supervisor-flow/selected-items';
 import SupervisorEditScreen from '@/app/supervisor-flow/edit';
+import EditTaskScreen from '@/app/supervisor-flow/edit-task';
+import ReviewTaskScreen from '@/app/supervisor-flow/review-task';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +25,16 @@ const StackScreen = () => (
             name="SupervisorEdit"
             component={SupervisorEditScreen}
             options={{ headerShown: false, title: 'Edit Work Order' }}
+        />
+        <Stack.Screen
+            name="SupervisorEditTask"
+            component={EditTaskScreen}
+            options={{ headerShown: false, title: 'Edit task' }}
+        />
+        <Stack.Screen
+            name="SupervisorReviewTask"
+            component={ReviewTaskScreen}
+            options={{ headerShown: false, title: 'Review Work Order' }}
         />
     </Stack.Navigator>
 );
