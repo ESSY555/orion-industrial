@@ -1,10 +1,23 @@
-import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, Keyboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'twrnc';
 import { router, type Href } from 'expo-router';
 
 export default function MenuBar() {
+    const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+
+    useEffect(() => {
+        const showSub = Keyboard.addListener('keyboardDidShow', () => setIsKeyboardVisible(true));
+        const hideSub = Keyboard.addListener('keyboardDidHide', () => setIsKeyboardVisible(false));
+        return () => {
+            showSub.remove();
+            hideSub.remove();
+        };
+    }, []);
+
+    if (isKeyboardVisible) return null;
+
     return (
         <View style={[tw`items-center`, { position: 'absolute', left: 0, right: 0, bottom: 18, zIndex: 1000 }]}> 
             <View style={[tw`flex-row items-center justify-between px-4 py-3 rounded-2xl`, { width: '90%', backgroundColor: '#FFFFFF', shadowColor: '#000', shadowOpacity: 0.08, shadowOffset: { width: 0, height: 4 }, shadowRadius: 12, elevation: 6 }]}> 
