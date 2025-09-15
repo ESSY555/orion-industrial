@@ -76,7 +76,7 @@ export default function ReviewTaskScreen() {
                     <TouchableOpacity style={[tw`w-9 h-9 rounded-full bg-white items-center justify-center`, shadow()]} onPress={() => router.back()}>
                         <Ionicons name="chevron-back" size={20} color="#3A3A3A" />
                     </TouchableOpacity>
-                    <Text style={[tw`text-black font-bold`, { fontSize: 18 }]}>Review Work Order</Text>
+                    <Text style={[tw`text-black font-bold`, { fontSize: 18 }]}>Review Task</Text>
                     <View style={tw`flex-row items-center`}>
                         <TouchableOpacity style={[tw`w-9 h-9 rounded-full bg-white items-center justify-center mr-2`, shadow()]}> 
                             <Ionicons name="sparkles" size={16} color="#7F56D9" />
@@ -98,32 +98,37 @@ export default function ReviewTaskScreen() {
                 </View>
 
                 {/* Summary Card - Glassmorphism */}
-                <View style={[tw`px-4`]}>
-                    <View style={[tw`rounded-2xl`, { overflow: 'hidden' }, shadow()]}>
-                        <BlurView intensity={80} tint="light" style={[tw`rounded-2xl`, { padding: 16, backgroundColor: 'transparent' }]}>
-                            <View style={[tw`rounded-2xl`, { backgroundColor: 'rgba(255,255,255,0.35)', padding: 12, borderWidth: 1, borderColor: 'rgba(255,255,255,0.45)' }]}>
-                                <Text style={[tw`text-black mb-3`, { fontWeight: '800', fontSize: 16 }]}>{person.name}</Text>
-                                {[['Cleaning Status', person.status], ['Start Time', person.start], ['End Time', person.end]].map((row, i) => (
-                                    <Row key={i} label={row[0]} value={row[1]} />
-                                ))}
-                                {/* Assets */}
-                                <View style={tw`flex-row items-center justify-between mt-1`}>
-                                    <Text style={mutedLabel()}>Assets Cleaned</Text>
-                                    <View style={tw`flex-row items-center`}>
-                                        {person.assets.map((a, i) => (
-                                            <View key={i} style={tw`flex-row items-center ml-3`}>
-                                                <Ionicons name="cube-outline" size={13} color="#9CA3AF" />
-                                                <Text style={[tw`text-gray-700 ml-1`, { fontSize: 12 }]}>{a}</Text>
-                                            </View>
-                                        ))}
+                <View style={[tw`rounded-2xl p-5 opacity-80 mx-4 `, { backgroundColor: '#FFFFFF' }, shadow()]}>
+                    <View style={[tw`bg-white/50`]}>
+                        <View style={tw`flex-row items-center  justify-between mb-2`}>
+                            <Text style={[tw`text-black`, { fontWeight: '800' }]}>{person.name}</Text>
+                            <Text style={{ color: '#2ECC71', fontWeight: '800', fontSize: 12 }}>{person.status}</Text>
+                        </View>
+                        {[
+                            ['Cleaning Status', person.status],
+                            ['Start Time', person.start],
+                            ['End Time', person.end],
+                        ].map((row, i) => (
+                            <Row key={i} label={row[0]} value={row[1]} />
+                        ))}
+
+                        {/* Assets cleaned */}
+                        <View style={tw`flex-row items-center justify-between mt-2`}>
+                            <Text style={mutedLabel()}>Assets Cleaned</Text>
+                            <View style={tw`flex-row items-center`}>
+                                {person.assets.map((a, i) => (
+                                    <View key={i} style={tw`flex-row items-center ml-3`}>
+                                        <Ionicons name="cube-outline" size={13} color="#9CA3AF" />
+                                        <Text style={Object.assign({}, tw`text-gray-700 ml-1`, { fontSize: 12 })}>{a}</Text>
                                     </View>
-                                </View>
-                                <Row label="Frequency" value={person.frequency} />
-                                <Row label="Duration" value={person.duration} />
+                                ))}
                             </View>
-                        </BlurView>
+                        </View>
+
+                        <Row label="Frequency" value={person.frequency} />
+                        <Row label="Duration" value={person.duration} />
                     </View>
-                </View>
+                </View> 
 
                 {/* Action Pills */}
                 <View style={[tw`px-2 mt-4`]}>
@@ -154,7 +159,8 @@ export default function ReviewTaskScreen() {
                 {selectedAction !== 'revise' && (
                     <View style={[tw`px-4 mt-4`]}>
                         <View style={[tw`rounded-2xl p-4`]}>
-                            <View style={tw`flex-row mb-3 items-center justify-between`}>
+                            <View style={tw`flex-row mb-3 items-center`}>
+
                                 {['draw', 'type'].map((k) => (
                                     <TouchableOpacity key={k} onPress={() => setActiveSignatureTab(k as any)} style={{ marginRight: 16 }}>
                                         <Text style={{ color: activeSignatureTab === k ? '#7F56D9' : '#6B7280', fontWeight: activeSignatureTab === k ? '800' as const : '600' as const }}>
@@ -162,24 +168,48 @@ export default function ReviewTaskScreen() {
                                         </Text>
                                     </TouchableOpacity>
                                 ))}
-                                <View style={tw`flex-row items-center`}>
-                                    {signatureColors.map((c) => (
-                                        <TouchableOpacity key={c}
-                                            onPress={() => setPenColor(c)}
-                                            accessibilityRole="button"
-                                            style={[{ width: 24, height: 24, borderRadius: 14, marginLeft: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: c, borderWidth: penColor === c ? 0 : 0 }]}>
-                                            {penColor === c && (
-                                                <Ionicons name="checkmark" size={16} color="#FFFFFF" />
-                                            )}
-                                        </TouchableOpacity>
-                                    ))}
-                                </View>
+
                             </View>
 
                             {/* Signature Canvas */}
                             {activeSignatureTab === 'draw' ? (
-                                <View style={[tw`rounded-2xl overflow-hidden mb-3`, { height: 190, borderWidth: 1, borderColor: '#E5E7EB', backgroundColor: '#8B4CE814' }]}>
+                                <View style={[tw`rounded-2xl overflow-hidden mb-3`, { height: 190, borderWidth: 1, borderColor: '#E5E7EB', backgroundColor: '#8B4CE814', position: 'relative' }]}>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    <View style={[tw`flex-row items-center`, { position: 'absolute', top: 8, right: 8, backgroundColor: '#F6F1FE', paddingHorizontal: 8, paddingVertical: 6, borderRadius: 16, zIndex: 10 }]}>
+                                        {signatureColors.map((c) => (
+                                            <TouchableOpacity key={c}
+                                                onPress={() => setPenColor(c)}
+                                                accessibilityRole="button"
+                                                style={[{ width: 24, height: 24, borderRadius: 14, marginLeft: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: c, borderWidth: penColor === c ? 0 : 0 }]}>
+                                                {penColor === c && (
+                                                    <Ionicons name="checkmark" size={16} color="#FFFFFF" />
+                                                )}
+                                            </TouchableOpacity>
+                                        ))}
+                                    </View>
+
                                     <Signature
+                                        key={penColor}
                                         onOK={(sig) => setSignatureDataUrl(sig)}
                                         onClear={() => setSignatureDataUrl(null)}
                                         webStyle={`.m-signature-pad{box-shadow:none;border-3;} .m-signature-pad--footer{display:flex;justify-content:flex-end;align-items:center;padding:8px}.button{background:#7F56D9;color:#fff;border:none;border-radius:12px;padding:8px 12px;margin-left:8px}.clear{background:#F3F4F6;color:#111827}`}
@@ -223,7 +253,7 @@ export default function ReviewTaskScreen() {
                 {selectedAction === 'revise' && (
                     <View style={[tw`px-4 mt-4`]}>
                         <View style={[tw`rounded-2xl p-4`, { backgroundColor: '#FFFFFF' }, shadow()]}> 
-                            <TouchableOpacity onPress={() => setIsAreaDropdownOpen((v) => !v)} activeOpacity={0.8} style={[tw`rounded-xl flex-row items-center justify-center mb-3`, { backgroundColor: '#F1ECF9', paddingVertical: 10 }]}>
+                            <TouchableOpacity onPress={() => setIsAreaDropdownOpen((v) => !v)} activeOpacity={0.8} style={[tw`rounded-xl flex-row items-center justify-center mb-3`, { backgroundColor: '#EEEEEEEE', paddingVertical: 10 }]}>
                                 <Text style={{ color: '#7F56D9', fontWeight: '700' }}>Select Specific Area</Text>
                                 <Ionicons name={isAreaDropdownOpen ? 'chevron-up' : 'chevron-down'} size={16} color="#7F56D9" style={{ marginLeft: 8 }} />
                             </TouchableOpacity>

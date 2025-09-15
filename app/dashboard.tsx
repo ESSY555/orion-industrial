@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { StyleSheet, TouchableOpacity, Image, ScrollView, Animated, Easing } from 'react-native';
+import { StyleSheet, TouchableOpacity, Image, ScrollView, Animated, Easing, RefreshControl } from 'react-native';
 import { Text, View } from 'react-native';
 import { Svg, Circle, G } from 'react-native-svg';
 import tw from 'twrnc';
@@ -15,6 +15,15 @@ type RootStackParamList = {
 export default function dashboard() {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const [showAll, setShowAll] = useState(false);
+    const [refreshTick, setRefreshTick] = useState(0);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const handleRefresh = () => {
+        setRefreshing(true);
+        setRefreshTick((t) => t + 1);
+        // simulate brief refresh feedback; remove timeout when wiring to real fetch
+        setTimeout(() => setRefreshing(false), 400);
+    };
 
     // Ensure header is hidden even if navigator defaults change
     useLayoutEffect(() => {
@@ -22,10 +31,21 @@ export default function dashboard() {
         navigation.setOptions?.({ headerShown: false, title: '' });
     }, [navigation]);
 
+    // Example effect to refetch or re-run any calculations when refreshed
+    useEffect(() => {
+        // Place data refetch logic here.
+        // For now this just triggers re-render through state change.
+    }, [refreshTick]);
+
     return (
         <>
             <StatusBar style="dark" backgroundColor="#FFFFFF" />
-            <ScrollView style={[tw`h-full`, { backgroundColor: '#F7F7F7' }]} showsVerticalScrollIndicator={false}>
+            <ScrollView
+                key={`refresh-${refreshTick}`}
+                style={[tw`h-full`, { backgroundColor: '#F7F7F7' }]}
+                showsVerticalScrollIndicator={false}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor="#7F56D9" />}
+            >
                 {/* Header */}
 
                 <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
@@ -39,7 +59,7 @@ export default function dashboard() {
                         </View>
                     </View>
                     <View style={[tw`flex-row items-center`]}>
-                        <TouchableOpacity style={[tw`mr-3 bg-white rounded-full shadow-lg p-2`]}>
+                        <TouchableOpacity style={[tw`mr-3 bg-white rounded-full shadow-lg p-2`]} onPress={handleRefresh}>
                             <Image source={require('../assets/images/refresh.png')} style={[tw`w-6 h-6 p-2 bg-white rounded-full`]} />
                         </TouchableOpacity>
                         <TouchableOpacity style={[tw`bg-white rounded-full shadow-lg p-2`]}>
