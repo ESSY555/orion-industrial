@@ -88,15 +88,6 @@ export default function ReviewTaskScreen() {
                     </View>
                 </View>
 
-                {/* Avatar */}
-                <View style={[tw`items-center mt-1 -mb-5`]}>
-                    <View style={[tw`w-28 h-28 rounded-full items-center justify-center`, { backgroundColor: '#F0E9FB', overflow: 'hidden', alignSelf: 'center' }]}> 
-                        <Image source={person.avatar} style={[tw`w-28 h-28`]} />
-                    </View>
-                    <View style={[tw`w-8 h-8 rounded-full items-center justify-center`, { backgroundColor: '#8B5CF6', position: 'absolute', right: '59%', top: 6 }]}> 
-                        <Ionicons name="trending-up" size={16} color="#FFFFFF" />
-                    </View>
-                </View>
 
                 {/* Summary Card - Glassmorphism */}
 
@@ -134,7 +125,7 @@ export default function ReviewTaskScreen() {
                 {selectedAction !== 'revise' && (
                     <View style={[tw`px-4 mt-4`]}>
                         <View style={[tw`rounded-2xl p-4`]}>
-                            <View style={tw`flex-row mb-3 items-center`}>
+                            {/* <View style={tw`flex-row mb-3 items-center`}>
 
                                 {['draw', 'type'].map((k) => (
                                     <TouchableOpacity key={k} onPress={() => setActiveSignatureTab(k as any)} style={{ marginRight: 16 }}>
@@ -144,31 +135,11 @@ export default function ReviewTaskScreen() {
                                     </TouchableOpacity>
                                 ))}
 
-                            </View>
+                            </View> */}
 
                             {/* Signature Canvas */}
-                            {activeSignatureTab === 'draw' ? (
+                            {/* {activeSignatureTab === 'draw' ? (
                                 <View style={[tw`rounded-2xl overflow-hidden mb-3`, { height: 190, borderWidth: 1, borderColor: '#E5E7EB', backgroundColor: '#8B4CE814', position: 'relative' }]}>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                                     <View style={[tw`flex-row items-center`, { position: 'absolute', top: 8, right: 8, backgroundColor: '#F6F1FE', paddingHorizontal: 8, paddingVertical: 6, borderRadius: 16, zIndex: 10 }]}>
                                         {signatureColors.map((c) => (
@@ -206,7 +177,7 @@ export default function ReviewTaskScreen() {
                                         <Image source={{ uri: signatureDataUrl }} style={{ width: '100%', height: '100%' }} resizeMode="contain" />
                                     </View>
                                 </View>
-                            )}
+                            )} */}
 
                             {/* Comment */}
                             <Text style={[tw`text-gray-500 mb-2`, { fontSize: 12 }]}>Add Comment</Text>
