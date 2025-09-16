@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
 import tw from 'twrnc';
 import Signature from 'react-native-signature-canvas';
+import SummaryCard from '@/components/SummaryCard';
 
 type Person = {
     name: string;
@@ -58,7 +59,7 @@ export default function ReviewTaskScreen() {
     }
 
     function handleSubmit() {
-        // Replace with your API call; signatureDataUrl is a base64 data URL
+
         const payload = {
             action: selectedAction,
             signature: signatureDataUrl,
@@ -89,7 +90,7 @@ export default function ReviewTaskScreen() {
 
                 {/* Avatar */}
                 <View style={[tw`items-center mt-1 -mb-5`]}>
-                    <View style={[tw`w-28 h-28 rounded-full items-center justify-center`, { backgroundColor: '#F0E9FB', overflow: 'hidden' }]}> 
+                    <View style={[tw`w-28 h-28 rounded-full items-center justify-center`, { backgroundColor: '#F0E9FB', overflow: 'hidden', alignSelf: 'center' }]}> 
                         <Image source={person.avatar} style={[tw`w-28 h-28`]} />
                     </View>
                     <View style={[tw`w-8 h-8 rounded-full items-center justify-center`, { backgroundColor: '#8B5CF6', position: 'absolute', right: '59%', top: 6 }]}> 
@@ -98,37 +99,11 @@ export default function ReviewTaskScreen() {
                 </View>
 
                 {/* Summary Card - Glassmorphism */}
-                <View style={[tw`rounded-2xl p-5 opacity-80 mx-4 `, { backgroundColor: '#FFFFFF' }, shadow()]}>
-                    <View style={[tw`bg-white/50`]}>
-                        <View style={tw`flex-row items-center  justify-between mb-2`}>
-                            <Text style={[tw`text-black`, { fontWeight: '800' }]}>{person.name}</Text>
-                            <Text style={{ color: '#2ECC71', fontWeight: '800', fontSize: 12 }}>{person.status}</Text>
-                        </View>
-                        {[
-                            ['Cleaning Status', person.status],
-                            ['Start Time', person.start],
-                            ['End Time', person.end],
-                        ].map((row, i) => (
-                            <Row key={i} label={row[0]} value={row[1]} />
-                        ))}
 
-                        {/* Assets cleaned */}
-                        <View style={tw`flex-row items-center justify-between mt-2`}>
-                            <Text style={mutedLabel()}>Assets Cleaned</Text>
-                            <View style={tw`flex-row items-center`}>
-                                {person.assets.map((a, i) => (
-                                    <View key={i} style={tw`flex-row items-center ml-3`}>
-                                        <Ionicons name="cube-outline" size={13} color="#9CA3AF" />
-                                        <Text style={Object.assign({}, tw`text-gray-700 ml-1`, { fontSize: 12 })}>{a}</Text>
-                                    </View>
-                                ))}
-                            </View>
-                        </View>
+                <SummaryCard person={person} />
 
-                        <Row label="Frequency" value={person.frequency} />
-                        <Row label="Duration" value={person.duration} />
-                    </View>
-                </View> 
+
+
 
                 {/* Action Pills */}
                 <View style={[tw`px-2 mt-4`]}>

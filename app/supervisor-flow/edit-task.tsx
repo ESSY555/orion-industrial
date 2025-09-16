@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'twrnc';
+import SummaryCard from '@/components/SummaryCard';
 
 export default function EditTaskDetailScreen() {
     const [activeTab, setActiveTab] = useState<'time' | 'evidence'>('time');
@@ -47,50 +48,9 @@ export default function EditTaskDetailScreen() {
                         </TouchableOpacity>
                     </View>
                 </View>
-
+ 
                 {/* Avatar and summary card */}
-                <View style={[tw`px-4 mt-2`]}>
-                    <View style={[tw`items-center -mb-5`]}>
-                        <View style={[tw`w-28 h-28 rounded-full items-center justify-center`, { backgroundColor: '#F0E9FB', overflow: 'hidden' }]}> 
-                            <Image source={require('../../assets/images/smiley-african-woman-with-golden-earrings.png')} style={[tw`w-28 h-28`]} />
-                        </View>
-                        <View style={[tw`w-8 h-8 rounded-full items-center justify-center`, { backgroundColor: '#8B5CF6', position: 'absolute', right: '60%', top: 6 }]}>
-                            <Ionicons name="trending-up" size={16} color="#FFFFFF" />
-                        </View>
-                    </View>
-
-                    <View style={[tw`rounded-2xl p-5 opacity-60 `, { backgroundColor: '#FFFFFF' }, shadow()]}>
-                        <View style={[tw`bg-white/50`]}>
-                            <View style={tw`flex-row items-center  justify-between mb-2`}>
-                            <Text style={[tw`text-black`, { fontWeight: '800' }]}>{person.name}</Text>
-                            <Text style={{ color: '#2ECC71', fontWeight: '800', fontSize: 12 }}>{person.status}</Text>
-                        </View>
-                        {[
-                            ['Cleaning Status', person.status],
-                            ['Start Time', person.start],
-                            ['End Time', person.end],
-                        ].map((row, i) => (
-                            <Row key={i} label={row[0]} value={row[1]} />
-                        ))}
-
-                        {/* Assets cleaned */}
-                        <View style={tw`flex-row items-center justify-between mt-2`}>
-                            <Text style={mutedLabel()}>Assets Cleaned</Text>
-                            <View style={tw`flex-row items-center`}>
-                                {person.assets.map((a, i) => (
-                                    <View key={i} style={tw`flex-row items-center ml-3`}>
-                                        <Ionicons name="cube-outline" size={13} color="#9CA3AF" />
-                                        <Text style={Object.assign({}, tw`text-gray-700 ml-1`, { fontSize: 12 })}>{a}</Text>
-                                    </View>
-                                ))}
-                            </View>
-                        </View>
-
-                        <Row label="Frequency" value={person.frequency} />
-                        <Row label="Duration" value={person.duration} />
-                    </View>
-                    </View> 
-                </View>
+             <SummaryCard person={person} />
 
 
 

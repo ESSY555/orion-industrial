@@ -26,7 +26,7 @@ export default function SupervisorEditScreen() {
     return (
         <>
             <StatusBar style="dark" backgroundColor="#FFFFFF" />
-            <ScrollView style={[tw`h-full mb-26`, { backgroundColor: '#F7F7F7' }]} showsVerticalScrollIndicator={false}>
+            <ScrollView style={[tw`h-full pb-26`, { backgroundColor: '#F7F7F7' }]} showsVerticalScrollIndicator={false}>
                 {/* Header */}
                 <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                     <CircleButton onPress={() => navigation.goBack()}>
@@ -40,8 +40,8 @@ export default function SupervisorEditScreen() {
 
                 {/* Avatar and CTA */}
                 <View style={[tw`items-center mt-2`]}>
-                    <View style={[tw`w-28 h-28 rounded-full items-center justify-center`, { backgroundColor: '#EFEFEF', overflow: 'hidden' }]}> 
-                        <Image source={require('../../assets/images/plate-two.png')} style={[tw`w-28 h-28`]} />
+                    <View style={[tw`w-28 h-28 rounded-full shadow-xl items-center justify-center`, { backgroundColor: '#EFEFEF', overflow: 'hidden' }]}>
+                        <Text style={[tw`text-black text-2xl font-bold`, { fontWeight: '800' }]}>AI</Text>
                     </View>
                     <TouchableOpacity accessibilityRole="button" style={[tw`mt-4 rounded-2xl px-4 py-2`, { backgroundColor: '#7F56D9' }]}>
                         <View style={tw`flex-row items-center`}>
