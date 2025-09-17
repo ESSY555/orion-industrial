@@ -86,13 +86,13 @@ export default function StepThree() {
             </View>
           ))}
 
-<View style={[{ marginTop: 12, backgroundColor: '#FFFFFF', borderRadius: 16, padding: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, tw`mb-28`]}>
+          <View style={tw`mt-3 bg-white rounded-2xl p-4 flex-row items-center justify-between border border-[#F0F1F5] shadow-sm`}>
         <View>
-          <Text style={{ color: '#6C6F7A' }}>Total Duration</Text>
-          <Text style={{ fontSize: 22, fontWeight: '800', color: '#2B2B2E' }}>0 hrs 0 mins</Text>
+              <Text style={tw`text-[#6C6F7A]`}>Total Duration</Text>
+              <Text style={tw`text-[22px] font-extrabold text-[#2B2B2E]`}>0 hrs 0 mins</Text>
         </View>
-        <View style={{ borderWidth: 1, borderColor: '#E5E6EC', borderRadius: 18, paddingVertical: 8, paddingHorizontal: 12 }}>
-          <Text style={{ color: '#6C6F7A', fontWeight: '700' }}>Not Done</Text>
+            <View style={tw`bg-[#E8E7EC] rounded-xl py-2 px-4`}>
+              <Text style={tw`text-[#2B2140] font-semibold`}>Not Done</Text>
         </View>
       </View>
         </ScrollView>
