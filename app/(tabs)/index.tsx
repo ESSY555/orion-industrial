@@ -1,15 +1,18 @@
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { ScrollView, View, Text, StyleSheet } from 'react-native';
-import tw from 'twrnc';
-import Dashboard from './../dashboard';
+import { View, StyleSheet } from 'react-native';
+import { Redirect } from 'expo-router';
+import CleanerFlow from '@/app/cleaner-flow/index';
+
 
 
 export default function Home() {
     return (
-        <View>
-            <Dashboard />
+        <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+            <CleanerFlow />
         </View>
+        // <View>
+        //     <Redirect href="/login" />
+        // </View>
     );
 }
 

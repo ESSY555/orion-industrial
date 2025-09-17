@@ -1,0 +1,343 @@
+import React, { useLayoutEffect, useMemo, useState } from 'react';
+import { View, Text, Pressable, ScrollView, useWindowDimensions, PixelRatio, Image } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
+import { Link, useNavigation, useRouter } from 'expo-router';
+import tw from 'twrnc';
+import StepTwo from './components/stepTwo';
+import StepThree from './components/stepThree';
+
+type Area = {
+  id: string;
+  name: string;
+  subtitle?: string;
+  status?: 'normal' | 'overdue' | 'scheduled' | 'priority';
+  checked?: boolean;
+};
+
+function Stepper({ steps, current }: { steps: number; current: number }) {
+  const circleSize = 26;
+  const lineHeight = 4;
+  const activeColor = '#7B61FF';
+  const baseColor = '#EEF0F3';
+  const textDark = '#292933';
+
+  const activeWidthPercent = ((Math.max(1, Math.min(current, steps)) - 1) / (steps - 1)) * 100;
+
+  return (
+    <View style={{ marginTop: 12, marginBottom: 6 }}>
+      <View
+        style={{
+          height: circleSize,
+          justifyContent: 'center',
+        }}
+      >
+        {/* Base line */}
+        <View
+          style={{
+            position: 'absolute',
+            left: circleSize / 2,
+            right: circleSize / 2,
+            height: lineHeight,
+            backgroundColor: baseColor,
+            borderRadius: 999,
+            top: (circleSize - lineHeight) / 2,
+          }}
+        />
+        {/* Active line */}
+        <View
+          style={{
+            position: 'absolute',
+            left: circleSize / 2,
+            width: `${activeWidthPercent}%`,
+            height: lineHeight,
+            backgroundColor: activeColor,
+            borderRadius: 999,
+            top: (circleSize - lineHeight) / 2,
+          }}
+        />
+
+        {/* Circles */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          {Array.from({ length: steps }).map((_, idx) => {
+            const step = idx + 1;
+            const isActive = step <= current;
+            return (
+              <View
+                key={step}
+                style={{
+                  width: circleSize,
+                  height: circleSize,
+                  borderRadius: circleSize / 2,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: isActive ? activeColor : '#F6F7F9',
+                  borderWidth: isActive ? 0 : 1,
+                  borderColor: baseColor,
+                }}
+              >
+                <Text style={{ fontSize: 12, color: isActive ? '#FFFFFF' : '#9FA4B2', fontWeight: '700' }}>
+                  {step}
+                </Text>
+              </View>
+            );
+          })}
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function Checkbox({ checked }: { checked?: boolean }) {
+  return (
+    <View
+      style={{
+        height: 28,
+        width: 28,
+        borderRadius: 8,
+        borderWidth: checked ? 0 : 2,
+        borderColor: '#CFCFD6',
+        backgroundColor: checked ? '#7B61FF' : '#FFFFFF',
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: 'rgba(0,0,0,0.04)',
+        shadowOpacity: 1,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
+      }}
+    >
+      {checked ? <Ionicons name="checkmark" size={16} color="#FFFFFF" /> : null}
+    </View>
+  );
+}
+
+function AreaCard({ area, toggle }: { area: Area; toggle: (id: string) => void }) {
+  const isSelected = Boolean(area.checked);
+  const bg = isSelected ? '#E9E1FF' : '#FFFFFF';
+  const border = isSelected ? '#7B61FF' : '#E5E6EC';
+  const subtitleColor = isSelected ? '#6C6F7A' : '#9A9AA3';
+
+  const statusText = useMemo(() => {
+    if (area.status === 'overdue') return 'Overdue for cleaning';
+    if (area.status === 'scheduled') return area.subtitle ?? 'Scheduled';
+    if (area.status === 'priority') return 'Priority Area';
+    return area.subtitle ?? '';
+  }, [area]);
+
+  const statusColor =
+    area.status === 'overdue' ? '#E93B3B' : area.status === 'priority' ? '#E2A400' : subtitleColor;
+
+  return (
+    <Pressable
+      onPress={() => toggle(area.id)}
+      style={{
+        paddingVertical: 16,
+        paddingHorizontal: 18,
+        borderRadius: 22,
+        backgroundColor: bg,
+        borderWidth: isSelected ? 2 : 1,
+        borderColor: border,
+        marginBottom: 14,
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+      }}
+    >
+      <View style={{ marginTop: 2 }}>
+        <Checkbox checked={isSelected} />
+      </View>
+      <View style={{ marginLeft: 12, flex: 1 }}>
+        <Text style={{ fontSize: 16, fontWeight: '700', color: '#292933' }}>{area.name}</Text>
+        {!!statusText && (
+          <Text style={{ marginTop: 6, color: statusColor, fontSize: 13 }}>{statusText}</Text>
+        )}
+      </View>
+    </Pressable>
+  );
+}
+
+export default function CleanerFlowScreen() {
+  const navigation = useNavigation();
+  useLayoutEffect(() => {
+    // @ts-ignore setOptions exists on any stack screen
+    navigation.setOptions?.({ headerShown: false, title: '' });
+  }, [navigation]);
+
+  const router = useRouter();
+  const { width } = useWindowDimensions();
+  const isSmall = width < 380;
+  const isTablet = width >= 768;
+  const [step, setStep] = useState<number>(1);
+
+  const scale = (size: number) => {
+    const guidelineBaseWidth = 375; // iPhone X width
+    const scaled = (width / guidelineBaseWidth) * size;
+    return Math.round(PixelRatio.roundToNearestPixel(Math.min(size * 1.25, Math.max(size * 0.85, scaled))));
+  };
+  const [areas, setAreas] = useState<Area[]>([
+    { id: '1', name: 'Fruit Room 1', subtitle: 'Last cleaned: 6 hours ago', checked: true },
+    { id: '2', name: 'Fresh Kitchen 2', subtitle: 'Last cleaned: 8 hours ago' },
+    { id: '3', name: 'Room 3', status: 'overdue' },
+    { id: '4', name: 'Tote Wash Room', status: 'scheduled', subtitle: 'Scheduled: 11:30 PM' },
+    { id: '5', name: 'Cook Room 5', status: 'priority' },
+  ]);
+
+  const toggle = (id: string) =>
+    setAreas((prev) =>
+      prev.map((a) => {
+        if (a.id === id) {
+          return { ...a, checked: !a.checked };
+        }
+        return { ...a, checked: false };
+      })
+    );
+
+  const selectedFromStep1 = areas.filter((a) => a.checked).map((a) => ({ id: a.id, name: a.name }));
+  const [combinedSelections, setCombinedSelections] = useState<Array<{ id: string; name: string }>>([]);
+  const selectedCount = (step === 1 ? selectedFromStep1 : combinedSelections).length;
+
+  const headerTitle = step === 1 ? 'Nightly Audit Form' : 'Nightly Audit Form';
+
+  return (
+    <>
+    <StatusBar style="dark" backgroundColor="#FFFFFF" />
+    <SafeAreaView style={[{ flex: 1, backgroundColor: '#FFFFFF' }, tw`pb-28`] }>
+      <View style={{ flex: 1, backgroundColor: '#FFFFFF', alignItems: 'center' }}>
+        <View style={{ flex: 1, width: '100%', maxWidth: 840, paddingHorizontal: isTablet ? 24 : 16 }}>
+        {/* Header */}
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
+          <Pressable
+            onPress={() => {
+              if (step > 1) setStep(step - 1); else router.back();
+            }}
+            style={{
+              height: 44,
+              width: 44,
+              borderRadius: 22,
+              backgroundColor: '#FFFFFF',
+              borderWidth: 1,
+              borderColor: '#EEEFF3',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginRight: 8,
+              shadowColor: '#000',
+              shadowOpacity: 0.06,
+              shadowRadius: 10,
+              shadowOffset: { width: 0, height: 4 },
+              elevation: 2,
+            }}
+          >
+            <Ionicons name="arrow-back-outline" size={20} color="#2B2140" />
+          </Pressable>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: scale(22), fontWeight: '800', color: '#2B2B2E', textAlign: 'center' }}>
+              {headerTitle}
+            </Text>
+          </View>
+          <View
+            style={{
+              height: 44,
+              width: 44,
+              borderRadius: 22,
+              backgroundColor: '#FFFFFF',
+              borderWidth: 1,
+              borderColor: '#EEEFF3',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginLeft: 8,
+              shadowColor: '#000',
+              shadowOpacity: 0.06,
+              shadowRadius: 10,
+              shadowOffset: { width: 0, height: 4 },
+              elevation: 2,
+            }}
+          >
+
+            <Image source={require('../../assets/images/element-3.png')} style={{ height: 20, width: 20 }} />
+            {/* <Ionicons name="apps-outline" size={20} color="#2B2140" /> */}
+          </View>
+        </View>
+
+        {/* Stepper */}
+          <View style={{ marginTop: 10 }}>
+          <Stepper steps={6} current={step} />
+          <View style={tw.style(isSmall ? 'flex-col' : 'flex-row', 'justify-between', 'items-center', 'mt-[6px]')}>
+            <Text style={[{ color: '#6B5DEB', fontWeight: '700' }, tw.style('flex-1', isSmall ? 'mb-[6px]' : '')]}>Step {step} of 6</Text>
+            <Text style={[{ color: '#9A9AA3' }, tw.style('text-[12px]', 'flex-1', 'text-right')]}>Pandas Factory CH2 · Aug 8, 2025</Text>
+          </View>
+        </View>
+
+        {step === 1 ? (
+          <>
+            <Text style={{ marginTop: 20, fontSize: scale(20), fontWeight: '800', color: '#2B2B2E' }}>
+              Select Areas to Audit
+            </Text>
+
+            <ScrollView
+              style={{ marginTop: 14, backgroundColor: '#FFFFFF' }}
+              contentInsetAdjustmentBehavior="always"
+              contentContainerStyle={{ paddingBottom: 120 }}
+            >
+              {areas.map((area) => (
+                <AreaCard key={area.id} area={area} toggle={toggle} />
+              ))}
+            </ScrollView>
+          </>
+        ) : step === 2 ? (
+          <StepTwo
+            previousSelections={selectedFromStep1}
+            onSelectionChange={(list) => {
+              const prevJson = JSON.stringify(combinedSelections);
+              const nextJson = JSON.stringify(list);
+              if (prevJson !== nextJson) setCombinedSelections(list);
+            }}
+          />
+        ) : (
+          <StepThree />
+        )}
+        
+        {/* Footer Actions */}
+        <View
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            padding: isSmall ? 12 : 16,
+            backgroundColor: 'white',
+            borderTopWidth: 1,
+            borderTopColor: '#EFEFF5',
+            zIndex: 5,
+          }}
+        >
+          <View style={tw`flex-row justify-between`}>
+            <Pressable
+              onPress={() => {
+                if (step > 1) setStep(step - 1);
+                else router.back();
+              }}
+              style={tw.style('border border-[#CFCFD6] rounded-[14px]', isSmall ? 'py-4 px-3' : 'py-[14px] px-[22px]')}
+            >
+              <Text style={{ color: '#6B5DEB', fontWeight: '700' }}>Save as Draft</Text>
+            </Pressable>
+
+            <Pressable
+              onPress={() => setStep((prev) => Math.min(3, prev + 1))}
+              style={tw.style('bg-[#6B5DEB] rounded-[14px] items-center', isSmall ? 'py-4 px-3' : 'py-[14px] px-[22px]')}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ color: 'white', fontWeight: '800', fontSize: scale(14) }}>Go to Time Logs</Text>
+                <Ionicons name="arrow-forward-outline" size={18} color="#FFFFFF" style={{ marginLeft: 8 }} />
+                {/* <Text style={{ color: 'white', fontWeight: '800', fontSize: scale(14) }}> ({selectedCount})</Text> */}
+              </View>
+            </Pressable>
+          </View>
+        </View>
+      </View>
+      </View>
+    </SafeAreaView>
+    </>
+  );
+}
+
+

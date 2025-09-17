@@ -6,6 +6,7 @@ import tw from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
+import { useLocalSearchParams } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 type RootStackParamList = {
@@ -13,6 +14,7 @@ type RootStackParamList = {
 };
 
 export default function dashboard() {
+    const { username } = useLocalSearchParams<{ username?: string }>();
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const [showAll, setShowAll] = useState(false);
     const [refreshTick, setRefreshTick] = useState(0);
@@ -53,7 +55,7 @@ export default function dashboard() {
                         <Image source={require('../assets/images/lady-home.png')} style={{ width: 42, height: 42, borderRadius: 21 }} />
                         <View style={[tw`pl-3`]}>
                             <Text style={[tw`text-black font-bold text-[18px]`]}>
-                                Hello Emmanuella
+                                Hello {username ? String(username) : 'Emmanuella'}
                             </Text>
                             <Text style={[tw`text-gray-600 text-[13px]`]}>Pandas Factory</Text>
                         </View>
