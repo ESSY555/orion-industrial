@@ -86,13 +86,23 @@ export default function StepTwo() {
             </View>
           ))}
 
-          <View style={tw`mt-3 bg-white rounded-2xl p-4 flex-row items-center justify-between border border-[#F0F1F5] shadow-sm`}>
+          <View style={tw`mt-3 bg-white text-[24px] rounded-2xl p-4 flex-row items-center justify-between border border-[#F0F1F5] shadow-sm`}>
             <View>
               <Text style={tw`text-[#6C6F7A]`}>Total Duration</Text>
-              <Text style={tw`text-[22px] font-extrabold text-[#2B2B2E]`}>0 hrs 0 mins</Text>
+              <Text style={tw`text-[18px] font-extrabold text-[#22C55E]`}>3 hrs 27 mins</Text>
             </View>
-            <View style={tw`bg-[#E8E7EC] rounded-xl py-2 px-4`}>
-              <Text style={tw`text-[#2B2140] font-semibold`}>Not Done</Text>
+            <View style={tw`bg-[#DFF5E9] rounded-xl py-2 px-4`}>
+              <Text style={tw`text-[#198754] font-semibold`}>Complete</Text>
+            </View>
+          </View>
+
+          <View style={tw`mt-3 bg-white rounded-2xl text-[24px] p-4 flex-row items-center justify-between border border-[#F0F1F5] shadow-sm`}>
+            <View>
+              <Text style={tw`text-[#6C6F7A]`}>Total Duration</Text>
+              <Text style={tw`text-[18px] font-extrabold text-[#3B82F6]`}>1 hrs 27 mins</Text>
+            </View>
+            <View style={tw`bg-[#E3E8FF] rounded-xl py-2 px-4`}>
+              <Text style={tw`text-[#4F46E5] font-semibold`}>In Progress</Text>
             </View>
           </View>
         </ScrollView>
