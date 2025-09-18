@@ -208,6 +208,16 @@ export default function CleanerFlowScreen() {
           ? 'Intensive Cleaning'
           : 'Review & Submit';
 
+  const nextButtonLabel = step === 1
+    ? 'Go to Time Logs'
+    : step === 2
+      ? 'Chemical Usage'
+      : step === 3
+        ? 'Intensive Cleaning'
+        : step === 4
+          ? 'Review'
+          : 'Submit Audit Report';
+
   return (
     <>
     <StatusBar style="dark" backgroundColor="#FFFFFF" />
@@ -333,7 +343,7 @@ export default function CleanerFlowScreen() {
               style={tw.style('bg-[#6B5DEB] rounded-[14px] items-center', isSmall ? 'py-4 px-3' : 'py-[14px] px-[22px]')}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ color: 'white', fontWeight: '800', fontSize: scale(14) }}>Go to Time Logs</Text>
+                    <Text style={{ color: 'white', fontWeight: '800', fontSize: scale(14) }}>{nextButtonLabel}</Text>
                 <Ionicons name="arrow-forward-outline" size={18} color="#FFFFFF" style={{ marginLeft: 8 }} />
                 {/* <Text style={{ color: 'white', fontWeight: '800', fontSize: scale(14) }}> ({selectedCount})</Text> */}
               </View>
