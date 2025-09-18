@@ -7,6 +7,8 @@ import { Link, useNavigation, useRouter } from 'expo-router';
 import tw from 'twrnc';
 import StepTwo from './components/stepTwo';
 import StepThree from './components/stepThree';
+import StepFour from './components/stepFour';
+import StepFive from './components/stepFive';
 
 type Area = {
   id: string;
@@ -196,7 +198,15 @@ export default function CleanerFlowScreen() {
   const [combinedSelections, setCombinedSelections] = useState<Array<{ id: string; name: string }>>([]);
   const selectedCount = (step === 1 ? selectedFromStep1 : combinedSelections).length;
 
-  const headerTitle = step === 1 ? 'Nightly Audit Form' : 'Nightly Audit Form';
+  const headerTitle = step === 1
+    ? 'Areas to Audit'
+    : step === 2
+      ? 'Time Tracking'
+      : step === 3
+        ? 'Chemical Usage'
+        : step === 4
+          ? 'Intensive Cleaning'
+          : 'Review & Submit';
 
   return (
     <>
@@ -260,9 +270,9 @@ export default function CleanerFlowScreen() {
 
         {/* Stepper */}
           <View style={{ marginTop: 10 }}>
-          <Stepper steps={6} current={step} />
+              <Stepper steps={5} current={step} />
           <View style={tw.style(isSmall ? 'flex-col' : 'flex-row', 'justify-between', 'items-center', 'mt-[6px]')}>
-            <Text style={[{ color: '#6B5DEB', fontWeight: '700' }, tw.style('flex-1', isSmall ? 'mb-[6px]' : '')]}>Step {step} of 6</Text>
+                <Text style={[{ color: '#6B5DEB', fontWeight: '700' }, tw.style('flex-1', isSmall ? 'mb-[6px]' : '')]}>Step {step} of 5</Text>
             <Text style={[{ color: '#9A9AA3' }, tw.style('text-[12px]', 'flex-1', 'text-right')]}>Pandas Factory CH2 · Aug 8, 2025</Text>
           </View>
         </View>
@@ -282,18 +292,15 @@ export default function CleanerFlowScreen() {
                 <AreaCard key={area.id} area={area} toggle={toggle} />
               ))}
             </ScrollView>
-          </>
+              </>
         ) : step === 2 ? (
-          <StepTwo
-            previousSelections={selectedFromStep1}
-            onSelectionChange={(list) => {
-              const prevJson = JSON.stringify(combinedSelections);
-              const nextJson = JSON.stringify(list);
-              if (prevJson !== nextJson) setCombinedSelections(list);
-            }}
-          />
-        ) : (
-          <StepThree />
+                <StepTwo />
+              ) : step === 3 ? (
+                <StepThree />
+                ) : step === 4 ? (
+                  <StepFour />
+                ) : (
+                  <StepFive />
         )}
         
         {/* Footer Actions */}
@@ -322,7 +329,7 @@ export default function CleanerFlowScreen() {
             </Pressable>
 
             <Pressable
-              onPress={() => setStep((prev) => Math.min(3, prev + 1))}
+                  onPress={() => setStep((prev) => Math.min(5, prev + 1))}
               style={tw.style('bg-[#6B5DEB] rounded-[14px] items-center', isSmall ? 'py-4 px-3' : 'py-[14px] px-[22px]')}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>

@@ -1,104 +1,147 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, ScrollView } from 'react-native';
+import { View, Text, Pressable, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'twrnc';
-
-type TimeRow = {
+import { Image } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
+type Chemical = {
   id: string;
-  label: string;
-  optional?: boolean;
+    name: string;
+    icon?: keyof typeof Ionicons.glyphMap;
 };
 
-const rows: TimeRow[] = [
-  { id: 'r1', label: 'Release to Sanitation' },
-  { id: 'r2', label: 'Ready to QA' },
-  { id: 'r3', label: 'QA Start Pre-op' },
-  { id: 'r4', label: 'QA Finish Pre-op' },
-  { id: 'r5', label: 'Time USDA', optional: true },
-  { id: 'r6', label: 'Released to Production' },
+const chemicals: Chemical[] = [
+    { id: 'c1', name: 'SK-250', icon: 'flask-outline' },
+    { id: 'c2', name: 'SK-140', icon: 'flask-outline' },
+    { id: 'c3', name: 'SK-241', icon: 'flask-outline' },
+    { id: 'c4', name: 'SK-148', icon: 'flask-outline' },
+    { id: 'c5', name: 'SK-150', icon: 'flask-outline' },
+    { id: 'c6', name: 'SK-148', icon: 'flask-outline' },
+    { id: 'c7', name: 'Sterilex Ultra Activator', icon: 'flask-outline' },
 ];
 
-function CurrentTimeButton({ onNow }: { onNow: () => void }) {
+function CounterRow({ label, value, onInc, onDec }: { label: string; value: number; onInc: () => void; onDec: () => void }) {
   return (
-    <Pressable
-      onPress={onNow}
-      style={{
-        borderWidth: 1,
-        borderColor: '#7B61FF',
-        backgroundColor: '#FFFFFF',
-        paddingVertical: 10,
-        paddingHorizontal: 14,
-        borderRadius: 10,
-      }}
-    >
-      <Text style={{ color: '#7B61FF', fontWeight: '700' }}>Current Time</Text>
-    </Pressable>
+        <View style={tw`bg-[#F6F6F6] rounded-2xl border border-[#EEF0F3] px-4 py-3 mb-3 flex-row items-center`}>
+            <View style={tw`h-10 w-10 rounded-full bg-[#FFFFFF] items-center justify-center mr-3`}>
+                <Image source={require('@/assets/images/confask.png')} style={tw`h-5 w-5`} />
+                {/* <Ionicons name="flask-outline" size={18} color="#7B61FF" /> */}
+            </View>
+            <Text style={tw`flex-1 text-[12px] text-[#2B2B2E] font-semibold`}>{label}</Text>
+            <Pressable onPress={onDec} style={tw`h-8 w-8 rounded-lg border-[1.4px] bg-white border-[#8B4CE8] items-center justify-center mr-3`}>
+                <Ionicons name="remove-outline" size={18} color="#7B61FF" />
+            </Pressable>
+            <View style={tw`h-8 w-8 rounded-lg bg-white items-center justify-center`}>
+                <Text style={tw`text-[#2B2B2E] font-bold`}>{value}</Text>
+            </View>
+            <Pressable onPress={onInc} style={tw`h-8 w-8 rounded-lg bg-[#7B61FF] items-center justify-center ml-3`}>
+                <Ionicons name="add-outline" size={18} color="#FFFFFF" />
+            </Pressable>
+        </View>
+    );
+}
+
+function DropdownSelect({
+    label,
+    options,
+    value,
+    onChange,
+    containerStyle,
+    inputStyle,
+    menuStyle,
+}: {
+    label: string;
+    options: string[];
+    value: string;
+    onChange: (v: string) => void;
+    containerStyle?: StyleProp<ViewStyle>;
+    inputStyle?: StyleProp<ViewStyle>;
+    menuStyle?: StyleProp<ViewStyle>;
+}) {
+    const [open, setOpen] = useState(false);
+    return (
+        <View style={[tw`rounded-xl mb-3`, containerStyle]}>
+            <Text style={tw`text-[#6C6F7A] mb-2`}>{label}</Text>
+            <View style={tw`relative`}> 
+                <Pressable
+                    onPress={() => setOpen((p) => !p)}
+                    style={[tw`h-11 rounded-xl border border-[#2D1B3D66] px-3 flex-row items-center justify-between`, inputStyle]}
+                >
+                    <Text style={tw`text-[#2B2B2E] font-semibold`}>{value}</Text>
+                    <Ionicons name={open ? 'chevron-up' : 'chevron-down'} size={18} color="#6C6F7A" />
+                </Pressable>
+                {open ? (
+                    <View style={[tw`absolute left-0 right-0 top-12 rounded-xl bg-white border border-[#E5E0EF] overflow-hidden z-10`, menuStyle]}>
+                        <ScrollView style={tw`max-h-48`} keyboardShouldPersistTaps="handled">
+                            {options.map((opt) => (
+                                <Pressable
+                                    key={opt}
+                                    onPress={() => {
+                                        onChange(opt);
+                                        setOpen(false);
+                                    }}
+                                    style={tw`px-3 py-3 bg-white`}
+                                >
+                                    <Text style={tw`text-[#2B2B2E]`}>{opt}</Text>
+                                </Pressable>
+                            ))}
+                        </ScrollView>
+                    </View>
+                ) : null}
+            </View>
+        </View>
   );
 }
 
 export default function StepThree() {
-  const [values, setValues] = useState<Record<string, string>>({});
+    const [counts, setCounts] = useState<Record<string, number>>(() =>
+        chemicals.reduce((acc, c) => ({ ...acc, [c.id]: 1 }), {})
+    );
 
-  const setNow = (id: string) => {
-    const d = new Date();
-    const hh = `${d.getHours()}`.padStart(2, '0');
-    const mm = `${d.getMinutes()}`.padStart(2, '0');
-    setValues((p) => ({ ...p, [id]: `${hh}:${mm}` }));
-  };
+    const increment = (id: string) => setCounts((p) => ({ ...p, [id]: (p[id] ?? 0) + 1 }));
+    const decrement = (id: string) =>
+        setCounts((p) => ({ ...p, [id]: Math.max(0, (p[id] ?? 0) - 1) }));
+
+    const [totes, setTotes] = useState<string>('0');
+    const [fogging, setFogging] = useState<string>('None');
 
   return (
     <View style={[{ flex: 1, paddingBottom: 100 }, tw`bg-[#FFFFFF]`]}>
-      <Text style={{ marginTop: 12, fontSize: 18, fontWeight: '800', color: '#2B2B2E' }}>Fresh Kitchen</Text>
-
-      <View style={{ marginTop: 10, backgroundColor: '#FFFFFF', borderRadius: 16, padding: 10 }}>
+          <View style={tw`mt-3 bg-white rounded-2xl border border-[#F0F1F5] p-3`}>
+              <Text style={tw`text-[#6C6F7A] mb-2`}>Chemicals Used (Jugs Filled)</Text>
         <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
-          {rows.map((row) => (
-            <View key={row.id} style={{ marginBottom: 14 }}>
-              <Text style={{ color: '#6C6F7A', marginBottom: 8 }}>
-                {row.label}
-                {row.optional ? ' (Optional)' : ''}
-              </Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View
-                  style={{
-                    flex: 1,
-                    borderWidth: 1,
-                    borderColor: '#E5E6EC',
-                    backgroundColor: '#F9F9FB',
-                    paddingHorizontal: 12,
-                    paddingVertical: 10,
-                    borderRadius: 10,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginRight: 12,
-                  }}
-                >
-                  <Ionicons name="time-outline" size={16} color="#6C6F7A" />
-                  <TextInput
-                    placeholder="00:00"
-                    value={values[row.id] ?? ''}
-                    onChangeText={(t) => setValues((p) => ({ ...p, [row.id]: t }))}
-                    style={{ marginLeft: 8, fontWeight: '700', color: '#2B2B2E', paddingVertical: 0 }}
-                  />
-                </View>
-                <CurrentTimeButton onNow={() => setNow(row.id)} />
-              </View>
-            </View>
-          ))}
+                  {chemicals.map((c) => (
+                      <CounterRow
+                          key={c.id}
+                          label={c.name}
+                          value={counts[c.id] ?? 0}
+                          onInc={() => increment(c.id)}
+                          onDec={() => decrement(c.id)}
+                      />
+                  ))}
+                  <View style={tw`mt-4 bg-[#EFE7FF] rounded-2xl border border-[#E3DBFF] p-4`}>
+                      <View style={tw`flex-row items-center mb-3`}>
+                          <Image source={require('@/assets/images/bulb.png')} style={tw`h-5 w-5`} />
+                          <Text style={tw`ml-2 text-[14px] text-[#2B2B2E] font-semibold`}>Special Activities</Text>
+                      </View>
+                      <DropdownSelect
+                          containerStyle={tw`mb-3`}
+                          label="Number of Green Totes Cleaned"
+                          options={[...Array(10)].map((_, i) => String(i))}
+                          value={totes}
+                          onChange={setTotes}
+                      />
+                      <DropdownSelect
+                          label="Fogging Rooms"
+                          options={["None", "Room 1", "Room 2", "Room 3"]}
+                          value={fogging}
+                          onChange={setFogging}
+                      />
+                  </View>
+              </ScrollView>
+          </View>
 
-          <View style={tw`mt-3 bg-white rounded-2xl p-4 flex-row items-center justify-between border border-[#F0F1F5] shadow-sm`}>
-        <View>
-              <Text style={tw`text-[#6C6F7A]`}>Total Duration</Text>
-              <Text style={tw`text-[22px] font-extrabold text-[#2B2B2E]`}>0 hrs 0 mins</Text>
-        </View>
-            <View style={tw`bg-[#E8E7EC] rounded-xl py-2 px-4`}>
-              <Text style={tw`text-[#2B2140] font-semibold`}>Not Done</Text>
-        </View>
-      </View>
-        </ScrollView>
-      </View>
 
-     
     </View>
   );
 }

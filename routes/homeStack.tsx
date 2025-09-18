@@ -6,7 +6,7 @@ import SelectedItemsScreen from '@/app/supervisor-flow/selected-items';
 import SupervisorEditScreen from '@/app/supervisor-flow/edit';
 import EditTaskScreen from '@/app/supervisor-flow/edit-task';
 import CleanerFlow from '@/app/cleaner-flow/index';
-import CleanerFlowStepTwo from '@/app/cleaner-flow/stepTwo';
+
 
 
 const Stack = createStackNavigator();
@@ -38,11 +38,7 @@ const StackScreen = () => (
             component={CleanerFlow}
             options={{ headerShown: false, title: 'Cleaner Flow' }}
         />
-        <Stack.Screen
-            name="CleanerFlowStepTwo"
-            component={CleanerFlowStepTwo}
-            options={{ headerShown: false, title: 'Cleaner Flow - Step Two' }}
-        />
+
     </Stack.Navigator>
 );
 
