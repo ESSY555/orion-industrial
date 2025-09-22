@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Keyboard } from 'react-native';
+import { View, Text, TouchableOpacity, Keyboard, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'twrnc';
-import { router, type Href } from 'expo-router';
+import { router, type Href, usePathname } from 'expo-router';
 
 export default function MenuBar() {
     const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+    const pathname = usePathname?.() as string | undefined;
+    let isHome = pathname === '/dashboard' || pathname === '/' || pathname === undefined;
+    let isScan = pathname === '/modal';
+    let isWorkOrders = pathname === '/WorkOrders';
+    if (!isHome && !isScan && !isWorkOrders) {
+        isHome = true;
+    }
 
     useEffect(() => {
         const showSub = Keyboard.addListener('keyboardDidShow', () => setIsKeyboardVisible(true));
@@ -20,22 +27,26 @@ export default function MenuBar() {
 
     return (
         <View style={[tw`items-center`, { position: 'absolute', left: 0, right: 0, bottom: 18, zIndex: 1000 }]}> 
-            <View style={[tw`flex-row items-center justify-between px-4 py-3 rounded-2xl`, { width: '90%', backgroundColor: '#FFFFFF', shadowColor: '#000', shadowOpacity: 0.08, shadowOffset: { width: 0, height: 4 }, shadowRadius: 12, elevation: 6 }]}> 
-                <Button icon="home" label="Home" onPress={() => router.push('/dashboard' as Href)} />
-                <Button icon="qr-code" label="Scan" onPress={() => router.push('/modal' as Href)} />
-                <Button icon="list" label="Task" onPress={() => router.push('/supervisor-flow/task' as Href)} />
+            <View style={[tw`flex-row items-center justify-between px-6 py-4 rounded-2xl`, { width: '92%', backgroundColor: '#2B2140', shadowColor: '#000', shadowOpacity: 0.18, shadowOffset: { width: 0, height: 6 }, shadowRadius: 16, elevation: 8 }]}>
+                <Button icon="home" label="Home" active={!!isHome} onPress={() => router.push('/dashboard' as Href)} />
+                <Button style={[tw`text-white`]} imageSrc={require('../assets/images/scanner.png')} label="Scan" active={!!isScan} onPress={() => router.push('/modal' as Href)} />
+                <Button style={[tw`text-white`]} imageSrc={require('../assets/images/note.png')} label="Work Orders" active={!!isWorkOrders} onPress={() => router.push('/WorkOrders' as Href)} />
             </View>
         </View>
     );
 }
 
-function Button({ icon, label, onPress }: { icon: any; label: string; onPress: () => void }) {
+function Button({ icon, imageSrc, label, onPress, active, style }: { icon?: any; imageSrc?: any; label: string; onPress: () => void; active?: boolean; style?: any }) {
     return (
-        <TouchableOpacity accessibilityRole="button" onPress={onPress} style={tw`items-center`}> 
-            <View style={[tw`w-10 h-10 rounded-full items-center justify-center`, { backgroundColor: '#F3F4F6' }]}> 
-                <Ionicons name={icon} size={18} color="#3A3A3A" />
+        <TouchableOpacity accessibilityRole="button" onPress={onPress} style={[tw`items-center`, style]}>
+            <View style={[tw`w-10 h-10 rounded-full items-center justify-center`, { backgroundColor: 'transparent' }]}>
+                {imageSrc ? (
+                    <Image source={imageSrc} style={{ width: 22, height: 22, tintColor: active ? '#8B5CF6' : '#FFFFFF', resizeMode: 'contain' }} />
+                ) : (
+                    <Ionicons name={icon as any} size={22} color={active ? '#8B5CF6' : '#FFFFFF'} />
+                )}
             </View>
-            <Text style={[tw`text-gray-700 mt-1`, { fontSize: 11 }]}>{label}</Text>
+            <Text style={[{ marginTop: 4, fontSize: 12, color: active ? '#8B5CF6' : '#FFFFFF', fontWeight: active ? '800' : '500' }]}>{label}</Text>
         </TouchableOpacity>
     );
 }

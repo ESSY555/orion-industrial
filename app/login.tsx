@@ -20,7 +20,7 @@ export default function LoginScreen() {
 
     const onLogin = () => {
         // TODO: Add API call with baseUrl/credentials when backend is ready
-        router.replace({ pathname: '/dashboard', params: { username } });
+        router.replace({ pathname: '/cleaner-flow/cleaner-dashboard', params: { username } });
     };
 
     return (

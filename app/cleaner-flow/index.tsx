@@ -1,9 +1,10 @@
 import React, { useLayoutEffect, useMemo, useState } from 'react';
-import { View, Text, Pressable, ScrollView, useWindowDimensions, PixelRatio, Image } from 'react-native';
+import { View, Text, Pressable, ScrollView, useWindowDimensions, PixelRatio, Image, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { Link, useNavigation, useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
 import StepTwo from './components/stepTwo';
 import StepThree from './components/stepThree';
@@ -18,7 +19,7 @@ type Area = {
   checked?: boolean;
 };
 
-function Stepper({ steps, current }: { steps: number; current: number }) {
+function Stepper({ steps, current, onPress }: { steps: number; current: number; onPress?: (step: number) => void }) {
   const circleSize = 26;
   const lineHeight = 4;
   const activeColor = '#7B61FF';
@@ -66,7 +67,7 @@ function Stepper({ steps, current }: { steps: number; current: number }) {
             const step = idx + 1;
             const isActive = step <= current;
             return (
-              <View
+              <Pressable
                 key={step}
                 style={{
                   width: circleSize,
@@ -78,11 +79,12 @@ function Stepper({ steps, current }: { steps: number; current: number }) {
                   borderWidth: isActive ? 0 : 1,
                   borderColor: baseColor,
                 }}
+                onPress={() => onPress?.(step)}
               >
                 <Text style={{ fontSize: 12, color: isActive ? '#FFFFFF' : '#9FA4B2', fontWeight: '700' }}>
                   {step}
                 </Text>
-              </View>
+              </Pressable>
             );
           })}
         </View>
@@ -218,6 +220,19 @@ export default function CleanerFlowScreen() {
           ? 'Review'
           : 'Submit Audit Report';
 
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const raw = await AsyncStorage.getItem('cleanerFlowDraftV1');
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (parsed?.areas) setAreas(parsed.areas);
+        if (parsed?.combinedSelections) setCombinedSelections(parsed.combinedSelections);
+        if (parsed?.step) setStep(parsed.step);
+      } catch (e) { }
+    })();
+  }, []);
+
   return (
     <>
     <StatusBar style="dark" backgroundColor="#FFFFFF" />
@@ -228,7 +243,18 @@ export default function CleanerFlowScreen() {
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
           <Pressable
             onPress={() => {
-              if (step > 1) setStep(step - 1); else router.back();
+                  if (step > 1) {
+                    setStep(step - 1);
+                  } else if (navigation.canGoBack?.()) {
+                    // Prefer native back only if there's something to go back to
+                    // to avoid GO_BACK warnings in development
+                    // @ts-ignore optional chaining safe
+                    navigation.goBack?.();
+                  } else {
+                    // Fallback: stay on screen or move to root route
+                    // Using replace avoids stacking
+                    router.replace('/');
+                  }
             }}
             style={{
               height: 44,
@@ -280,7 +306,7 @@ export default function CleanerFlowScreen() {
 
         {/* Stepper */}
           <View style={{ marginTop: 10 }}>
-              <Stepper steps={5} current={step} />
+              <Stepper steps={5} current={step} onPress={(s) => setStep(s)} />
           <View style={tw.style(isSmall ? 'flex-col' : 'flex-row', 'justify-between', 'items-center', 'mt-[6px]')}>
                 <Text style={[{ color: '#6B5DEB', fontWeight: '700' }, tw.style('flex-1', isSmall ? 'mb-[6px]' : '')]}>Step {step} of 5</Text>
             <Text style={[{ color: '#9A9AA3' }, tw.style('text-[12px]', 'flex-1', 'text-right')]}>Pandas Factory CH2 · Aug 8, 2025</Text>
@@ -303,8 +329,8 @@ export default function CleanerFlowScreen() {
               ))}
             </ScrollView>
               </>
-        ) : step === 2 ? (
-                <StepTwo />
+            ) : step === 2 ? (
+                <StepTwo areaName={selectedFromStep1[0]?.name} />
               ) : step === 3 ? (
                 <StepThree />
                 ) : step === 4 ? (
@@ -329,9 +355,17 @@ export default function CleanerFlowScreen() {
         >
           <View style={tw`flex-row justify-between`}>
             <Pressable
-              onPress={() => {
-                if (step > 1) setStep(step - 1);
-                else router.back();
+                  onPress={async () => {
+                    try {
+                      const draft = {
+                        step,
+                        areas,
+                        combinedSelections,
+                        savedAt: Date.now(),
+                      };
+                      await AsyncStorage.setItem('cleanerFlowDraftV1', JSON.stringify(draft));
+                      Alert.alert('Saved', 'Draft saved successfully.');
+                    } catch (e) { }
               }}
               style={tw.style('border border-[#CFCFD6] rounded-[14px]', isSmall ? 'py-4 px-3' : 'py-[14px] px-[22px]')}
             >

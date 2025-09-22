@@ -36,19 +36,18 @@ function CurrentTimeButton({ onNow }: { onNow: () => void }) {
   );
 }
 
-export default function StepTwo() {
+export default function StepTwo({ areaName }: { areaName?: string }) {
   const [values, setValues] = useState<Record<string, string>>({});
 
   const setNow = (id: string) => {
     const d = new Date();
-    const hh = `${d.getHours()}`.padStart(2, '0');
-    const mm = `${d.getMinutes()}`.padStart(2, '0');
-    setValues((p) => ({ ...p, [id]: `${hh}:${mm}` }));
+    const t = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+    setValues((p) => ({ ...p, [id]: t }));
   };
 
   return (
     <View style={[{ flex: 1, paddingBottom: 100 }, tw`bg-[#FFFFFF]`]}>
-      <Text style={{ marginTop: 12, fontSize: 18, fontWeight: '800', color: '#2B2B2E' }}>Fresh Kitchen</Text>
+      <Text style={{ marginTop: 12, fontSize: 18, fontWeight: '800', color: '#2B2B2E' }}>{areaName ?? 'Fresh Kitchen'}</Text>
 
       <View style={{ marginTop: 10, backgroundColor: '#FFFFFF', borderRadius: 16, padding: 10 }}>
         <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
@@ -86,7 +85,21 @@ export default function StepTwo() {
             </View>
           ))}
 
+
+
+
+
           <View style={tw`mt-3 bg-white text-[24px] rounded-2xl p-4 flex-row items-center justify-between border border-[#F0F1F5] shadow-sm`}>
+            <View>
+              <Text style={tw`text-[#6C6F7A]`}>Total Duration</Text>
+              <Text style={tw`text-[18px] font-extrabold text-black`}>3 hrs 27 mins</Text>
+            </View>
+            <View style={tw`bg-[#9393934F] rounded-xl py-2 px-4`}>
+              <Text style={tw`text-black font-semibold`}>Complete</Text>
+            </View>
+          </View>
+
+          {/* <View style={tw`mt-3 bg-white text-[24px] rounded-2xl p-4 flex-row items-center justify-between border border-[#F0F1F5] shadow-sm`}>
             <View>
               <Text style={tw`text-[#6C6F7A]`}>Total Duration</Text>
               <Text style={tw`text-[18px] font-extrabold text-[#22C55E]`}>3 hrs 27 mins</Text>
@@ -94,9 +107,9 @@ export default function StepTwo() {
             <View style={tw`bg-[#DFF5E9] rounded-xl py-2 px-4`}>
               <Text style={tw`text-[#198754] font-semibold`}>Complete</Text>
             </View>
-          </View>
+          </View> */}
 
-          <View style={tw`mt-3 bg-white rounded-2xl text-[24px] p-4 flex-row items-center justify-between border border-[#F0F1F5] shadow-sm`}>
+          {/* <View style={tw`mt-3 bg-white rounded-2xl text-[24px] p-4 flex-row items-center justify-between border border-[#F0F1F5] shadow-sm`}>
             <View>
               <Text style={tw`text-[#6C6F7A]`}>Total Duration</Text>
               <Text style={tw`text-[18px] font-extrabold text-[#3B82F6]`}>1 hrs 27 mins</Text>
@@ -104,7 +117,7 @@ export default function StepTwo() {
             <View style={tw`bg-[#E3E8FF] rounded-xl py-2 px-4`}>
               <Text style={tw`text-[#4F46E5] font-semibold`}>In Progress</Text>
             </View>
-          </View>
+          </View> */}
         </ScrollView>
       </View>
 

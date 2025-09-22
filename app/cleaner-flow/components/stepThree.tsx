@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, Pressable, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'twrnc';
@@ -104,6 +104,7 @@ export default function StepThree() {
 
     const [totes, setTotes] = useState<string>('0');
     const [fogging, setFogging] = useState<string>('None');
+    const totalChemicals = useMemo(() => Object.values(counts).reduce((acc, curr) => acc + curr, 0), [counts]);
 
   return (
     <View style={[{ flex: 1, paddingBottom: 100 }, tw`bg-[#FFFFFF]`]}>
@@ -119,6 +120,18 @@ export default function StepThree() {
                           onDec={() => decrement(c.id)}
                       />
                   ))}
+
+                  <View style={tw`mt-2 bg-white rounded-2xl p-4 flex-row items-center justify-between border border-[#F0F1F5] shadow-sm`}>
+                      <View style={tw`flex-row items-center`}>
+                          <View style={tw`h-8 w-8 rounded-full bg-[#F1ECFF] items-center justify-center mr-3`}>
+                              <Ionicons name="flask-outline" size={16} color="#7B61FF" />
+                          </View>
+                          <View style={tw`flex-row items-center`}>
+                              <Text style={tw`text-[#6C6F7A]`}>Total Chemicals Used=</Text>
+                              <Text style={tw`text-[18px] font-extrabold text-[#2B2B2E]`}> {totalChemicals}</Text>
+                          </View>
+                      </View>
+                  </View>
                   <View style={tw`mt-4 bg-[#EFE7FF] rounded-2xl border border-[#E3DBFF] p-4`}>
                       <View style={tw`flex-row items-center mb-3`}>
                           <Image source={require('@/assets/images/bulb.png')} style={tw`h-5 w-5`} />
