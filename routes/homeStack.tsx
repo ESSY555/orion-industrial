@@ -9,6 +9,7 @@ import CleanerFlow from '@/app/cleaner-flow/index';
 
 
 
+
 const Stack = createStackNavigator();
 
 const StackScreen = () => (
@@ -38,6 +39,7 @@ const StackScreen = () => (
             component={CleanerFlow}
             options={{ headerShown: false, title: 'Cleaner Flow' }}
         />
+     
 
     </Stack.Navigator>
 );

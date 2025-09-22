@@ -9,7 +9,7 @@ export default function MenuBar() {
     const pathname = usePathname?.() as string | undefined;
     let isHome = pathname === '/dashboard' || pathname === '/' || pathname === undefined;
     let isScan = pathname === '/modal';
-    let isWorkOrders = pathname === '/WorkOrders';
+    let isWorkOrders = pathname === '/WorkOrders' || pathname === '/cleaner-flow/training-levels';
     if (!isHome && !isScan && !isWorkOrders) {
         isHome = true;
     }
@@ -30,7 +30,7 @@ export default function MenuBar() {
             <View style={[tw`flex-row items-center justify-between px-6 py-4 rounded-2xl`, { width: '92%', backgroundColor: '#2B2140', shadowColor: '#000', shadowOpacity: 0.18, shadowOffset: { width: 0, height: 6 }, shadowRadius: 16, elevation: 8 }]}>
                 <Button icon="home" label="Home" active={!!isHome} onPress={() => router.push('/cleaner-flow/cleaner-dashboard' as Href)} />
                 <Button style={[tw`text-white`]} imageSrc={require('../assets/images/scanner.png')} label="Scan" active={!!isScan} onPress={() => router.push('/modal' as Href)} />
-                <Button style={[tw`text-white`]} imageSrc={require('../assets/images/note.png')} label="Work Orders" active={!!isWorkOrders} onPress={() => router.push('/cleaner-flow/screens/training-levels' as Href)} />
+                <Button style={[tw`text-white`]} imageSrc={require('../assets/images/note.png')} label="Work Orders" active={!!isWorkOrders} onPress={() => router.push('/cleaner-flow/training-levels' as Href)} />
             </View>
         </View>
     );
