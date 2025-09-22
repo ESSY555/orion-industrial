@@ -6,7 +6,7 @@ import tw from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import UiButton from '@/components/UiButton';
 
@@ -40,6 +40,8 @@ export default function dashboard() {
         // For now this just triggers re-render through state change.
     }, [refreshTick]);
 
+    
+
     return (
         <>
             <StatusBar style="dark" backgroundColor="#FFFFFF" />
@@ -70,7 +72,6 @@ export default function dashboard() {
                         </TouchableOpacity>
                     </View>
                 </View>
-
 
 
   {/* Work Orders banner */}
@@ -133,6 +134,7 @@ export default function dashboard() {
                   textColor="#FFFFFF"
                   rounded={18}
                   size="lg"
+                  onPress={() => router.push('/cleaner-flow/required-courses')}
                 />
                </View>
 
