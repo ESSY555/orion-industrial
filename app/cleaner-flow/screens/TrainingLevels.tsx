@@ -16,7 +16,7 @@ export default function TrainingLevels() {
     return (
         <View style={styles.container}>
             {/* Header */}
-            <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
+            <View style={[tw`px-4 pt-14 pb- flex-row items-center justify-between`]}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.iconButton, tw`shadow-lg`]}>
                     <Ionicons name="chevron-back" size={18} color="#111827" />
                 </TouchableOpacity>
@@ -28,7 +28,7 @@ export default function TrainingLevels() {
 
             <ScrollView contentContainerStyle={{ paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
                 {/* Search */}
-                <View style={[tw`px-4`]}>
+                <View style={[tw`px-4 pt-6`]}>
                     <View style={styles.searchWrap}>
                         <Ionicons name="search" size={16} color="#9CA3AF" />
                         <TextInput
