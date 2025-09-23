@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, ViewStyle } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
-import { useLocalSearchParams, useNavigation } from 'expo-router';
+import { useLocalSearchParams, useNavigation, router } from 'expo-router';
 
 export default function LevelsScreen() {
     const navigation = useNavigation<any>();
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     tabTextActive: { color: '#FFFFFF', fontSize: 12, fontWeight: '700' },
 });
 
-function StatusBadge({ status }: { status: 'done' | 'continue' | 'start' | 'start-grey' }) {
+function StatusBadge({ status, index }: { status: 'done' | 'continue' | 'start' | 'start-grey'; index?: number }) {
     if (status === 'done') {
         return (
             <View style={{ backgroundColor: '#DCFCE7', paddingVertical: 6, paddingHorizontal: 14, borderRadius: 10 }}>
@@ -228,11 +228,14 @@ function StatusBadge({ status }: { status: 'done' | 'continue' | 'start' | 'star
     }
     const bg = status === 'start-grey' ? '#E5E7EB' : '#7C5CFF';
     const color = status === 'start-grey' ? '#374151' : '#FFFFFF';
+    const isDisabled = status === 'start-grey';
+    const onPress = () => router.push({ pathname: '/cleaner-flow/moduls', params: { module: String(index ?? 1), total: '6' } });
+    const Wrapper: any = isDisabled ? View : TouchableOpacity;
     return (
-        <View style={{ backgroundColor: bg, paddingVertical: 6, paddingHorizontal: 14, borderRadius: 10, flexDirection: 'row', alignItems: 'center' }}>
+        <Wrapper onPress={isDisabled ? undefined : onPress} style={{ backgroundColor: bg, paddingVertical: 6, paddingHorizontal: 14, borderRadius: 10, flexDirection: 'row', alignItems: 'center' }}>
             <Text style={{ color, fontWeight: '700', fontSize: 12, marginRight: 6 }}>Start</Text>
             <Ionicons name="arrow-forward" size={14} color={color} />
-        </View>
+        </Wrapper>
     );
 }
 
@@ -245,7 +248,7 @@ function ModuleRow({ index, title, status, style }: { index: number; title: stri
                 </View>
                 <Text style={{ color: '#111827' }}>{title}</Text>
             </View>
-            <StatusBadge status={status} />
+            <StatusBadge status={status} index={index} />
         </View>
     );
 }

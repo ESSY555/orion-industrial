@@ -72,6 +72,12 @@ export default function dashboard() {
         }
     };
 
+    const handleStartTask = (taskId: number) => {
+        Alert.alert('Start Task', `Starting task #${taskId}`);
+        // TODO: navigate to the task detail screen when available
+        // router.push('/cleaner-flow/task');
+    };
+
     
 
     return (
@@ -87,9 +93,6 @@ export default function dashboard() {
 
                 <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                     <View style={[tw`flex-row items-center`]}>
-                        {/* <TouchableOpacity onPress={() => DeviceEventEmitter.emit('sidebar:open')} style={[tw`mr-3 bg-white rounded-full shadow-lg p-2`]}>
-                            <Ionicons name="menu" size={18} color="#111827" />
-                        </TouchableOpacity> */}
                         <Image source={require('../../assets/images/lady-home.png')} style={{ width: 42, height: 42, borderRadius: 21 }} />
                         <View style={[tw`pl-3`]}>
                             <Text style={[tw`text-black font-bold text-[18px]`]}>
@@ -165,11 +168,11 @@ export default function dashboard() {
                 {/* Work Orders list header */}
                 <View style={[tw`px-4 mt-5 flex-row items-center justify-between`]}>
                     <Text style={[tw`text-black font-bold`]}>Recent Tasks</Text>
-                    <TouchableOpacity style={[tw`bg-white border border-[#EFEFEF] rounded-full px-4 py-2`]} onPress={() => {
-                        // @ts-ignore navigate is available via useNavigation
-                        (navigation as any).navigate?.('WorkOrders');
-                    }}>
-                        <Text style={[tw`text-black`]}>View All</Text>
+                    <TouchableOpacity
+                        style={[tw`bg-white border border-[#EFEFEF] rounded-full px-4 py-2`]}
+                        onPress={() => setShowAll((s) => !s)}
+                    >
+                        <Text style={[tw`text-black`]}>{showAll ? 'View Less' : 'View All'}</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -209,14 +212,24 @@ export default function dashboard() {
                                     <Text style={tw`text-[#7A7A86] text-[11px] mt-1`}>{item.subtitle}</Text>
                                 </View>
                             </View>
-                            <View style={[styles.statusPill, item.status === 'In progress' ? styles.statusBlue : styles.statusPink, tw`px-4 py-3`]}>
-                                <Text style={[styles.statusText, item.status === 'In progress' ? styles.statusBlueText : styles.statusPinkText]}>{item.status}</Text>
-                            </View>
+                            {item.status === 'Start Task' ? (
+                                <TouchableOpacity
+                                    accessibilityRole="button"
+                                    onPress={() => handleStartTask(item.id)}
+                                    style={[styles.statusPill, styles.statusPink, tw`px-4 py-3`]}
+                                >
+                                    <Text style={[styles.statusText, styles.statusPinkText]}>Start Task</Text>
+                                </TouchableOpacity>
+                            ) : (
+                                <View style={[styles.statusPill, styles.statusBlue, tw`px-4 py-3`]}>
+                                    <Text style={[styles.statusText, styles.statusBlueText]}>In progress</Text>
+                                </View>
+                            )}
                         </View>
                     ))}
                 </View>
             </ScrollView>
-            {/* Sidebar now rendered globally in app/_layout.tsx */}
+
         </>
     );
 }
