@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react';
-import { StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { StyleSheet, TouchableOpacity, Image, ScrollView, DeviceEventEmitter } from 'react-native';
 import { Text, View } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
@@ -27,6 +27,9 @@ export default function requiredCourses() {
                 {/* Header */}
                 <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                     <View style={[tw`flex-row items-center`]}>
+                            {/* <TouchableOpacity onPress={() => DeviceEventEmitter.emit('sidebar:open')} style={[tw`mr-3 bg-white rounded-full shadow-lg p-2`]}>
+                                <Ionicons name="menu" size={18} color="#111827" />
+                            </TouchableOpacity> */}
                         <Image source={require('../../assets/images/lady-home.png')} style={{ width: 42, height: 42, borderRadius: 21 }} />
                         <View style={[tw`pl-3`]}>
                             <Text style={[tw`text-black font-bold text-[18px]`]}>Hello {username ? String(username) : 'Emmanuella'}</Text>

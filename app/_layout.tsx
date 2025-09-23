@@ -8,7 +8,10 @@ import MenuBar from '@/components/MenuBar';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-import { View } from 'react-native';
+import React from 'react';
+import { View, DeviceEventEmitter, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import Sidebar from '@/app/cleaner-flow/components/Sidebar';
 
 import { useColorScheme } from '@/components/useColorScheme';
 
@@ -55,6 +58,18 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
   const pathname = usePathname();
   const isLogin = pathname === '/login' || pathname === 'login' || pathname?.endsWith('/login');
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    const openSub = DeviceEventEmitter.addListener('sidebar:open', () => setSidebarOpen(true));
+    const closeSub = DeviceEventEmitter.addListener('sidebar:close', () => setSidebarOpen(false));
+    const toggleSub = DeviceEventEmitter.addListener('sidebar:toggle', () => setSidebarOpen(prev => !prev));
+    return () => {
+      openSub.remove();
+      closeSub.remove();
+      toggleSub.remove();
+    };
+  }, []);
 
   return (
     <SafeAreaProvider>
@@ -66,6 +81,18 @@ function RootLayoutNav() {
             <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
           </Stack>
           {!isLogin && <MenuBar />}
+          {!isLogin && (
+            <TouchableOpacity
+              accessibilityRole="button"
+              onPress={() => DeviceEventEmitter.emit('sidebar:open')}
+              style={{ position: 'absolute', left: 16, top: 90, width: 36, height: 36, borderRadius: 18, backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOpacity: 0.12, shadowOffset: { width: 0, height: 4 }, shadowRadius: 8, elevation: 3 }}
+            >
+              <Ionicons name="menu" size={18} color="#111827" />
+            </TouchableOpacity>
+          )}
+          {!isLogin && (
+            <Sidebar isOpen={sidebarOpen} onToggle={setSidebarOpen} onSelect={() => setSidebarOpen(false)} />
+          )}
         </View>
       </ThemeProvider>
     </SafeAreaProvider>

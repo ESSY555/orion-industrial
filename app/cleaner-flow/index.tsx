@@ -315,9 +315,9 @@ export default function CleanerFlowScreen() {
 
         {step === 1 ? (
           <>
-            <Text style={{ marginTop: 20, fontSize: scale(20), fontWeight: '800', color: '#2B2B2E' }}>
+            {/* <Text style={{ marginTop: 20, fontSize: scale(20), fontWeight: '800', color: '#2B2B2E' }}>
               Select Areas to Audit
-            </Text>
+            </Text> */}
 
             <ScrollView
               style={{ marginTop: 14, backgroundColor: '#FFFFFF' }}

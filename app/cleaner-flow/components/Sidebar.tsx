@@ -67,6 +67,14 @@ export default function Sidebar({ isOpen = false, onToggle, onSelect, initialAct
             });
             return;
         }
+        if (key === 'lms') {
+            onToggle?.(false);
+            setOpen(false);
+            Animated.timing(slide, { toValue: 0, duration: 200, easing: Easing.in(Easing.cubic), useNativeDriver: true }).start(() => {
+                router.push('/cleaner-flow/required-courses');
+            });
+            return;
+        }
         onSelect?.(key);
     }
 

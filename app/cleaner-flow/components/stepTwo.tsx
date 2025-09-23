@@ -39,6 +39,36 @@ function CurrentTimeButton({ onNow }: { onNow: () => void }) {
 export default function StepTwo({ areaName }: { areaName?: string }) {
   const [values, setValues] = useState<Record<string, string>>({});
 
+  const parseTimeToSeconds = (timeStr: string): number | null => {
+    if (!timeStr) return null;
+    const m = /^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i.exec(timeStr.trim());
+    if (!m) return null;
+    let hours = parseInt(m[1], 10);
+    const minutes = parseInt(m[2], 10);
+    const seconds = m[3] ? parseInt(m[3], 10) : 0;
+    const ampm = m[4].toUpperCase();
+    if (hours === 12) hours = 0;
+    if (ampm === 'PM') hours += 12;
+    return hours * 3600 + minutes * 60 + seconds;
+  };
+
+  const totalDurationLabel = (() => {
+    const secs: number[] = Object.values(values)
+      .map(parseTimeToSeconds)
+      .filter((n): n is number => typeof n === 'number');
+    if (secs.length < 2) return '--';
+    const minVal = Math.min(...secs);
+    const maxVal = Math.max(...secs);
+    const diff = Math.max(0, maxVal - minVal);
+    const h = Math.floor(diff / 3600);
+    const m = Math.floor((diff % 3600) / 60);
+    const s = diff % 60;
+    const hLabel = `${h} hr${h === 1 ? '' : 's'} `; // always show hours, even 0
+    const mLabel = `${m} min${m === 1 ? '' : 's'} `;
+    const sLabel = `${s} sec${s === 1 ? '' : 's'}`;
+    return `${hLabel}${mLabel}${sLabel}`;
+  })();
+
   const setNow = (id: string) => {
     const d = new Date();
     const t = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
@@ -76,7 +106,9 @@ export default function StepTwo({ areaName }: { areaName?: string }) {
                   <TextInput
                     placeholder="00:00"
                     value={values[row.id] ?? ''}
-                    onChangeText={(t) => setValues((p) => ({ ...p, [row.id]: t }))}
+                    editable={false}
+                    selectTextOnFocus={false}
+                    caretHidden
                     style={{ marginLeft: 8, fontWeight: '700', color: 'black', paddingVertical: 0 }}
                   />
                 </View>
@@ -89,12 +121,12 @@ export default function StepTwo({ areaName }: { areaName?: string }) {
 
 
 
-          <View style={tw`mt-3 bg-white text-[24px] rounded-2xl p-4 flex-row items-center justify-between border border-[#F0F1F5] shadow-sm`}>
-            <View>
+          <View style={[tw`mt-3 bg-white text-[24px] rounded-2xl p-4 border border-[#F0F1F5] shadow-sm`, { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }]}>
+            <View style={{ flexShrink: 1, flexBasis: '80%' }}>
               <Text style={tw`text-[#6C6F7A]`}>Total Duration</Text>
-              <Text style={tw`text-[18px] font-extrabold text-black`}>3 hrs 27 mins</Text>
+              <Text style={tw`text-[18px] font-extrabold text-black`}>{totalDurationLabel}</Text>
             </View>
-            <View style={tw`bg-[#9393934F] rounded-xl py-2 px-4`}>
+            <View style={[tw`bg-[#9393934F] rounded-xl py-2 px-4`, { alignSelf: 'flex-start', marginTop: 8 }]}>
               <Text style={tw`text-black font-semibold`}>Complete</Text>
             </View>
           </View>

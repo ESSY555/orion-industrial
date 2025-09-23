@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { StyleSheet, TouchableOpacity, Image, ScrollView, Animated, Easing, RefreshControl } from 'react-native';
+import { StyleSheet, TouchableOpacity, Image, ScrollView, Animated, Easing, RefreshControl, Alert } from 'react-native';
 import { Text, View } from 'react-native';
 import { Svg, Circle, G } from 'react-native-svg';
 import tw from 'twrnc';
@@ -9,7 +9,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import UiButton from '@/components/UiButton';
-import Sidebar from './components/Sidebar';
+import { DeviceEventEmitter } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type RootStackParamList = {
     WorkOrders: undefined;
@@ -21,7 +22,6 @@ export default function dashboard() {
     const [showAll, setShowAll] = useState(false);
     const [refreshTick, setRefreshTick] = useState(0);
     const [refreshing, setRefreshing] = useState(false);
-    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const handleRefresh = () => {
         setRefreshing(true);
@@ -42,6 +42,36 @@ export default function dashboard() {
         // For now this just triggers re-render through state change.
     }, [refreshTick]);
 
+    const DRAFT_KEY = 'sanitrack:reportDraftRoute';
+    const [draftClearedAt, setDraftClearedAt] = useState<number | null>(null);
+
+    const handleResumeDraft = async () => {
+        try {
+            const saved = (await AsyncStorage.getItem(DRAFT_KEY)) || '';
+            const normalized = saved.trim().toLowerCase();
+            // If no valid draft (or recently cleared), start fresh
+            if (!normalized || normalized === 'null' || normalized === 'undefined' || draftClearedAt) {
+                router.push('/cleaner-flow' as any);
+                return;
+            }
+            router.push(saved as any);
+        } catch (e) {
+            router.push('/cleaner-flow' as any);
+        }
+    };
+
+    const handleClearDraft = async () => {
+        try {
+            // Remove and also overwrite to an empty string to avoid stale cached reads
+            await AsyncStorage.removeItem(DRAFT_KEY);
+            await AsyncStorage.setItem(DRAFT_KEY, '');
+            setDraftClearedAt(Date.now());
+            Alert.alert('Draft cleared');
+        } catch (e) {
+            Alert.alert('Could not clear draft');
+        }
+    };
+
     
 
     return (
@@ -57,9 +87,9 @@ export default function dashboard() {
 
                 <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                     <View style={[tw`flex-row items-center`]}>
-                        <TouchableOpacity onPress={() => setSidebarOpen(true)} style={[tw`mr-3 bg-white rounded-full shadow-lg p-2`]}>
+                        {/* <TouchableOpacity onPress={() => DeviceEventEmitter.emit('sidebar:open')} style={[tw`mr-3 bg-white rounded-full shadow-lg p-2`]}>
                             <Ionicons name="menu" size={18} color="#111827" />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <Image source={require('../../assets/images/lady-home.png')} style={{ width: 42, height: 42, borderRadius: 21 }} />
                         <View style={[tw`pl-3`]}>
                             <Text style={[tw`text-black font-bold text-[18px]`]}>
@@ -87,6 +117,18 @@ export default function dashboard() {
                             <Text style={[tw`text-white mt-1 text-[12px]`]}>
                                 3/8 <Text style={[tw`text-[12px] text-white/60`]}>Task completed today</Text>
                             </Text>
+                            <View>
+                                <TouchableOpacity style={[tw`flex-row items-center mt-2`]} onPress={handleResumeDraft}>
+                                    <Ionicons name="play-circle-outline" size={16} color="#F28BFD" style={{ marginLeft: 6 }} />
+                                    <Text style={[{ color: '#F28BFD' }, tw`text-[14px]`]}> Resume Draft</Text>
+
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[tw`flex-row items-center mt-2`]} onPress={handleClearDraft}>
+                                    <Ionicons name="trash-outline" size={16} color="#F28BFD" style={{ marginLeft: 6 }} />
+                                    <Text style={[{ color: '#F28BFD' }, tw`text-[14px]`]}> clear Draft</Text>
+
+                                </TouchableOpacity>
+                            </View>
                         </View>
                         <View style={[styles.ringContainer]}>
                             <ProgressRing percent={69} size={92} strokeWidth={10} />
@@ -139,7 +181,7 @@ export default function dashboard() {
                   textColor="#FFFFFF"
                   rounded={18}
                   size="lg"
-                  onPress={() => router.push('/cleaner-flow/required-courses')}
+                        onPress={() => router.push('/cleaner-flow')}
                 />
                </View>
 
@@ -174,7 +216,7 @@ export default function dashboard() {
                     ))}
                 </View>
             </ScrollView>
-            <Sidebar isOpen={sidebarOpen} onToggle={setSidebarOpen} onSelect={() => setSidebarOpen(false)} />
+            {/* Sidebar now rendered globally in app/_layout.tsx */}
         </>
     );
 }
