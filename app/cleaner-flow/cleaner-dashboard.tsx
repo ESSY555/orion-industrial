@@ -9,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import UiButton from '@/components/UiButton';
+import Sidebar from './components/Sidebar';
 
 type RootStackParamList = {
     WorkOrders: undefined;
@@ -20,6 +21,7 @@ export default function dashboard() {
     const [showAll, setShowAll] = useState(false);
     const [refreshTick, setRefreshTick] = useState(0);
     const [refreshing, setRefreshing] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const handleRefresh = () => {
         setRefreshing(true);
@@ -55,6 +57,9 @@ export default function dashboard() {
 
                 <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                     <View style={[tw`flex-row items-center`]}>
+                        <TouchableOpacity onPress={() => setSidebarOpen(true)} style={[tw`mr-3 bg-white rounded-full shadow-lg p-2`]}>
+                            <Ionicons name="menu" size={18} color="#111827" />
+                        </TouchableOpacity>
                         <Image source={require('../../assets/images/lady-home.png')} style={{ width: 42, height: 42, borderRadius: 21 }} />
                         <View style={[tw`pl-3`]}>
                             <Text style={[tw`text-black font-bold text-[18px]`]}>
@@ -169,6 +174,7 @@ export default function dashboard() {
                     ))}
                 </View>
             </ScrollView>
+            <Sidebar isOpen={sidebarOpen} onToggle={setSidebarOpen} onSelect={() => setSidebarOpen(false)} />
         </>
     );
 }

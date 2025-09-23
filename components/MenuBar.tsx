@@ -31,6 +31,7 @@ export default function MenuBar() {
                 <Button icon="home" label="Home" active={!!isHome} onPress={() => router.push('/cleaner-flow/cleaner-dashboard' as Href)} />
                 <Button style={[tw`text-white`]} imageSrc={require('../assets/images/scanner.png')} label="Scan" active={!!isScan} onPress={() => router.push('/modal' as Href)} />
                 <Button style={[tw`text-white`]} imageSrc={require('../assets/images/note.png')} label="Work Orders" active={!!isWorkOrders} onPress={() => router.push('/cleaner-flow/training-levels' as Href)} />
+            
             </View>
         </View>
     );

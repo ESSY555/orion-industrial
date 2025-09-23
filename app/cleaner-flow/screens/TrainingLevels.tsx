@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TextInput, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from 'expo-router';
+import { useNavigation, router } from 'expo-router';
 
 export default function TrainingLevels() {
     const navigation = useNavigation<any>();
@@ -87,6 +87,21 @@ type LevelCardProps = {
 
 function LevelCard({ level, title, modules, time, progress, locked, tint, bg }: LevelCardProps) {
     return (
+        <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() =>
+                router.push({
+                    pathname: '/cleaner-flow/levels',
+                    params: {
+                        level: String(level),
+                        title,
+                        modules,
+                        time,
+                        progress: typeof progress === 'number' ? String(progress) : undefined,
+                        locked: locked ? 'true' : 'false',
+                    },
+                })
+            }>
         <View style={[styles.card, { backgroundColor: bg }, tw``]}> 
             <View style={[tw`flex-row items-center justify-between`]}>
                 <Text style={[tw`text-black font-bold text-[20px]`]}>Level {level}</Text>
@@ -128,6 +143,7 @@ function LevelCard({ level, title, modules, time, progress, locked, tint, bg }: 
 
             <Image source={require('../../../assets/images/experiment-one.png')} style={[styles.bgFlask, { tintColor: tint }]} resizeMode="contain" />
         </View>
+        </TouchableOpacity>
     );
 }
 
