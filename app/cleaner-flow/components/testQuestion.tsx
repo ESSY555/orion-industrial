@@ -2,7 +2,8 @@ import React, { useLayoutEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation, router } from 'expo-router';
+import { useNavigation, router, useLocalSearchParams } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import UiButton from '@/components/UiButton';
 
 type Question = {
@@ -40,6 +41,7 @@ const RIGHT_ANSWERS: string[] = [
 
 export default function TestQuestion() {
   const navigation = useNavigation<any>();
+    const { username } = useLocalSearchParams<{ username?: string }>();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedByIndex, setSelectedByIndex] = useState<Record<number, string | null>>({});
 
@@ -54,6 +56,19 @@ export default function TestQuestion() {
   const setSelected = (opt: string) => setSelectedByIndex((prev) => ({ ...prev, [currentIndex]: opt }));
   const progressPct = Math.round(((currentIndex + 1) / total) * 100);
   const isLast = currentIndex === total - 1;
+
+    const CERTS_KEY = 'sanitrack:certificates';
+    const addCertificate = async (title: string) => {
+        try {
+            const now = new Date();
+            const date = `Completed: ${now.toLocaleString(undefined, { month: 'short' })} ${now.getDate()}, ${now.getFullYear()}`;
+            const raw = (await AsyncStorage.getItem(CERTS_KEY)) || '[]';
+            const parsed: { title: string; date: string }[] = JSON.parse(raw);
+            const exists = parsed.some((c) => c.title === title);
+            const next = exists ? parsed : [{ title, date }, ...parsed].slice(0, 10);
+            await AsyncStorage.setItem(CERTS_KEY, JSON.stringify(next));
+        } catch { }
+    };
 
   return (
     <View style={[tw`flex-1 bg-[#F7F7F7]`]}>
@@ -125,7 +140,10 @@ export default function TestQuestion() {
                       setSelectedByIndex({});
                       setCurrentIndex(0);
                       if (pct >= 70) {
-                        router.push('/cleaner-flow/certification');
+                          (async () => {
+                              await addCertificate('Chemical Handling Sk-148');
+                              router.push({ pathname: '/cleaner-flow/certification', params: { username: username ? String(username) : undefined } });
+                          })();
                       }
                     },
                   },

@@ -1,17 +1,36 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useLocalSearchParams } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Certification() {
   const navigation = useNavigation<any>();
-  const { name } = useLocalSearchParams<{ name?: string }>();
+    const { username } = useLocalSearchParams<{ username?: string }>();
+    const [recent, setRecent] = useState<{ title: string; date: string }[]>([]);
+    //   const { name } = useLocalSearchParams<{ name?: string }>();
 
   useLayoutEffect(() => {
     // @ts-ignore
     navigation.setOptions?.({ headerShown: false });
   }, [navigation]);
+
+    useEffect(() => {
+        let mounted = true;
+        (async () => {
+            try {
+                const raw = (await AsyncStorage.getItem('sanitrack:certificates')) || '[]';
+                const list = JSON.parse(raw) as { title: string; date: string }[];
+                if (mounted) setRecent(list);
+            } catch {
+                if (mounted) setRecent([]);
+            }
+        })();
+        return () => {
+            mounted = false;
+        };
+    }, []);
 
   return (
     <View style={[tw`flex-1 bg-[#F7F7F7]`]}> 
@@ -22,7 +41,7 @@ export default function Certification() {
         </TouchableOpacity>
         <Text style={[tw`text-black font-bold text-[18px]`]}>Certifications</Text>
         <TouchableOpacity style={styles.iconButton}>
-          <Ionicons name="cloud-download-outline" size={18} color="#111827" />
+                  <Ionicons name="time-outline" size={18} color="#111827" />
         </TouchableOpacity>
       </View>
 
@@ -39,7 +58,7 @@ export default function Certification() {
                 </View>
                 <Text style={[tw`mt-2`, { color: '#2B2140', fontWeight: '900', fontSize: 26 }]}>Level 2 Certified</Text>
                 <Text style={[tw`mt-1`, { color: '#6B7280', fontSize: 12 }]}>Basic Skills & Awareness</Text>
-                <Text style={[tw`mt-3`, { color: '#2B2140', fontWeight: '600', fontSize: 16 }]}>{name ?? 'Adewumi'}</Text>
+                              <Text style={[tw`mt-3`, { color: '#2B2140', fontWeight: '600', fontSize: 16 }]}>{username ? String(username) : 'Emmanuella'}</Text>
                 <View style={styles.nameUnderline} />
               </View>
               <View style={[tw`flex-row items-center justify-between mt-3`]}>
@@ -80,24 +99,29 @@ export default function Certification() {
               </TouchableOpacity>
             </View>
 
-            {[
-              { title: 'Chemical Handling SK-148', date: 'Completed: Jul 28, 2025' },
+                      {(recent.length ? recent : [
+                          { title: 'Chemical Handling Sk-148', date: 'Completed: Jul 28, 2025' },
               { title: 'LOTO Procedures', date: 'Completed: Aug 5, 2025' },
-            ].map((row, idx) => (
+                      ]).map((row, idx) => (
               <View key={idx} style={[styles.recentRow, idx === 0 ? tw`mb-3` : null]}> 
-                <View style={[tw`flex-row items-center`]}>
+                              <View style={[tw`flex-row items-center flex-1`]}>
                   <View style={styles.recentThumb}>
-                    <Image source={require('../../assets/images/experiment-one.png')} style={{ width: 20, height: 20 }} resizeMode="contain" />
+                                      <Image source={require('../../assets/images/experiment-one.png')} style={{ width: 52, height: 32 }} resizeMode="contain" />
                   </View>
-                  <View style={[tw`ml-3`]}>
-                    <Text style={[tw`text-black font-semibold text-[12px]`]}>{row.title}</Text>
-                    <Text style={[tw`text-[#6B7280] text-[10px] mt-1`]}>{row.date}</Text>
+                                  <View style={[tw`ml-3`, { flexShrink: 1 }]}>
+                                      <Text style={[tw`text-black font-semibold text-[14px]`]} numberOfLines={1} ellipsizeMode="tail">{row.title}</Text>
+                                      <Text style={[tw`text-[#6B7280] text-[12px] mt-1`]}>{row.date}</Text>
                   </View>
                 </View>
-                <TouchableOpacity style={[tw`flex-row items-center`]}>
-                  <Text style={[tw`text-[#7C5CFF] text-[12px] mr-1`]}>View</Text>
-                  <Ionicons name="eye-outline" size={16} color="#7C5CFF" />
-                </TouchableOpacity>
+                              <View style={[tw`flex-row items-center`]}>
+                                  <TouchableOpacity style={[tw`mr-3 flex-row items-center`]}>
+                                      <Text style={[tw`text-[#7C5CFF] text-[12px] mr-1`]}>View</Text>
+                                      <Ionicons name="eye-outline" size={16} color="#7C5CFF" />
+                                  </TouchableOpacity>
+                                  <TouchableOpacity accessibilityRole="button">
+                                      <Ionicons name="download-outline" size={18} color="#6B7280" />
+                                  </TouchableOpacity>
+                              </View>
               </View>
             ))}
           </View>
