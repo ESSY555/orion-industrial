@@ -111,12 +111,12 @@ export default function ModulsScreen() {
 
           {/* Footer nav */}
           <View style={[tw`mt-3 flex-row items-center justify-between`]}>
-            <TouchableOpacity style={styles.footerBtnLight} onPress={() => navigation.goBack()}>
+            <TouchableOpacity style={[styles.footerBtnLight, tw`py-5`]} onPress={() => navigation.goBack()}>
               <Ionicons name="chevron-back" size={16} color="#111827" />
               <Text style={[tw`ml-2 text-black`]}>Previous Module</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.footerBtnPrimary}
+              style={[styles.footerBtnPrimary, tw`py-5`]}
               onPress={() => router.push({ pathname: '/cleaner-flow/final-test', params: { module: String(moduleNum + 1), total: String(total) } })}
             >
               <Text style={[tw`text-white mr-2`]}>Next Module</Text>

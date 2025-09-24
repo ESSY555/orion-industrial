@@ -92,9 +92,8 @@ export default function Sidebar({ isOpen = false, onToggle, onSelect, initialAct
                 </TouchableOpacity>
 
                 <View style={[tw``]}>
-                   <View
-                   > <Text style={[tw`text-black font-bold text-[18px] text-center py-3`]}>Cleaner Tabs</Text>
-                   
+                    <View>
+                        <Text style={[tw`text-black font-bold text-[18px] text-center py-3`]}>Cleaner Tabs</Text>
                    </View>
                     {items.map(item => {
                         const isActive = active === item.key;
