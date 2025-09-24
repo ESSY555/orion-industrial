@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
-import { useLocalSearchParams, useNavigation } from 'expo-router';
+import { useLocalSearchParams, useNavigation, router } from 'expo-router';
 
 export default function ModulsScreen() {
   const navigation = useNavigation<any>();
@@ -41,14 +41,14 @@ export default function ModulsScreen() {
           </View>
 
           {/* Title row */}
-          <View style={[tw`mt-3 flex-row items-center justify-between`]}>
+          <View style={[tw`mt-3 flex-row justify-between`]}>
             <View>
-              <Text style={[tw`text-black font-bold`]}> {title} </Text>
+              <Text style={[tw`text-black font-bold text[12px]`]}> {title} </Text>
               <Text style={[tw`text-[#E565B8] text-[11px] mt-1`]}>Due in 3 days</Text>
             </View>
             <TouchableOpacity style={styles.downloadAll}>
               <Ionicons name="download-outline" size={14} color="#FFFFFF" />
-              <Text style={[tw`text-white ml-2 text-[12px]`]}>Download All</Text>
+              <Text style={[tw`text-white ml-2 text-[10px]`]}>Download All</Text>
             </TouchableOpacity>
           </View>
 
@@ -66,7 +66,8 @@ export default function ModulsScreen() {
             <View style={styles.bulletBox}>
               {['1:128 - General cleaning', '1:128 - General cleaning', '1:128 - General cleaning'].map((t, i) => (
                 <View key={i} style={[tw`flex-row items-center mt-2`]}>
-                  <Ionicons name="alert-circle-outline" size={14} color="#7C5CFF" />
+                  <Image source={require('../../assets/images/conflask.png')} style={{ width: 25, height: 25, }} resizeMode="contain" />
+                  {/* <Ionicons name="alert-circle-outline" size={14} color="#7C5CFF" /> */}
                   <Text style={[tw`ml-2 text-[#6B7280] text-[12px]`]}>{t}</Text>
                 </View>
               ))}
@@ -79,18 +80,28 @@ export default function ModulsScreen() {
           {/* Quiz block */}
           <View style={styles.quizCard}>
             <View style={[tw`flex-row items-center`]}>
-              <Ionicons name="help-circle-outline" size={16} color="#7C5CFF" />
+              <Image source={require('../../assets/images/lamp.png')} style={{ width: 25, height: 25, }} resizeMode="contain" />
               <Text style={[tw`ml-2 text-[#7C5CFF] font-bold`]}>Quick Knowledge Check</Text>
             </View>
-            <Text style={[tw`text-[#6B7280] mt-2`]}>
+            <Text style={[tw`text-[#6B7280] mt-2 `]}>
               What is the dilution ratio for general cleaning with SK-250?
             </Text>
             {['1.16', '1.14', '1.2', '1.79'].map((opt, i) => {
               const isSelected = selected === opt;
               return (
-                <TouchableOpacity key={i} style={[styles.optionRow, isSelected && { borderColor: '#7C5CFF', backgroundColor: '#F3F0FF' }]} onPress={() => setSelected(opt)}>
-                  <Text style={[tw`text-black`]}>{opt}</Text>
-                  <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
+                <TouchableOpacity
+                  key={i}
+                  activeOpacity={0.9}
+                  style={[
+                    styles.optionRow,
+                    isSelected
+                      ? { borderColor: '#7C5CFF', backgroundColor: '#DCCBFF' }
+                      : { borderColor: '#CBC2EE', backgroundColor: '#F3F0FF' },
+                  ]}
+                  onPress={() => setSelected(opt)}
+                >
+                  <Text style={[tw`text-black`, { fontWeight: '700' }]}>{opt}</Text>
+                  <View style={[styles.checkCircle, isSelected ? styles.checkCircleSelected : styles.checkCircleUnselected]}>
                     {isSelected && <Ionicons name="checkmark" size={12} color="#FFFFFF" />}
                   </View>
                 </TouchableOpacity>
@@ -104,7 +115,10 @@ export default function ModulsScreen() {
               <Ionicons name="chevron-back" size={16} color="#111827" />
               <Text style={[tw`ml-2 text-black`]}>Previous Module</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.footerBtnPrimary}>
+            <TouchableOpacity
+              style={styles.footerBtnPrimary}
+              onPress={() => router.push({ pathname: '/cleaner-flow/final-test', params: { module: String(moduleNum + 1), total: String(total) } })}
+            >
               <Text style={[tw`text-white mr-2`]}>Next Module</Text>
               <Ionicons name="chevron-forward" size={16} color="#FFFFFF" />
             </TouchableOpacity>
@@ -157,14 +171,14 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
   },
   bulletBox: {
-    backgroundColor: '#F6F5FA',
+    backgroundColor: '#F6F6F6',
     borderRadius: 12,
     padding: 12,
     marginTop: 10,
   },
   quizCard: {
     marginTop: 14,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#8B4CE81A',
     borderRadius: 14,
     padding: 14,
     shadowColor: '#000',
@@ -173,36 +187,28 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
   },
   optionRow: {
-    marginTop: 10,
-    borderWidth: 1,
-    borderColor: '#E8E8EF',
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    borderRadius: 10,
+    marginTop: 14,
+    borderWidth: 2,
+    borderColor: '#CBC2EE',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    borderRadius: 18,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  selectedDot: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    backgroundColor: '#7C5CFF',
+  checkCircle: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  checkbox: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    borderWidth: 2,
-    borderColor: '#C7C9D9',
-    alignItems: 'center',
-    justifyContent: 'center',
+  checkCircleUnselected: {
+    backgroundColor: '#E8DDFE',
   },
-  checkboxSelected: {
+  checkCircleSelected: {
     backgroundColor: '#7C5CFF',
-    borderColor: '#7C5CFF',
   },
   footerBtnLight: {
     backgroundColor: '#FFFFFF',
