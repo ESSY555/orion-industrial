@@ -144,7 +144,7 @@ export default function StepFour() {
       
         {/* Section: Header dropdown chip */}
         <View style={tw`bg-white rounded-2xl border border-[#F0F1F5] p-4 mt-3`}>
-          <Text style={tw`text-[#2B2B2E] font-extrabold mb-2`}>Documentation Evidence</Text>
+          <Text style={tw`text-[#2B2B2E] font-extrabold mb-2 text-[16px]`}>Documentation Evidence</Text>
 
           <DropdownSelect
             label="Area Performed"
@@ -154,7 +154,7 @@ export default function StepFour() {
           />
 
           <View style={tw`mt-1`}>
-            <Text style={tw`text-[#2D1B3DE5] mb-2`}>Fogging Rooms</Text>
+            <Text style={tw`text-[#2D1B3DE5] mb-2 text-[12px]`}>Fogging Rooms</Text>
             <View style={tw`rounded-2xl border border-[#2D1B3D33] bg-white p-4`}>
               <Text style={tw`text-[#2B2B2E]`}>
                 {fogging}
@@ -165,7 +165,7 @@ export default function StepFour() {
 
         {/* Photo Evidence */}
         <View style={tw`bg-white rounded-2xl border border-[#F0F1F5] p-4 mt-4`}>
-          <Text style={tw`text-[#2B2B2E] font-extrabold mb-3`}>Photo Evidence</Text>
+          <Text style={tw`text-[#2B2B2E] font-extrabold mb-3 text-[16px]`}>Photo Evidence</Text>
 
           <Pressable onPress={uploads.length >= 3 ? undefined : pickImages} style={tw`rounded-2xl border-2 border-dashed border-[#C9A8FF] bg-[#F5EEFF] py-10 items-center justify-center mb-4`}>
             <View style={tw`h-12 w-12 rounded-full bg-white items-center justify-center mb-3`}>
@@ -198,7 +198,7 @@ export default function StepFour() {
           </View>
 
           <View style={tw`mt-4`}>
-            <Text style={tw`text-[#6C6F7A] mb-1`}>
+            <Text style={tw`text-[#6C6F7A] mb-1 text-[12px]`}>
               Upload time left: <Text style={tw`text-[#E565B8]`}>{Math.max(0, Math.ceil((1 - uploadProgress) * 4))}s</Text>
             </Text>
             <View style={tw`h-2 rounded-full bg-[#EFEFF5]`}>

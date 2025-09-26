@@ -377,7 +377,7 @@ export default function CleanerFlowScreen() {
               style={tw.style('bg-[#6B5DEB] rounded-[14px] items-center', isSmall ? 'py-4 px-3' : 'py-[14px] px-[22px]')}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={{ color: 'white', fontWeight: '800', fontSize: scale(14) }}>{nextButtonLabel}</Text>
+                    <Text style={{ color: 'white', fontWeight: '800', fontSize: scale(12) }}>{nextButtonLabel}</Text>
                 <Ionicons name="arrow-forward-outline" size={18} color="#FFFFFF" style={{ marginLeft: 8 }} />
                 {/* <Text style={{ color: 'white', fontWeight: '800', fontSize: scale(14) }}> ({selectedCount})</Text> */}
               </View>
