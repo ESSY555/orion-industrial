@@ -116,7 +116,7 @@ export default function dashboard() {
   <View style={[tw`px-4 mt-4`]}>
                     <View style={[styles.banner]}>
                         <View>
-                            <Text style={[tw`text-white font-bold text-[20px]`]}>Completed Tasks</Text>
+                            <Text style={[tw`text-white font-bold text-[18px]`]}>Completed Tasks</Text>
                             <Text style={[tw`text-white mt-1 text-[12px]`]}>
                                 3/8 <Text style={[tw`text-[12px] text-white/60`]}>Task completed today</Text>
                             </Text>
@@ -147,17 +147,17 @@ export default function dashboard() {
                             <View style={styles.kpiBadge}> 
                                 <Ionicons name="time-outline" size={18} color="#FFFFFF" />
                             </View>
-                            <Text style={[styles.kpiNumber]}>2</Text>
-                            <Text style={[styles.kpiTitleStrong]}>Active Tasks</Text>
-                            <Text style={[styles.kpiSubtitle]}>Check out current tasks</Text>
+                            <Text style={[styles.kpiNumber, tw`text-[50px]`]}>2</Text>
+                            <Text style={[styles.kpiTitleStrong, tw`text-[13px]`]}>Active Tasks</Text>
+                            <Text style={[styles.kpiSubtitle, tw`text-[11px]`]}>Check out current tasks</Text>
                         </View>
                         <View style={[styles.kpiCard, styles.kpiLight]}>
                             <View style={styles.kpiBadge}> 
                                 <Ionicons name="time-outline" size={18} color="#FFFFFF" />
                             </View>
-                            <Text style={[styles.kpiNumber]}>1</Text>
-                            <Text style={[styles.kpiTitleStrong]}>Past Due Tracks</Text>
-                            <Text style={[styles.kpiSubtitle]}>View missed Tasks</Text>
+                            <Text style={[styles.kpiNumber, tw`text-[50px]`]}>1</Text>
+                            <Text style={[styles.kpiTitleStrong, tw`text-[13px]`]}>Past Due Tracks</Text>
+                            <Text style={[styles.kpiSubtitle, tw`text-[11px]`]}>View missed Tasks</Text>
                         </View>
                     </View>
 
@@ -167,9 +167,9 @@ export default function dashboard() {
 
                 {/* Work Orders list header */}
                 <View style={[tw`px-4 mt-5 flex-row items-center justify-between`]}>
-                    <Text style={[tw`text-black font-bold`]}>Recent Tasks</Text>
+                    <Text style={[tw`text-black font-bold text-[16px]`]}>Recent Tasks</Text>
                     <TouchableOpacity
-                        style={[tw`bg-white border border-[#EFEFEF] rounded-full px-4 py-2`]}
+                        style={[tw`bg-white border border-[#EFEFEF] rounded-full px-4 py-2 text-[12px]`]}
                         onPress={() => setShowAll((s) => !s)}
                     >
                         <Text style={[tw`text-black`]}>{showAll ? 'View Less' : 'View All'}</Text>
@@ -177,7 +177,7 @@ export default function dashboard() {
                 </View>
 
 
-               <View style={[tw`px-4 my-4`]}>
+               <View style={[tw`px-4 my-4 text-[22px]`]}>
                 <UiButton
                   label="Start a Report"
                   backgroundColor="#8B4CE8"
@@ -208,8 +208,8 @@ export default function dashboard() {
                                     )}
                                 </View>
                                 <View style={tw`pl-3`}>
-                                    <Text style={tw`text-black font-bold`}>{item.title}</Text>
-                                    <Text style={tw`text-[#7A7A86] text-[11px] mt-1`}>{item.subtitle}</Text>
+                                    <Text style={tw`text-black font-bold text-[12px]`}>{item.title}</Text>
+                                    <Text style={tw`text-[#7A7A86] text-[9px] mt-1`}>{item.subtitle}</Text>
                                 </View>
                             </View>
                             {item.status === 'Start Task' ? (
@@ -222,7 +222,7 @@ export default function dashboard() {
                                 </TouchableOpacity>
                             ) : (
                                 <View style={[styles.statusPill, styles.statusBlue, tw`px-4 py-3`]}>
-                                    <Text style={[styles.statusText, styles.statusBlueText]}>In progress</Text>
+                                    <Text style={[styles.statusText, styles.statusBlueText, tw`text-[12px]`]}>In progress</Text>
                                 </View>
                             )}
                         </View>
