@@ -1,8 +1,9 @@
-import React, { useLayoutEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useLayoutEffect, useMemo, useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, router } from 'expo-router';
+import { mockCourseWithAssignment } from '@/db/mock-db';
 
 export default function FinalTest() {
   const navigation = useNavigation<any>();
@@ -12,47 +13,65 @@ export default function FinalTest() {
     navigation.setOptions?.({ headerShown: false });
   }, [navigation]);
 
+  const totalDurationSec = (mockCourseWithAssignment.assessmentDuration || 0) * 60;
+  const [remainingSec, setRemainingSec] = useState<number>(totalDurationSec);
+
+  const formatTime = (sec: number) => {
+    const m = Math.floor(sec / 60).toString().padStart(2, '0');
+    const s = Math.floor(sec % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  };
+
+  useEffect(() => {
+    if (remainingSec <= 0) return;
+    const id = setInterval(() => {
+      setRemainingSec((s) => (s > 0 ? s - 1 : 0));
+    }, 1000);
+    return () => clearInterval(id);
+  }, [remainingSec]);
+
   return (
     <View style={[tw`flex-1 bg-[#F7F7F7]`]}>
       {/* Header */}
       <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.iconButton}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`w-9 h-9 rounded-full bg-white items-center justify-center`}>
           <Ionicons name="chevron-back" size={18} color="#111827" />
         </TouchableOpacity>
         <Text style={[tw`text-black font-bold text-[24px]`]}>Final Assessment</Text>
-        <View style={styles.iconButton}>
+        <View style={tw`w-9 h-9 rounded-full bg-white items-center justify-center flex-row`}>
           <Ionicons name="time-outline" size={18} color="#111827" />
+          <Text style={[tw`ml-1 text-black`, { fontSize: 12 }]}>{formatTime(remainingSec)}</Text>
         </View>
       </View>
 
       <ScrollView contentContainerStyle={{ paddingBottom: 120 }} showsVerticalScrollIndicator={true}>
         <View style={[tw`px-4 mt-8`]}>
           {/* White Info Card */}
-          <View style={styles.whiteCard}>
+          <View style={tw`bg-white rounded-2xl p-4`}>
             <BulletRow icon="help-circle-outline" text={
               <Text style={tw`text-black`}>
-                There are <Text style={tw`text-black font-bold text-[12px]`}>20 Questions</Text>
+                There are <Text style={tw`text-black font-bold text-[12px]`}>{mockCourseWithAssignment.questionsAndOptions.length} Questions</Text>
               </Text>
             } />
             <BulletRow icon="time-outline" text={
               <Text style={tw`text-black`}>
-                You have <Text style={tw`text-black font-bold text-[12px]`}>25 minutes</Text> to finish
+                You have <Text style={tw`text-black font-bold text-[12px]`}>{mockCourseWithAssignment.assessmentDuration} minutes</Text> to finish
               </Text>
             } />
             <BulletRow icon="checkmark-circle-outline" text={
               <Text style={tw`text-black`}>
-                The pass mark is <Text style={tw`text-black font-bold text-[12px]`}>70%</Text>
+                The pass mark is <Text style={tw`text-black font-bold text-[12px]`}>{mockCourseWithAssignment.minimumPassScore}%</Text>
               </Text>
             } />
             <BulletRow icon="create-outline" text={
               <Text style={tw`text-black`}>
-                You have only <Text style={tw`text-black font-bold text-[12px]`}>3 attemps</Text>
+                You have only <Text style={tw`text-black font-bold text-[12px]`}>{mockCourseWithAssignment.courseAssignment?.maxAttempts ?? 1} attemps</Text>
               </Text>
             } />
           </View>
 
           {/* Purple Tips Card */}
-          <View style={styles.tipsCard}>
+          <View style={tw`bg-[#EDE7FF] rounded-2xl p-4 mt-4`}>
             <View style={[tw`flex-row items-center mb-2`]}>
               <Ionicons name="bulb-outline" size={16} color="#7C5CFF" />
               <Text style={[tw`ml-2 text-[#7C5CFF] font-bold text-[14px]`]}>Read the below very well</Text>
@@ -66,11 +85,11 @@ export default function FinalTest() {
 
           {/* Footer Buttons */}
           <View style={[tw`mt-6 flex-row items-center justify-between`]}>
-            <TouchableOpacity style={[styles.footerBtnLight, tw`py-5`]} onPress={() => navigation.goBack()}>
+            <TouchableOpacity style={tw`bg-[#EEEEEE] border border-[#E5E7EB] rounded-2xl px-3.5 py-4 flex-row items-center`} onPress={() => navigation.goBack()}>
               <Ionicons name="chevron-back" size={16} color="#111827" />
               <Text style={[tw`ml-2 text-black text-[12px]`]}>Go Back to Modules</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.footerBtnPrimary, tw`py-5`]} onPress={() => router.push('/cleaner-flow/test-question')}>
+            <TouchableOpacity style={tw`bg-[#7C5CFF] rounded-2xl px-4 py-3 flex-row items-center`} onPress={() => router.push('/cleaner-flow/test-question')}>
               <Text style={[tw`text-white mr-2 text-[12px]`]}>Start Test</Text>
               <Ionicons name="arrow-forward" size={16} color="#FFFFFF" />
             </TouchableOpacity>
@@ -84,7 +103,7 @@ export default function FinalTest() {
 function BulletRow({ icon, text }: { icon: any; text: React.ReactNode }) {
   return (
     <View style={[tw`flex-row items-center mb-4`]}>
-      <View style={styles.pillIcon}>
+      <View style={tw`w-7 h-7 rounded-full bg-[#7C5CFF] items-center justify-center`}>
         <Ionicons name={icon} size={14} color="#FFFFFF" />
       </View>
       <View style={{ marginLeft: 10 }}>{text}</View>
@@ -101,56 +120,5 @@ function TipText({ index, text, style }: { index: number; text: string; style?: 
   );
 }
 
-const styles = StyleSheet.create({
-  iconButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  whiteCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 18,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOpacity: 0.04,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 8,
-  },
-  pillIcon: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: '#7C5CFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tipsCard: {
-    backgroundColor: '#EDE7FF',
-    borderRadius: 18,
-    padding: 16,
-    marginTop: 16,
-  },
-  footerBtnLight: {
-    backgroundColor: '#EEEEEE',
-    borderColor: '#E5E7EB',
-    borderWidth: 1,
-    borderRadius: 18,
-    paddingHorizontal: 14,
-    paddingVertical: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  footerBtnPrimary: {
-    backgroundColor: '#7C5CFF',
-    borderRadius: 18,
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});
 
 

@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, router, useLocalSearchParams } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import UiButton from '@/components/UiButton';
+import { mockCourseWithAssignment } from '@/db/mock-db';
 
 type Question = {
   text: string;
@@ -44,6 +45,10 @@ export default function TestQuestion() {
     const { username } = useLocalSearchParams<{ username?: string }>();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedByIndex, setSelectedByIndex] = useState<Record<number, string | null>>({});
+  const [submitted, setSubmitted] = useState(false);
+
+  const totalDurationSec = (mockCourseWithAssignment.assessmentDuration || 0) * 60;
+  const [remainingSec, setRemainingSec] = useState<number>(totalDurationSec);
 
   useLayoutEffect(() => {
     // @ts-ignore
@@ -70,6 +75,49 @@ export default function TestQuestion() {
         } catch { }
     };
 
+  const formatTime = (sec: number) => {
+    const m = Math.floor(sec / 60).toString().padStart(2, '0');
+    const s = Math.floor(sec % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  };
+
+  const handleSubmit = () => {
+    if (submitted) return;
+    setSubmitted(true);
+    const total = QUESTIONS.length;
+    const chosen = Array.from({ length: total }, (_, idx) => selectedByIndex[idx] ?? null);
+    const correct = chosen.reduce((acc, ans, idx) => (ans === RIGHT_ANSWERS[idx] ? acc + 1 : acc), 0);
+    const pct = (correct / total) * 100;
+    Alert.alert('Result', `Score: ${Math.round(pct)}%`, [
+      {
+        text: 'OK',
+        onPress: () => {
+          setSelectedByIndex({});
+          setCurrentIndex(0);
+          if (pct >= 70) {
+            (async () => {
+              await addCertificate('Chemical Handling Sk-148');
+              router.push({ pathname: '/cleaner-flow/certification', params: { username: username ? String(username) : undefined } });
+            })();
+          }
+        },
+      },
+    ]);
+  };
+
+  // countdown effect
+  React.useEffect(() => {
+    if (submitted) return;
+    if (remainingSec <= 0) {
+      handleSubmit();
+      return;
+    }
+    const id = setInterval(() => {
+      setRemainingSec((s) => (s > 0 ? s - 1 : 0));
+    }, 1000);
+    return () => clearInterval(id);
+  }, [remainingSec, submitted]);
+
   return (
     <View style={[tw`flex-1 bg-[#F7F7F7]`]}>
       {/* Header */}
@@ -80,6 +128,7 @@ export default function TestQuestion() {
         <Text style={[tw`text-black font-bold text-[18px]`]}>Question {currentIndex + 1} of {total}</Text>
         <View style={[styles.iconButton, tw`flex-row items-center justify-center`]}>
           <Ionicons name="time-outline" size={16} color="#111827" />
+          <Text style={[tw`ml-1 text-black`, { fontSize: 12 }]}>{formatTime(remainingSec)}</Text>
         </View>
       </View>
 
@@ -128,26 +177,7 @@ export default function TestQuestion() {
                   setCurrentIndex((i) => (i < total - 1 ? i + 1 : i));
                   return;
                 }
-                // Submit: compute score
-                const chosen = Array.from({ length: total }, (_, idx) => selectedByIndex[idx] ?? null);
-                const correct = chosen.reduce((acc, ans, idx) => (ans === RIGHT_ANSWERS[idx] ? acc + 1 : acc), 0);
-                const pct = (correct / total) * 100;
-                Alert.alert('Result', `Score: ${Math.round(pct)}%`, [
-                  {
-                    text: 'OK',
-                    onPress: () => {
-                      // refresh screen state
-                      setSelectedByIndex({});
-                      setCurrentIndex(0);
-                      if (pct >= 70) {
-                          (async () => {
-                              await addCertificate('Chemical Handling Sk-148');
-                              router.push({ pathname: '/cleaner-flow/certification', params: { username: username ? String(username) : undefined } });
-                          })();
-                      }
-                    },
-                  },
-                ]);
+                handleSubmit();
               }}
             >
               <Text style={[tw`mr-2`, { color: '#FFFFFF', fontWeight: '700', fontSize: 12 }]}>{isLast ? 'Submit' : 'Next Question'}</Text>
