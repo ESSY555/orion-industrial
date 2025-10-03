@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Animated, Easing } from 'react-native';
+import { View, Text, TouchableOpacity, Animated, Easing } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'twrnc';
 import { router } from 'expo-router';
@@ -79,15 +79,15 @@ export default function Sidebar({ isOpen = false, onToggle, onSelect, initialAct
     }
 
     return (
-        <View pointerEvents={open ? 'auto' : 'none'} style={[styles.wrapper, open ? styles.wrapperOpen : undefined]}> 
+        <View pointerEvents={open ? 'auto' : 'none'} style={[tw`absolute left-0 top-0 bottom-0 z-50`, open ? { width: '100%' } : { width: 0 }]}> 
             <Animated.View
                 pointerEvents={open ? 'auto' : 'none'}
-                style={[styles.backdrop, { opacity: backdropOpacity }]}
+                style={[tw`absolute left-0 right-0 top-0 bottom-0`, { backgroundColor: 'rgba(0,0,0,0.12)', opacity: backdropOpacity }]}
             >
                 <TouchableOpacity style={{ flex: 1 }} activeOpacity={1} onPress={() => { setOpen(false); onToggle?.(false); }} />
             </Animated.View>
-            <Animated.View style={[styles.sidebar, { transform: [{ translateX: sidebarX }] }]}> 
-                <TouchableOpacity accessibilityRole="button" onPress={handleToggle} style={[styles.toggleButton, tw`mt-5`]}>
+            <Animated.View style={[tw`absolute left-0 top-0 bottom-0 w-60 bg-[#F9FAFB] border-r border-[#E5E7EB] pt-5 px-3`, { transform: [{ translateX: sidebarX }] }]}>
+                <TouchableOpacity accessibilityRole="button" onPress={handleToggle} style={tw`w-9 h-9 rounded-full bg-white items-center justify-center border border-[#E5E7EB] mt-5`}>
                     <Ionicons name={open ? 'close' : 'menu'} size={18} color="#111827" />
                 </TouchableOpacity>
 
@@ -105,10 +105,10 @@ export default function Sidebar({ isOpen = false, onToggle, onSelect, initialAct
                                 key={item.key}
                                 accessibilityRole="button"
                                 onPress={() => handleSelect(item.key)}
-                                style={[styles.button, { backgroundColor }]}
+                                style={[tw`flex-row items-center py-3 px-3 rounded-xl mb-2.5 border`, { borderColor: '#ECECEC', backgroundColor }]}
                             >
                                 <Ionicons name={item.icon as any} size={18} color={iconColor} />
-                                <Text style={[styles.buttonText, { color }]}>{item.label}</Text>
+                                <Text style={[tw`ml-2.5 font-extrabold`, { color }]}>{item.label}</Text>
                             </TouchableOpacity>
                         );
                     })}
@@ -118,69 +118,5 @@ export default function Sidebar({ isOpen = false, onToggle, onSelect, initialAct
     );
 }
 
-const { width } = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-    wrapper: {
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        bottom: 0,
-        width: 0,
-        zIndex: 2000,
-    },
-    wrapperOpen: {
-        width: width, // allow overlay capture if needed
-    },
-    backdrop: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.12)',
-    },
-    sidebar: {
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        bottom: 0,
-        width: 240,
-        backgroundColor: '#F9FAFB',
-        borderRightWidth: 1,
-        borderRightColor: '#E5E7EB',
-        paddingTop: 20,
-        paddingHorizontal: 12,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
-        shadowOffset: { width: 0, height: 4 },
-    },
-    sidebarOpen: {},
-    toggleButton: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
-        backgroundColor: '#FFFFFF',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderWidth: 1,
-        borderColor: '#E5E7EB',
-    },
-    button: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 12,
-        borderRadius: 12,
-        marginBottom: 10,
-        borderWidth: 1,
-        borderColor: '#ECECEC',
-    },
-    buttonText: {
-        marginLeft: 10,
-        fontWeight: '700',
-    },
-});
 
 

@@ -35,7 +35,7 @@ export const mockCourse: Course = {
     },
   ],
   answers: [["Safety goggles"], ["1:128"], ["Don PPE"], ["Keep sealed and labeled"]],
-  assessmentDuration: 10,
+  assessmentDuration: 1,
   facilityId: "facility-001",
 };
 
