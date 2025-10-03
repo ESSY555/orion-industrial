@@ -30,17 +30,17 @@ function Dropdown({ label, value, options, onChange }: { label: string; value: s
 }
 
 function SummaryCard({ label, value, tint }: { label: string; value: string; tint: 'left' | 'right' }) {
-  const bg = tint === 'left' ? '#F4F1FF' : '#EFE8FF';
-  const iconBg = tint === 'left' ? '#2B2140' : 'black';
+  const bgClass = tint === 'left' ? 'bg-[#F4F1FF]' : 'bg-[#EFE8FF]';
+  const iconBgClass = tint === 'left' ? 'bg-[#2B2140]' : 'bg-black';
   const iconSrc = tint === 'left'
     ? require('../../../assets/images/areas-cleaned.png')
     : require('../../../assets/images/new-pot.png');
   return (
     <View style={tw`flex-1`}> 
-      <View style={[tw`rounded-2xl p-4`, { backgroundColor: bg }]}> 
+      <View style={tw.style('rounded-2xl p-4', bgClass)}> 
         <View style={tw`flex-row items-center mb-2`}>
-          <View style={[tw`h-8 w-8 rounded-full items-center justify-center mr-2`, { backgroundColor: iconBg }]}>
-            <Image source={iconSrc} style={{ width: 16, height: 16, resizeMode: 'contain' }} />
+          <View style={tw.style('h-8 w-8 rounded-full items-center justify-center mr-2', iconBgClass)}>
+            <Image source={iconSrc} resizeMode="contain" style={tw`w-4 h-4`} />
           </View>
           <Text style={tw`text-[#2B2B2E] font-semibold`}>{label}</Text>
         </View>
@@ -58,8 +58,8 @@ export default function StepFive() {
   const [confirm, setConfirm] = useState(false);
 
   return (
-    <View style={[{ flex: 1, paddingBottom:10 }, tw`bg-[#F7F7F7]`]}>
-      <ScrollView style={tw`px-3`} contentContainerStyle={{ paddingBottom: 100 }}>
+    <View style={tw`flex-1 pb-3 bg-[#F7F7F7]`}>
+      <ScrollView style={tw`px-3`} contentContainerStyle={tw`pb-24`}>
         <Text style={tw`text-[18px] font-extrabold text-[#2B2B2E] mt-2 mb-3`}>Final Step</Text>
 
         <View style={tw`flex-row mb-3`}>
@@ -108,7 +108,7 @@ export default function StepFive() {
           />
         </View>
 
-        <View style={tw.style('mt-4 rounded-2xl px-4 py-4 flex-row items-center', confirm ? 'bg-[#EDE4FF] border border-[#E3DAFF]' : 'bg-white border border-[#E3DAFF]`')}>
+        <View style={tw.style('mt-4 rounded-2xl px-4 py-4 flex-row items-center', confirm ? 'bg-[#EDE4FF] border border-[#E3DAFF]' : 'bg-white border border-[#E3DAFF]')}>
           <Pressable
             onPress={() => setConfirm((p) => !p)}
             style={tw.style('h-6 w-6 rounded-md shadow-lg items-center justify-center mr-3', confirm ? 'bg-[#7B61FF]' : 'bg-white')}

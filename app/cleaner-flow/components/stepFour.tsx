@@ -3,23 +3,21 @@ import { View, Text, Pressable, ScrollView, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'twrnc';
-import type { StyleProp, ViewStyle } from 'react-native';
+// Tailwind-only: removed StyleSheet types
 
 function DropdownSelect({
   label,
   options,
   value,
   onChange,
-  inputStyle,
-  menuStyle,
+  // Tailwind-only; external style injection removed
   showLabel = true,
 }: {
   label: string;
   options: string[];
   value: string;
   onChange: (v: string) => void;
-  inputStyle?: StyleProp<ViewStyle>;
-  menuStyle?: StyleProp<ViewStyle>;
+    // style props removed for Tailwind-only
   showLabel?: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -29,13 +27,13 @@ function DropdownSelect({
       <View style={tw`relative`}>
         <Pressable
           onPress={() => setOpen((p) => !p)}
-          style={[tw`h-11 rounded-xl bg-white border border-[#E5E0EF] px-3 flex-row items-center justify-between`, inputStyle]}
+          style={tw`h-11 rounded-xl bg-white border border-[#E5E0EF] px-3 flex-row items-center justify-between`}
         >
           <Text style={tw`text-[#2B2B2E] font-semibold`}>{value}</Text>
           <Ionicons name={open ? 'chevron-up' : 'chevron-down'} size={18} color="#6C6F7A" />
         </Pressable>
         {open ? (
-          <View style={[tw`absolute left-0 right-0 top-12 rounded-xl bg-white border border-[#E5E0EF] overflow-hidden z-10`, menuStyle]}>
+          <View style={tw`absolute left-0 right-0 top-12 rounded-xl bg-white border border-[#E5E0EF] overflow-hidden z-10`}>
             <ScrollView style={tw`max-h-48`} keyboardShouldPersistTaps="handled">
               {options.map((opt) => (
                 <Pressable
