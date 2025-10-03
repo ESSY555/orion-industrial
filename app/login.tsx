@@ -13,7 +13,7 @@ export default function LoginScreen() {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
-    const canSubmit = baseUrl.trim().length > 0 && username.trim().length > 0 && password.length > 0;
+    const canSubmit = (baseUrl ?? '').trim().length > 0 && (username ?? '').trim().length > 0 && password.length > 0;
 
     const onLogin = () => {
         // TODO: Add API call with baseUrl/credentials when backend is ready

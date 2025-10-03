@@ -47,8 +47,8 @@ export default function dashboard() {
 
     const handleResumeDraft = async () => {
         try {
-            const saved = (await AsyncStorage.getItem(DRAFT_KEY)) || '';
-            const normalized = saved.trim().toLowerCase();
+            const saved = await AsyncStorage.getItem(DRAFT_KEY);
+            const normalized = (saved ?? '').trim().toLowerCase();
             // If no valid draft (or recently cleared), start fresh
             if (!normalized || normalized === 'null' || normalized === 'undefined' || draftClearedAt) {
                 router.push('/cleaner-flow' as any);

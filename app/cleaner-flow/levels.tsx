@@ -156,7 +156,7 @@ function StatusBadge({ status, index }: { status: 'done' | 'continue' | 'start' 
 
 function ModuleRow({ index, title, status, style }: { index: number; title: string; status: 'done' | 'continue' | 'start' | 'start-grey'; style?: ViewStyle | ViewStyle[] }) {
     return (
-        <View style={tw.style('bg-white rounded-2xl p-3 mb-3 flex-row items-center justify-between', style as any)}>
+        <View style={[tw`bg-white rounded-2xl p-3 mb-3 flex-row items-center justify-between`, style as any]}>
             <View style={tw`flex-row items-center`}>
                 <View style={tw`w-9 h-9 rounded-full bg-[#F3F4F6] items-center justify-center mr-3`}>
                     <Text style={tw`text-[#111827] font-bold`}>{index}</Text>

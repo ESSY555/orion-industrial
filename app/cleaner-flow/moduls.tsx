@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useNavigation, router } from 'expo-router';
@@ -18,14 +18,14 @@ export default function ModulsScreen() {
   }, [navigation]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#F7F7F7' }}>
+    <View style={tw`flex-1 bg-[#F7F7F7]`}>
       {/* Header */}
       <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.iconButton}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`w-8 h-8 rounded-full bg-white items-center justify-center`}>
           <Ionicons name="chevron-back" size={18} color="#111827" />
         </TouchableOpacity>
         <Text style={[tw`text-black font-bold text-[18px]`]}>Module {moduleNum} of {total}</Text>
-        <TouchableOpacity style={styles.iconButton}>
+        <TouchableOpacity style={tw`w-8 h-8 rounded-full bg-white items-center justify-center`}>
           <Ionicons name="time-outline" size={18} color="#111827" />
         </TouchableOpacity>
       </View>
@@ -33,9 +33,9 @@ export default function ModulsScreen() {
       <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
         <View style={[tw`px-4`]}>
           {/* Video thumbnail */}
-          <View style={styles.videoCard}>
-            <Image source={require('../../assets/images/scientists-look-orange-chemicals-glass-laboratory 1.png')} style={{ width: '100%', height: 160, borderRadius: 12 }} resizeMode="cover" />
-            <View style={styles.playOverlay}>
+          <View style={tw`bg-white p-2 rounded-xl`}>
+            <Image source={require('../../assets/images/scientists-look-orange-chemicals-glass-laboratory 1.png')} style={tw`w-full h-40 rounded-xl`} resizeMode="cover" />
+            <View style={tw`absolute inset-0 items-center justify-center`}>
               <Ionicons name="play" size={28} color="#FFFFFF" />
             </View>
           </View>
@@ -46,14 +46,14 @@ export default function ModulsScreen() {
               <Text style={[tw`text-black font-bold text[12px]`]}> {title} </Text>
               <Text style={[tw`text-[#E565B8] text-[11px] mt-1`]}>Due in 3 days</Text>
             </View>
-            <TouchableOpacity style={styles.downloadAll}>
+            <TouchableOpacity style={tw`bg-[#7C5CFF] px-3 py-2 rounded-xl flex-row items-center`}>
               <Ionicons name="download-outline" size={14} color="#FFFFFF" />
               <Text style={[tw`text-white ml-2 text-[10px]`]}>Download All</Text>
             </TouchableOpacity>
           </View>
 
           {/* Content card */}
-          <View style={styles.contentCard}>
+          <View style={tw`mt-3 bg-white rounded-xl p-3`}>
             <View style={[tw`flex-row items-center`]}>
               <Ionicons name="information-circle-outline" size={16} color="#7C5CFF" />
               <Text style={[tw`text-[#7C5CFF] ml-2 font-bold`]}>
@@ -63,10 +63,10 @@ export default function ModulsScreen() {
             <Text style={[tw`text-[#6B7280] mt-2`]}>
               SK-250 is a concentrated cleaner that must be properly diluted before use. The standard dilution ratio is:
             </Text>
-            <View style={styles.bulletBox}>
+            <View style={tw`bg-[#F6F6F6] rounded-xl p-3 mt-2`}>
               {['1:128 - General cleaning', '1:128 - General cleaning', '1:128 - General cleaning'].map((t, i) => (
                 <View key={i} style={[tw`flex-row items-center mt-2`]}>
-                  <Image source={require('../../assets/images/conflask.png')} style={{ width: 25, height: 25, }} resizeMode="contain" />
+                  <Image source={require('../../assets/images/conflask.png')} style={tw`w-[25px] h-[25px]`} resizeMode="contain" />
                   {/* <Ionicons name="alert-circle-outline" size={14} color="#7C5CFF" /> */}
                   <Text style={[tw`ml-2 text-[#6B7280] text-[12px]`]}>{t}</Text>
                 </View>
@@ -78,9 +78,9 @@ export default function ModulsScreen() {
           </View>
 
           {/* Quiz block */}
-          <View style={styles.quizCard}>
+          <View style={tw`mt-3 bg-[#8B4CE81A] rounded-xl p-3`}>
             <View style={[tw`flex-row items-center`]}>
-              <Image source={require('../../assets/images/lamp.png')} style={{ width: 25, height: 25, }} resizeMode="contain" />
+              <Image source={require('../../assets/images/lamp.png')} style={tw`w-[25px] h-[25px]`} resizeMode="contain" />
               <Text style={[tw`ml-2 text-[#7C5CFF] font-bold`]}>Quick Knowledge Check</Text>
             </View>
             <Text style={[tw`text-[#6B7280] mt-2 `]}>
@@ -92,16 +92,11 @@ export default function ModulsScreen() {
                 <TouchableOpacity
                   key={i}
                   activeOpacity={0.9}
-                  style={[
-                    styles.optionRow,
-                    isSelected
-                      ? { borderColor: '#7C5CFF', backgroundColor: '#DCCBFF' }
-                      : { borderColor: '#CBC2EE', backgroundColor: '#F3F0FF' },
-                  ]}
+                  style={tw.style('mt-3 border-2 px-4 py-4 rounded-2xl flex-row items-center justify-between', isSelected ? 'border-[#7C5CFF] bg-[#DCCBFF]' : 'border-[#CBC2EE] bg-[#F3F0FF]')}
                   onPress={() => setSelected(opt)}
                 >
                   <Text style={[tw`text-black`, { fontWeight: '700' }]}>{opt}</Text>
-                  <View style={[styles.checkCircle, isSelected ? styles.checkCircleSelected : styles.checkCircleUnselected]}>
+                  <View style={tw.style('w-[30px] h-[30px] rounded-full items-center justify-center', isSelected ? 'bg-[#7C5CFF]' : 'bg-[#E8DDFE]')}>
                     {isSelected && <Ionicons name="checkmark" size={12} color="#FFFFFF" />}
                   </View>
                 </TouchableOpacity>
@@ -111,12 +106,12 @@ export default function ModulsScreen() {
 
           {/* Footer nav */}
           <View style={[tw`mt-3 flex-row items-center justify-between`]}>
-            <TouchableOpacity style={[styles.footerBtnLight, tw`py-5`]} onPress={() => navigation.goBack()}>
+            <TouchableOpacity style={tw`bg-white border border-[#EFEFEF] rounded-2xl px-3.5 py-5 flex-row items-center`} onPress={() => navigation.goBack()}>
               <Ionicons name="chevron-back" size={16} color="#111827" />
               <Text style={[tw`ml-2 text-black`]}>Previous Module</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.footerBtnPrimary, tw`py-5`]}
+              style={tw`bg-[#7C5CFF] rounded-2xl px-3.5 py-5 flex-row items-center`}
               onPress={() => router.push({ pathname: '/cleaner-flow/final-test', params: { module: String(moduleNum + 1), total: String(total) } })}
             >
               <Text style={[tw`text-white mr-2`]}>Next Module</Text>
@@ -129,105 +124,6 @@ export default function ModulsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  iconButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  videoCard: {
-    backgroundColor: '#FFFFFF',
-    padding: 8,
-    borderRadius: 14,
-  },
-  playOverlay: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  downloadAll: {
-    backgroundColor: '#7C5CFF',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  contentCard: {
-    marginTop: 14,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 14,
-    padding: 14,
-    shadowColor: '#000',
-    shadowOpacity: 0.04,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 8,
-  },
-  bulletBox: {
-    backgroundColor: '#F6F6F6',
-    borderRadius: 12,
-    padding: 12,
-    marginTop: 10,
-  },
-  quizCard: {
-    marginTop: 14,
-    backgroundColor: '#8B4CE81A',
-    borderRadius: 14,
-    padding: 14,
-    shadowColor: '#000',
-    shadowOpacity: 0.04,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 8,
-  },
-  optionRow: {
-    marginTop: 14,
-    borderWidth: 2,
-    borderColor: '#CBC2EE',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderRadius: 18,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  checkCircle: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  checkCircleUnselected: {
-    backgroundColor: '#E8DDFE',
-  },
-  checkCircleSelected: {
-    backgroundColor: '#7C5CFF',
-  },
-  footerBtnLight: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#EFEFEF',
-    borderWidth: 1,
-    borderRadius: 18,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  footerBtnPrimary: {
-    backgroundColor: '#7C5CFF',
-    borderRadius: 18,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});
+// Tailwind-only: removed StyleSheet block
 
 

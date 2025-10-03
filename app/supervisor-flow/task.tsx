@@ -88,7 +88,10 @@ export default function TaskScreen() {
                 {/* People list */}
                 <View style={[tw`px-4 mt-4 mb-10`]}> 
                     {people
-                        .filter(p => query.trim().length ? p.name.toLowerCase().includes(query.trim().toLowerCase()) : true)
+                        .filter(p => {
+                            const q = (query ?? '').trim().toLowerCase();
+                            return q.length ? p.name.toLowerCase().includes(q) : true;
+                        })
                         .map((p) => (
                         <TouchableOpacity key={p.id} activeOpacity={0.9} onPress={() => router.push({ pathname: '/supervisor-flow/edit-task', params: { id: p.id, name: p.name } })} style={[tw`bg-white rounded-2xl px-3 py-4 flex-row items-center justify-between mb-3`, shadowLight()]}> 
                             <View style={[tw`flex-row items-center flex-1`]}>

@@ -31,7 +31,8 @@ export default function StepTwo({ areaName }: { areaName?: string }) {
 
   const parseTimeToSeconds = (timeStr: string): number | null => {
     if (!timeStr) return null;
-    const m = /^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i.exec(timeStr.trim());
+    const safe = (timeStr ?? '').trim();
+    const m = /^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i.exec(safe);
     if (!m) return null;
     let hours = parseInt(m[1], 10);
     const minutes = parseInt(m[2], 10);

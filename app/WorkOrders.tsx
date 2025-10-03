@@ -32,7 +32,7 @@ export default function WorkOrders() {
         { id: 6, title: 'Fresh Kitchen Room', sub: 'Shelf AK--1560', status: 'Not Cleaned', color: '#E74C3C', when: 'tomorrow' as const },
         { id: 7, title: 'Fresh Kitchen Room', sub: 'Shelf AK--1560', status: 'Not Cleaned', color: '#E74C3C', when: 'tomorrow' as const },
     ]);
-    const isTyping = showSearch && query.trim().length > 0;
+    const isTyping = showSearch && (query ?? '').trim().length > 0;
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
 
@@ -186,7 +186,10 @@ export default function WorkOrders() {
                 <View style={[tw`px-4 mt-3 mb-6`]}> 
                     {orders
                         .filter(item => showAll ? true : item.when === selectedTab)
-                        .filter(item => query.trim().length ? item.title.toLowerCase().includes(query.trim().toLowerCase()) : true)
+                        .filter(item => {
+                            const q = (query ?? '').trim().toLowerCase();
+                            return q.length ? item.title.toLowerCase().includes(q) : true;
+                        })
                         .filter(item => {
                             if (statusFilter === 'all') return true;
                             if (statusFilter === 'cleaned') return item.status.toLowerCase() === 'cleaned';

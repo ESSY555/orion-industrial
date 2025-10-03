@@ -55,7 +55,7 @@ export default function TrainingLevels() {
                             { level: 3, title: 'Quality Assurance (Green Badge)', modules: '8 Modules', time: '1hr 30min', progress: 50, tint: '#EDE7FF', bg: 'rgba(239,234,249,0.6)' },
                             { level: 4, title: 'Advanced Sanitation (Blue Badge)', modules: '8 Modules', time: '1hr 30min', locked: true, tint: '#E5E7EB', bg: 'rgba(233,233,238,0.6)' },
                         ];
-                        const q = query.trim().toLowerCase();
+                        const q = (query ?? '').trim().toLowerCase();
                         const filtered = q
                             ? levels.filter(l =>
                                 `${l.level}`.includes(q) ||
