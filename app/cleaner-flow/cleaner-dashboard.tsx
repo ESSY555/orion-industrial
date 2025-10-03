@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { StyleSheet, TouchableOpacity, Image, ScrollView, Animated, Easing, RefreshControl, Alert } from 'react-native';
+import { TouchableOpacity, Image, ScrollView, Animated, Easing, RefreshControl, Alert } from 'react-native';
 import { Text, View } from 'react-native';
 import { Svg, Circle, G } from 'react-native-svg';
 import tw from 'twrnc';
@@ -114,7 +114,7 @@ export default function dashboard() {
 
   {/* Work Orders banner */}
   <View style={[tw`px-4 mt-4`]}>
-                    <View style={[styles.banner]}>
+                    <View style={tw`bg-[#2D163E] rounded-2xl p-4 flex-row justify-between items-center`}>
                         <View>
                             <Text style={[tw`text-white font-bold text-[18px]`]}>Completed Tasks</Text>
                             <Text style={[tw`text-white mt-1 text-[12px]`]}>
@@ -133,7 +133,7 @@ export default function dashboard() {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <View style={[styles.ringContainer]}>
+                        <View style={tw`items-center justify-center`}>
                             <ProgressRing percent={69} size={92} strokeWidth={10} />
                         </View>
                     </View>
@@ -143,21 +143,21 @@ export default function dashboard() {
                 {/* KPI Grid */}
                 <View style={[tw`px-4 mt-8 mb-5`]}>
                     <View style={[tw`flex-row`]}>
-                        <View style={[styles.kpiCard, styles.kpiLight]}>
-                            <View style={styles.kpiBadge}> 
+                        <View style={tw`flex-1 rounded-2xl p-3 mr-3 bg-white`}>
+                            <View style={tw`absolute top-3 right-3 w-10 h-10 rounded-full bg-[#2B2140] items-center justify-center`}> 
                                 <Ionicons name="time-outline" size={18} color="#FFFFFF" />
                             </View>
-                            <Text style={[styles.kpiNumber, tw`text-[50px]`]}>2</Text>
-                            <Text style={[styles.kpiTitleStrong, tw`text-[13px]`]}>Active Tasks</Text>
-                            <Text style={[styles.kpiSubtitle, tw`text-[11px]`]}>Check out current tasks</Text>
+                            <Text style={tw`text-[#2B2140] font-extrabold text-[50px] mt-1.5`}>2</Text>
+                            <Text style={tw`text-[#2B2140] font-bold mt-1.5 text-[13px]`}>Active Tasks</Text>
+                            <Text style={tw`text-[#7A7A86] mt-1 text-[11px]`}>Check out current tasks</Text>
                         </View>
-                        <View style={[styles.kpiCard, styles.kpiLight]}>
-                            <View style={styles.kpiBadge}> 
+                        <View style={tw`flex-1 rounded-2xl p-3 bg-white`}>
+                            <View style={tw`absolute top-3 right-3 w-10 h-10 rounded-full bg-[#2B2140] items-center justify-center`}> 
                                 <Ionicons name="time-outline" size={18} color="#FFFFFF" />
                             </View>
-                            <Text style={[styles.kpiNumber, tw`text-[50px]`]}>1</Text>
-                            <Text style={[styles.kpiTitleStrong, tw`text-[13px]`]}>Past Due Tracks</Text>
-                            <Text style={[styles.kpiSubtitle, tw`text-[11px]`]}>View missed Tasks</Text>
+                            <Text style={tw`text-[#2B2140] font-extrabold text-[50px] mt-1.5`}>1</Text>
+                            <Text style={tw`text-[#2B2140] font-bold mt-1.5 text-[13px]`}>Past Due Tracks</Text>
+                            <Text style={tw`text-[#7A7A86] mt-1 text-[11px]`}>View missed Tasks</Text>
                         </View>
                     </View>
 
@@ -198,9 +198,9 @@ export default function dashboard() {
                         { id: 1, title: 'UXroom2', subtitle: 'AS--1683', status: 'In progress' as const },
                         { id: 2, title: 'UXroom3', subtitle: 'VG--1688', status: 'Start Task' as const },
                     ]).map((item, idx) => (
-                        <View key={item.id} style={[styles.taskCard, tw`mb-3 p-6`]}>
+                        <View key={item.id} style={tw`bg-white rounded-3xl border border-[#EFEFF4] flex-row items-center justify-between shadow-lg mb-3 p-6`}>
                             <View style={tw`flex-row items-center flex-1`}>
-                                <View style={[styles.taskIcon, { backgroundColor: idx % 2 === 0 ? '#2B2140' : '#8B5CF6' }]}>
+                                <View style={tw.style('w-11 h-11 rounded-full items-center justify-center', { backgroundColor: idx % 2 === 0 ? '#2B2140' : '#8B5CF6' })}>
                                     {idx % 2 === 0 ? (
                                         <Ionicons name="bed-outline" size={18} color="#FFFFFF" />
                                     ) : (
@@ -216,13 +216,13 @@ export default function dashboard() {
                                 <TouchableOpacity
                                     accessibilityRole="button"
                                     onPress={() => handleStartTask(item.id)}
-                                    style={[styles.statusPill, styles.statusPink, tw`px-4 py-3`]}
+                                    style={tw`px-4 py-3 rounded-xl bg-[#F5B0DC]`}
                                 >
-                                    <Text style={[styles.statusText, styles.statusPinkText]}>Start Task</Text>
+                                    <Text style={tw`font-bold text-[12px] text-white`}>Start Task</Text>
                                 </TouchableOpacity>
                             ) : (
-                                <View style={[styles.statusPill, styles.statusBlue, tw`px-4 py-3`]}>
-                                    <Text style={[styles.statusText, styles.statusBlueText, tw`text-[12px]`]}>In progress</Text>
+                                    <View style={tw`px-4 py-3 rounded-xl bg-[#E4EDFF]`}>
+                                        <Text style={tw`font-bold text-[12px] text-[#3B82F6]`}>In progress</Text>
                                 </View>
                             )}
                         </View>
@@ -266,7 +266,7 @@ function ProgressRing({ percent, size = 92, strokeWidth = 10 }: ProgressRingProp
     });
 
     return (
-        <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={tw.style('', { width: size, height: size, alignItems: 'center', justifyContent: 'center' })}>
             <Svg width={size} height={size}>
                 <G rotation={-90} originX={center} originY={center}>
                     {/* Track */}
@@ -295,11 +295,11 @@ function ProgressRing({ percent, size = 92, strokeWidth = 10 }: ProgressRingProp
                 </G>
             </Svg>
             {/* Center percent */}
-            <View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center' }}>
+            <View style={tw`absolute items-center justify-center`}>
                 <Text style={[tw`text-white font-bold`]}>69%</Text>
             </View>
             {/* Knob: overlay small circle positioned on arc via rotation */}
-            <View style={{ position: 'absolute', width: size, height: size, alignItems: 'center', justifyContent: 'flex-start' }}>
+            <View style={tw.style('absolute', { width: size, height: size, alignItems: 'center', justifyContent: 'flex-start' })}>
                 <Animated.View
                     style={{
                         width: size,
@@ -309,9 +309,9 @@ function ProgressRing({ percent, size = 92, strokeWidth = 10 }: ProgressRingProp
                         ],
                     }}
                 >
-                    <View style={{ position: 'absolute', top: strokeWidth / 2, right: size / 2 - strokeWidth / 2 }}>
-                        <View style={{ width: strokeWidth, height: strokeWidth, borderRadius: strokeWidth / 2, backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' }}>
-                            <View style={{ width: strokeWidth / 3, height: strokeWidth / 3, borderRadius: strokeWidth / 6, backgroundColor: '#2D163E' }} />
+                    <View style={tw.style('absolute', { top: strokeWidth / 2, right: size / 2 - strokeWidth / 2 })}>
+                        <View style={tw.style('', { width: strokeWidth, height: strokeWidth, borderRadius: strokeWidth / 2, backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center' })}>
+                            <View style={tw.style('', { width: strokeWidth / 3, height: strokeWidth / 3, borderRadius: strokeWidth / 6, backgroundColor: '#2D163E' })} />
                         </View>
                     </View>
                 </Animated.View>
@@ -322,139 +322,5 @@ function ProgressRing({ percent, size = 92, strokeWidth = 10 }: ProgressRingProp
 
 
 
-const styles = StyleSheet.create({
-    kpiCard: {
-        flex: 1,
-        borderRadius: 16,
-        padding: 14,
-        marginRight: 12,
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOpacity: 0.05,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 8,
-    },
-  kpiBadge: {
-    position: 'absolute',
-    top: 12,
-    right: 12,
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    backgroundColor: '#2B2140',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  kpiNumber: {
-    color: '#2B2140',
-    fontWeight: '800',
-    fontSize: 42,
-    marginTop: 6,
-  },
-  kpiTitleStrong: {
-    color: '#2B2140',
-    fontWeight: '700',
-    marginTop: 6,
-  },
-  kpiSubtitle: {
-    color: '#7A7A86',
-    marginTop: 4,
-    fontSize: 12,
-  },
-    kpiLight: {
-        backgroundColor: '#FFFFFF',
-    },
-    kpiPurple: {
-        backgroundColor: '#EAE2F8',
-    },
-    kpiIcon: {
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        backgroundColor: '#F1EEF6',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 8,
-    },
-    kpiTitle: {
-        color: '#3A3A3A',
-        marginBottom: 8,
-    },
-    kpiValue: {
-        color: '#000',
-        fontWeight: 'bold',
-        fontSize: 22,
-    },
-    banner: {
-        backgroundColor: '#2D163E',
-        borderRadius: 18,
-        padding: 18,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    ringContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    viewAllPill: {
-        backgroundColor: '#EFECEF',
-        paddingVertical: 6,
-        paddingHorizontal: 14,
-        borderRadius: 18,
-    },
-    orderCard: {
-        backgroundColor: '#FFFFFF',
-        borderRadius: 24,
-        paddingVertical: 16,
-        paddingHorizontal: 12,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 12,
-        borderWidth: 0.5,
-        borderColor: '#EFEFEF',
-    },
-    orderIndex: {
-        width: 34,
-        height: 34,
-        borderRadius: 17,
-        backgroundColor: '#F3F1F4',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    taskCard: {
-        backgroundColor: '#FFFFFF',
-        borderRadius: 24,
-        paddingVertical: 14,
-        paddingHorizontal: 14,
-        borderWidth: 1,
-        borderColor: '#EFEFF4',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        shadowColor: '#000',
-        shadowOpacity: 0.04,
-        shadowOffset: { width: 0, height: 4 },
-        shadowRadius: 8,
-        elevation: 2,
-    },
-    taskIcon: {
-        width: 44,
-        height: 44,
-        borderRadius: 22,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    statusPill: {
-        paddingVertical: 8,
-        paddingHorizontal: 14,
-        borderRadius: 16,
-    },
-    statusBlue: { backgroundColor: '#E4EDFF' },
-    statusPink: { backgroundColor: '#F5B0DC' },
-    statusText: { fontWeight: '700', fontSize: 12 },
-    statusBlueText: { color: '#3B82F6' },
-    statusPinkText: { color: '#FFFFFF' },
-});
+// Tailwind-only: removed StyleSheet block
 

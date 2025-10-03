@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, ViewStyle } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image, ViewStyle } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useNavigation, router } from 'expo-router';
@@ -28,14 +28,14 @@ export default function LevelsScreen() {
     const activeColor = '#8B4CE8';
 
     return (
-        <View style={styles.container}>
+        <View style={tw`flex-1 bg-[#F7F7F7]`}>
             {/* Header */}
             <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.iconButton]}>
+                <TouchableOpacity onPress={() => navigation.goBack()} style={tw`w-8 h-8 rounded-full bg-white items-center justify-center`}>
                     <Ionicons name="chevron-back" size={18} color="#111827" />
                 </TouchableOpacity>
                 <Text style={[tw`text-black font-bold text-[18px]`]}>Level {levelNum}</Text>
-                <TouchableOpacity style={[styles.iconButton]}>
+                <TouchableOpacity style={tw`w-8 h-8 rounded-full bg-white items-center justify-center`}>
                     <Ionicons name="time-outline" size={18} color="#111827" />
                 </TouchableOpacity>
             </View>
@@ -43,10 +43,10 @@ export default function LevelsScreen() {
             <ScrollView contentContainerStyle={{ paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
                 {/* Hero Card */}
                 <View style={[tw`px-4 mt-2`]}>
-                    <View style={styles.heroCard}>
+                    <View style={tw`rounded-2xl p-4 overflow-hidden`}>
                         <View style={[tw`flex-row items-center justify-between`]}>
                             <Text style={[tw`text-black font-bold text-[20px]`]}>Level {levelNum}</Text>
-                            <View style={styles.progressPill}>
+                            <View style={tw`bg-white px-2.5 py-1.5 rounded-xl`}>
                                 {isLocked ? (
                                     <View style={[tw`flex-row items-center`]}>
                                         <Ionicons name="lock-closed" size={12} color="#111827" />
@@ -64,45 +64,45 @@ export default function LevelsScreen() {
                         <View style={[tw`mt-3 flex-row items-center`]}>
                             <View style={[tw`flex-row items-center`]}>
                                 <Ionicons name="book" size={12} color="#6B7280" />
-                                <Text style={styles.metaText}>{params.modules}</Text>
+                                <Text style={tw`text-[#6B7280] text-[12px] ml-1.5`}>{params.modules}</Text>
                             </View>
-                            <View style={styles.metaDot} />
+                            <View style={tw`w-1 h-1 rounded-full bg-[#E5E7EB] mx-2.5`} />
                             <View style={[tw`flex-row items-center`]}>
                                 <Ionicons name="time-outline" size={12} color="#6B7280" />
-                                <Text style={styles.metaText}>{params.time}</Text>
+                                <Text style={tw`text-[#6B7280] text-[12px] ml-1.5`}>{params.time}</Text>
                             </View>
                         </View>
                         {!isLocked && typeof progress === 'number' && progress < 100 && (
-                            <View style={styles.progressTrack}> 
-                                <View style={[styles.progressFill, { width: `${progress}%` }]} />
-                                <View style={styles.progressEndCap} />
+                            <View style={tw`h-2 bg-[#EDE7FF] rounded-lg mt-3 relative`}>
+                                <View style={[tw`h-2 bg-[#E565B8] rounded-lg`, { width: `${progress}%` }]} />
+                                <View style={tw`absolute right-2 -top-1.5 w-10 h-2 rounded bg-white opacity-80`} />
                             </View>
                         )}
-                        <Image source={require('../../assets/images/experiment-one.png')} style={styles.bgFlask} resizeMode="contain" />
+                        <Image source={require('../../assets/images/experiment-one.png')} style={tw`absolute w-[160px] h-[130px] right-[-10px] top-[-8px] opacity-60`} resizeMode="contain" />
                     </View>
                 </View>
 
                 {/* Tabs */}
                 <View style={[tw`px-4 mt-3`]}>
-                    <View style={styles.tabs}>
+                    <View style={tw`bg-white rounded-2xl p-2 flex-row items-center justify-between`}>
                         <TouchableOpacity
-                            style={[styles.tabItem, activeTab === 'about' && { backgroundColor: activeColor }]}
+                            style={tw.style('py-2.5 px-3.5 rounded-xl flex-row items-center', activeTab === 'about' && 'bg-[#8B4CE8]')}
                             onPress={() => setActiveTab('about')}
                         >
-                            <Text style={activeTab === 'about' ? styles.tabTextActive : styles.tabTextMuted}>About Level</Text>
+                            <Text style={activeTab === 'about' ? tw`text-white text-[12px] font-bold` : tw`text-[#6B7280] text-[12px]`}>About Level</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            style={[styles.tabItem, activeTab === 'modules' && { backgroundColor: activeColor }]}
+                            style={tw.style('py-2.5 px-3.5 rounded-xl flex-row items-center', activeTab === 'modules' && 'bg-[#8B4CE8]')}
                             onPress={() => setActiveTab('modules')}
                         >
-                            <Text style={activeTab === 'modules' ? styles.tabTextActive : styles.tabTextMuted}>Modules</Text>
+                            <Text style={activeTab === 'modules' ? tw`text-white text-[12px] font-bold` : tw`text-[#6B7280] text-[12px]`}>Modules</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            style={[styles.tabItem, activeTab === 'download' && { backgroundColor: activeColor }]}
+                            style={tw.style('py-2.5 px-3.5 rounded-xl flex-row items-center', activeTab === 'download' && 'bg-[#8B4CE8]')}
                             onPress={() => setActiveTab('download')}
                         >
                             <Ionicons name="download-outline" size={14} color={activeTab === 'download' ? '#FFFFFF' : '#6B7280'} />
-                            <Text style={activeTab === 'download' ? [styles.tabTextActive, { marginLeft: 8 }] : [styles.tabTextMuted, { marginLeft: 8 }]}>
+                            <Text style={tw.style('ml-2', activeTab === 'download' ? 'text-white text-[12px] font-bold' : 'text-[#6B7280] text-[12px]')}>
                                 Download All
                             </Text>
                         </TouchableOpacity>
@@ -124,105 +124,20 @@ export default function LevelsScreen() {
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#F7F7F7',
-    },
-    iconButton: {
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        backgroundColor: '#FFFFFF',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    heroCard: {
-        backgroundColor: 'rgba(239,234,249,0.6)',
-        borderRadius: 18,
-        padding: 16,
-        overflow: 'hidden',
-    },
-    progressPill: {
-        backgroundColor: '#FFFFFF',
-        paddingHorizontal: 10,
-        paddingVertical: 6,
-        borderRadius: 12,
-    },
-    metaText: {
-        color: '#6B7280',
-        fontSize: 12,
-        marginLeft: 6,
-    },
-    metaDot: {
-        width: 4,
-        height: 4,
-        borderRadius: 2,
-        backgroundColor: '#E5E7EB',
-        marginHorizontal: 10,
-    },
-    progressTrack: {
-        height: 8,
-        backgroundColor: '#EDE7FF',
-        borderRadius: 6,
-        marginTop: 12,
-        position: 'relative',
-    },
-    progressFill: {
-        height: 8,
-        backgroundColor: '#E565B8',
-        borderRadius: 6,
-    },
-    progressEndCap: {
-        position: 'absolute',
-        right: 8,
-        top: -6,
-        width: 40,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: '#FFFFFF',
-        opacity: 0.8,
-    },
-    bgFlask: {
-        position: 'absolute',
-        width: 160,
-        height: 130,
-        right: -10,
-        top: -8,
-        tintColor: '#EDE7FF',
-        opacity: 0.6,
-    },
-    tabs: {
-        backgroundColor: '#FFFFFF',
-        borderRadius: 16,
-        padding: 8,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-    tabItem: {
-        paddingVertical: 10,
-        paddingHorizontal: 14,
-        borderRadius: 12,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    tabTextMuted: { color: '#6B7280', fontSize: 12 },
-    tabTextActive: { color: '#FFFFFF', fontSize: 12, fontWeight: '700' },
-});
+// Tailwind-only: removed StyleSheet block
 
 function StatusBadge({ status, index }: { status: 'done' | 'continue' | 'start' | 'start-grey'; index?: number }) {
     if (status === 'done') {
         return (
-            <View style={{ backgroundColor: '#DCFCE7', paddingVertical: 6, paddingHorizontal: 14, borderRadius: 10 }}>
-                <Text style={{ color: '#22C55E', fontWeight: '700', fontSize: 12 }}>Done</Text>
+            <View style={tw`bg-[#DCFCE7] py-1.5 px-3.5 rounded-lg`}>
+                <Text style={tw`text-[#22C55E] font-bold text-[12px]`}>Done</Text>
             </View>
         );
     }
     if (status === 'continue') {
         return (
-            <View style={{ backgroundColor: '#E5F0FF', paddingVertical: 6, paddingHorizontal: 14, borderRadius: 10 }}>
-                <Text style={{ color: '#3B82F6', fontWeight: '700', fontSize: 12 }}>Continue</Text>
+            <View style={tw`bg-[#E5F0FF] py-1.5 px-3.5 rounded-lg`}>
+                <Text style={tw`text-[#3B82F6] font-bold text-[12px]`}>Continue</Text>
             </View>
         );
     }
@@ -232,8 +147,8 @@ function StatusBadge({ status, index }: { status: 'done' | 'continue' | 'start' 
     const onPress = () => router.push({ pathname: '/cleaner-flow/moduls', params: { module: String(index ?? 1), total: '6' } });
     const Wrapper: any = isDisabled ? View : TouchableOpacity;
     return (
-        <Wrapper onPress={isDisabled ? undefined : onPress} style={{ backgroundColor: bg, paddingVertical: 6, paddingHorizontal: 14, borderRadius: 10, flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ color, fontWeight: '700', fontSize: 12, marginRight: 6 }}>Start</Text>
+        <Wrapper onPress={isDisabled ? undefined : onPress} style={tw.style('py-1.5 px-3.5 rounded-lg flex-row items-center', { backgroundColor: bg })}>
+            <Text style={tw.style('font-bold text-[12px] mr-1.5', { color })}>Start</Text>
             <Ionicons name="arrow-forward" size={14} color={color} />
         </Wrapper>
     );
@@ -241,12 +156,12 @@ function StatusBadge({ status, index }: { status: 'done' | 'continue' | 'start' 
 
 function ModuleRow({ index, title, status, style }: { index: number; title: string; status: 'done' | 'continue' | 'start' | 'start-grey'; style?: ViewStyle | ViewStyle[] }) {
     return (
-        <View style={[{ backgroundColor: '#FFFFFF', borderRadius: 16, padding: 14, marginBottom: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, style as any]}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: '#F3F4F6', alignItems: 'center', justifyContent: 'center', marginRight: 12 }}>
-                    <Text style={{ color: '#111827', fontWeight: '700' }}>{index}</Text>
+        <View style={tw.style('bg-white rounded-2xl p-3 mb-3 flex-row items-center justify-between', style as any)}>
+            <View style={tw`flex-row items-center`}>
+                <View style={tw`w-9 h-9 rounded-full bg-[#F3F4F6] items-center justify-center mr-3`}>
+                    <Text style={tw`text-[#111827] font-bold`}>{index}</Text>
                 </View>
-                <Text style={{ color: '#111827' }}>{title}</Text>
+                <Text style={tw`text-[#111827]`}>{title}</Text>
             </View>
             <StatusBadge status={status} index={index} />
         </View>

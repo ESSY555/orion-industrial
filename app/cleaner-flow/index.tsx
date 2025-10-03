@@ -29,59 +29,25 @@ function Stepper({ steps, current, onPress }: { steps: number; current: number; 
   const activeWidthPercent = ((Math.max(1, Math.min(current, steps)) - 1) / (steps - 1)) * 100;
 
   return (
-    <View style={{ marginTop: 12, marginBottom: 6 }}>
-      <View
-        style={{
-          height: circleSize,
-          justifyContent: 'center',
-        }}
-      >
+    <View style={tw`mt-3 mb-1.5`}>
+      <View style={tw.style('', { height: circleSize, justifyContent: 'center' })}>
         {/* Base line */}
-        <View
-          style={{
-            position: 'absolute',
-            left: circleSize / 2,
-            right: circleSize / 2,
-            height: lineHeight,
-            backgroundColor: baseColor,
-            borderRadius: 999,
-            top: (circleSize - lineHeight) / 2,
-          }}
-        />
+        <View style={tw.style('absolute rounded-full', { left: circleSize / 2, right: circleSize / 2, height: lineHeight, backgroundColor: baseColor, top: (circleSize - lineHeight) / 2 })} />
         {/* Active line */}
-        <View
-          style={{
-            position: 'absolute',
-            left: circleSize / 2,
-            width: `${activeWidthPercent}%`,
-            height: lineHeight,
-            backgroundColor: activeColor,
-            borderRadius: 999,
-            top: (circleSize - lineHeight) / 2,
-          }}
-        />
+        <View style={tw.style('absolute rounded-full', { left: circleSize / 2, width: `${activeWidthPercent}%`, height: lineHeight, backgroundColor: activeColor, top: (circleSize - lineHeight) / 2 })} />
 
         {/* Circles */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={tw`flex-row justify-between`}>
           {Array.from({ length: steps }).map((_, idx) => {
             const step = idx + 1;
             const isActive = step <= current;
             return (
               <Pressable
                 key={step}
-                style={{
-                  width: circleSize,
-                  height: circleSize,
-                  borderRadius: circleSize / 2,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: isActive ? activeColor : '#F6F7F9',
-                  borderWidth: isActive ? 0 : 1,
-                  borderColor: baseColor,
-                }}
+                style={tw.style('items-center justify-center', { width: circleSize, height: circleSize, borderRadius: circleSize / 2, backgroundColor: isActive ? activeColor : '#F6F7F9', borderWidth: isActive ? 0 : 1, borderColor: baseColor })}
                 onPress={() => onPress?.(step)}
               >
-                <Text style={{ fontSize: 12, color: isActive ? '#FFFFFF' : '#9FA4B2', fontWeight: '700' }}>
+                <Text style={tw.style('font-bold', { fontSize: 12, color: isActive ? '#FFFFFF' : '#9FA4B2' })}>
                   {step}
                 </Text>
               </Pressable>
@@ -95,22 +61,20 @@ function Stepper({ steps, current, onPress }: { steps: number; current: number; 
 
 function Checkbox({ checked }: { checked?: boolean }) {
   return (
-    <View
-      style={{
+    <View style={
+      tw.style('items-center justify-center', {
         height: 28,
         width: 28,
         borderRadius: 8,
         borderWidth: checked ? 0 : 2,
         borderColor: '#CFCFD6',
         backgroundColor: checked ? '#7B61FF' : '#FFFFFF',
-        alignItems: 'center',
-        justifyContent: 'center',
         shadowColor: 'rgba(0,0,0,0.04)',
         shadowOpacity: 1,
         shadowRadius: 4,
         shadowOffset: { width: 0, height: 2 },
-      }}
-    >
+      })
+    }>
       {checked ? <Ionicons name="checkmark" size={16} color="#FFFFFF" /> : null}
     </View>
   );
@@ -236,11 +200,11 @@ export default function CleanerFlowScreen() {
   return (
     <>
     <StatusBar style="dark" backgroundColor="#FFFFFF" />
-    <SafeAreaView style={[{ flex: 1, backgroundColor: '#FFFFFF' }, tw`pb-28`] }>
-      <View style={{ flex: 1, backgroundColor: '#FFFFFF', alignItems: 'center' }}>
-        <View style={{ flex: 1, width: '100%', maxWidth: 840, paddingHorizontal: isTablet ? 24 : 16 }}>
+      <SafeAreaView style={tw`flex-1 bg-white pb-28`}>
+        <View style={tw`flex-1 bg-white items-center`}>
+          <View style={tw.style('flex-1 w-full', { maxWidth: 840, paddingHorizontal: isTablet ? 24 : 16 })}>
         {/* Header */}
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
+            <View style={tw`flex-row items-center mt-2`}>
           <Pressable
             onPress={() => {
                   if (step > 1) {
@@ -256,50 +220,17 @@ export default function CleanerFlowScreen() {
                     router.replace('/');
                   }
             }}
-            style={{
-              height: 44,
-              width: 44,
-              borderRadius: 22,
-              backgroundColor: '#FFFFFF',
-              borderWidth: 1,
-              borderColor: '#EEEFF3',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginRight: 8,
-              shadowColor: '#000',
-              shadowOpacity: 0.06,
-              shadowRadius: 10,
-              shadowOffset: { width: 0, height: 4 },
-              elevation: 2,
-            }}
+                style={tw`h-11 w-11 rounded-full bg-white border border-[#EEEFF3] items-center justify-center mr-2`}
           >
             <Ionicons name="arrow-back-outline" size={20} color="#2B2140" />
           </Pressable>
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: scale(22), fontWeight: '800', color: '#2B2B2E', textAlign: 'center' }}>
+              <View style={tw`flex-1`}>
+                <Text style={tw.style('text-center font-extrabold text-[#2B2B2E]', { fontSize: scale(22) })}>
               {headerTitle}
             </Text>
           </View>
-          <View
-            style={{
-              height: 44,
-              width: 44,
-              borderRadius: 22,
-              backgroundColor: '#FFFFFF',
-              borderWidth: 1,
-              borderColor: '#EEEFF3',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginLeft: 8,
-              shadowColor: '#000',
-              shadowOpacity: 0.06,
-              shadowRadius: 10,
-              shadowOffset: { width: 0, height: 4 },
-              elevation: 2,
-            }}
-          >
-
-            <Image source={require('../../assets/images/element-3.png')} style={{ height: 20, width: 20 }} />
+              <View style={tw`h-11 w-11 rounded-full bg-white border border-[#EEEFF3] items-center justify-center ml-2`}>
+                <Image source={require('../../assets/images/element-3.png')} style={tw`h-5 w-5`} />
             {/* <Ionicons name="apps-outline" size={20} color="#2B2140" /> */}
           </View>
         </View>
@@ -319,11 +250,7 @@ export default function CleanerFlowScreen() {
               Select Areas to Audit
             </Text> */}
 
-            <ScrollView
-              style={{ marginTop: 14, backgroundColor: '#FFFFFF' }}
-              contentInsetAdjustmentBehavior="always"
-              contentContainerStyle={{ paddingBottom: 120 }}
-            >
+                <ScrollView style={tw`mt-3 bg-white`} contentInsetAdjustmentBehavior="always" contentContainerStyle={tw`pb-30`}>
               {areas.map((area) => (
                 <AreaCard key={area.id} area={area} toggle={toggle} />
               ))}
@@ -340,19 +267,7 @@ export default function CleanerFlowScreen() {
         )}
         
         {/* Footer Actions */}
-        <View
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            bottom: 0,
-            padding: isSmall ? 12 : 16,
-            backgroundColor: 'white',
-            borderTopWidth: 1,
-            borderTopColor: '#EFEFF5',
-            zIndex: 5,
-          }}
-        >
+            <View style={tw.style('absolute left-0 right-0 bottom-0 bg-white border-t border-[#EFEFF5] z-10', { padding: isSmall ? 12 : 16 })}>
           <View style={tw`flex-row justify-between`}>
             <Pressable
                   onPress={async () => {
@@ -369,16 +284,16 @@ export default function CleanerFlowScreen() {
               }}
               style={tw.style('border border-[#CFCFD6] rounded-[14px]', isSmall ? 'py-4 px-3' : 'py-[14px] px-[22px]')}
             >
-              <Text style={{ color: '#6B5DEB', fontWeight: '700' }}>Save as Draft</Text>
+                  <Text style={tw`text-[#6B5DEB] font-bold`}>Save as Draft</Text>
             </Pressable>
 
             <Pressable
                   onPress={() => setStep((prev) => Math.min(5, prev + 1))}
               style={tw.style('bg-[#6B5DEB] rounded-[14px] items-center', isSmall ? 'py-4 px-3' : 'py-[14px] px-[22px]')}
             >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={{ color: 'white', fontWeight: '800', fontSize: scale(12) }}>{nextButtonLabel}</Text>
-                <Ionicons name="arrow-forward-outline" size={18} color="#FFFFFF" style={{ marginLeft: 8 }} />
+                  <View style={tw`flex-row items-center`}>
+                    <Text style={tw.style('text-white font-extrabold', { fontSize: scale(12) })}>{nextButtonLabel}</Text>
+                    <Ionicons name="arrow-forward-outline" size={18} color="#FFFFFF" style={tw`ml-2`} />
                 {/* <Text style={{ color: 'white', fontWeight: '800', fontSize: scale(14) }}> ({selectedCount})</Text> */}
               </View>
             </Pressable>
