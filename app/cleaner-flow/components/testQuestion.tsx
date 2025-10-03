@@ -1,10 +1,10 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, router, useLocalSearchParams } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import UiButton from '@/components/UiButton';
+// Tailwind-only: removed StyleSheet and unused UiButton
 import { mockCourseWithAssignment } from '@/db/mock-db';
 
 type Question = {
@@ -122,11 +122,11 @@ export default function TestQuestion() {
     <View style={[tw`flex-1 bg-[#F7F7F7]`]}>
       {/* Header */}
       <View style={[tw`px-4 pt-14 flex-row items-center justify-between`]}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.iconButton}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`w-9 h-9 rounded-full bg-white items-center justify-center`}>
           <Ionicons name="chevron-back" size={18} color="#111827" />
         </TouchableOpacity>
         <Text style={[tw`text-black font-bold text-[18px]`]}>Question {currentIndex + 1} of {total}</Text>
-        <View style={[styles.iconButton, tw`flex-row items-center justify-center`]}>
+        <View style={tw`w-9 h-9 rounded-full bg-white items-center justify-center flex-row`}>
           <Ionicons name="time-outline" size={16} color="#111827" />
           <Text style={[tw`ml-1 text-black`, { fontSize: 12 }]}>{formatTime(remainingSec)}</Text>
         </View>
@@ -135,8 +135,8 @@ export default function TestQuestion() {
       <ScrollView contentContainerStyle={{ paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
         <View style={[tw`px-4 pt-12`]}>
           {/* Progress */}
-          <View style={styles.track}>
-            <View style={[styles.fill, { width: `${progressPct}%` }]} />
+          <View style={tw`h-2 bg-[#E5E7EB] rounded-lg overflow-hidden`}>
+            <View style={[tw`h-2 bg-[#7C5CFF] rounded-lg` as any, { width: `${progressPct}%` }]} />
           </View>
 
           {/* Question Text */}
@@ -147,12 +147,9 @@ export default function TestQuestion() {
             {q.options.map((opt) => {
               const isSelected = selected === opt;
               return (
-                <TouchableOpacity key={opt} onPress={() => setSelected(opt)} style={[
-                  styles.option,
-                  isSelected ? styles.optionSelected : styles.optionIdle,
-                ]}>
+                <TouchableOpacity key={opt} onPress={() => setSelected(opt)} style={tw.style('rounded-2xl py-4 px-4 mt-3 flex-row items-center justify-between', isSelected ? 'bg-[#E8DDFE] border-2 border-[#7C5CFF]' : 'bg-white border border-[#E5E7EB]')}>
                   <Text style={[tw`text-black`, { fontSize: 14 }]}>{opt}</Text>
-                  <View style={[styles.circle, isSelected ? styles.circleSelected : styles.circleIdle]}>
+                  <View style={tw.style('w-7 h-7 rounded-full items-center justify-center', isSelected ? 'bg-[#7C5CFF]' : 'bg-[#F1F0F5]')}>
                     {isSelected && <Ionicons name="checkmark" size={14} color="#FFFFFF" />}
                   </View>
                 </TouchableOpacity>
@@ -162,7 +159,7 @@ export default function TestQuestion() {
 
           <View style={[tw`mt-6 flex-row items-center justify-between`]}>
             <TouchableOpacity
-              style={styles.prevBtn}
+              style={tw`bg-[#EEEEEE] border border-[#E5E7EB] rounded-2xl px-3.5 py-2.5 flex-row items-center`}
               onPress={() => setCurrentIndex((i) => (i > 0 ? i - 1 : 0))}
               disabled={currentIndex === 0}
             >
@@ -170,7 +167,7 @@ export default function TestQuestion() {
               <Text style={[tw`ml-2`, { color: '#2D1B3D', fontWeight: '600', fontSize: 12 }]}>Previous</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.nextBtn, !selected && { opacity: 0.5 }]}
+              style={tw.style('bg-[#7C5CFF] rounded-2xl px-4 py-3 flex-row items-center', !selected && 'opacity-50')}
               disabled={!selected}
               onPress={() => {
                 if (!isLast) {
@@ -190,76 +187,6 @@ export default function TestQuestion() {
   );
 }
 
-const styles = StyleSheet.create({
-  iconButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  track: {
-    height: 8,
-    backgroundColor: '#E5E7EB',
-    borderRadius: 6,
-    overflow: 'hidden',
-  },
-  fill: {
-    height: 8,
-    backgroundColor: '#7C5CFF',
-    borderRadius: 6,
-  },
-  option: {
-    borderRadius: 14,
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    marginTop: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  optionIdle: {
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-  },
-  optionSelected: {
-    backgroundColor: '#E8DDFE',
-    borderWidth: 2,
-    borderColor: '#7C5CFF',
-  },
-  circle: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  circleIdle: {
-    backgroundColor: '#F1F0F5',
-  },
-  circleSelected: {
-    backgroundColor: '#7C5CFF',
-  },
-  prevBtn: {
-    backgroundColor: '#EEEEEE',
-    borderColor: '#E5E7EB',
-    borderWidth: 1,
-    borderRadius: 18,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  nextBtn: {
-    backgroundColor: '#7C5CFF',
-    borderRadius: 18,
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});
+// Tailwind-only: StyleSheet removed
 
 

@@ -20,18 +20,8 @@ const rows: TimeRow[] = [
 
 function CurrentTimeButton({ onNow }: { onNow: () => void }) {
   return (
-    <Pressable
-      onPress={onNow}
-      style={{
-        borderWidth: 1,
-        borderColor: '#7B61FF',
-        backgroundColor: '#FFFFFF',
-        paddingVertical: 10,
-        paddingHorizontal: 14,
-        borderRadius: 10,
-      }}
-    >
-      <Text style={{ color: '#7B61FF', fontWeight: '700' }}>Current Time</Text>
+    <Pressable onPress={onNow} style={tw`border border-[#7B61FF] bg-white py-2.5 px-3.5 rounded-xl`}>
+      <Text style={tw`text-[#7B61FF] font-bold`}>Current Time</Text>
     </Pressable>
   );
 }
@@ -76,40 +66,27 @@ export default function StepTwo({ areaName }: { areaName?: string }) {
   };
 
   return (
-    <View style={[{ flex: 1, paddingBottom: 100 }, tw`bg-[#FFFFFF]`]}>
-      <Text style={{ marginTop: 12, fontSize: 18, fontWeight: '800', color: '#2B2B2E' }}>{areaName ?? 'Fresh Kitchen'}</Text>
+    <View style={tw`flex-1 pb-24 bg-white`}>
+      <Text style={tw`mt-3 text-[18px] font-extrabold text-[#2B2B2E]`}>{areaName ?? 'Fresh Kitchen'}</Text>
 
-      <View style={{ marginTop: 10, backgroundColor: '#FFFFFF', borderRadius: 16, padding: 10 }}>
-        <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
+      <View style={tw`mt-2 bg-white rounded-2xl p-3`}>
+        <ScrollView contentContainerStyle={tw`pb-30`}>
           {rows.map((row) => (
-            <View key={row.id} style={{ marginBottom: 14 }}>
-              <Text style={{ color: '#6C6F7A', marginBottom: 8 }}>
+            <View key={row.id} style={tw`mb-3.5`}>
+              <Text style={tw`text-[#6C6F7A] mb-2`}>
                 {row.label}
                 {row.optional ? ' (Optional)' : ''}
               </Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View
-                  style={{
-                    flex: 1,
-                    borderWidth: 1,
-                    borderColor: '#E5E6EC',
-                    backgroundColor: '#FFFFFF',
-                    paddingHorizontal: 12,
-                    paddingVertical: 10,
-                    borderRadius: 10,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginRight: 12,
-                  }}
-                >
-                  <Ionicons name="time-outline" size={16}  style={[tw`text-black font-bold`]}/>
+              <View style={tw`flex-row items-center`}>
+                <View style={tw`flex-1 border border-[#E5E6EC] bg-white px-3 py-2.5 rounded-xl flex-row items-center mr-3`}>
+                  <Ionicons name="time-outline" size={16} color="#111827" />
                   <TextInput
                     placeholder="00:00"
                     value={values[row.id] ?? ''}
                     editable={false}
                     selectTextOnFocus={false}
                     caretHidden
-                    style={{ marginLeft: 8, fontWeight: '700', color: 'black', paddingVertical: 0 }}
+                    style={tw`ml-2 font-bold text-black py-0`}
                   />
                 </View>
                 <CurrentTimeButton onNow={() => setNow(row.id)} />
@@ -118,12 +95,12 @@ export default function StepTwo({ areaName }: { areaName?: string }) {
           ))}
 
 
-          <View style={[tw`mt-3 bg-white text-[24px] rounded-2xl p-4 border border-[#F0F1F5] shadow-sm`, { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }]}>
-            <View style={{ flexShrink: 1, flexBasis: '80%' }}>
+          <View style={tw`mt-3 bg-white rounded-2xl p-4 border border-[#F0F1F5] shadow-sm flex-row items-start justify-between`}>
+            <View style={tw`flex-shrink`}>
               <Text style={tw`text-[#6C6F7A]`}>Total Duration</Text>
               <Text style={tw`text-[18px] font-extrabold text-black`}>{totalDurationLabel}</Text>
             </View>
-            <View style={[tw`bg-[#9393934F] rounded-xl py-2 px-4`, { alignSelf: 'flex-start', marginTop: 8 }]}>
+            <View style={tw`bg-[#9393934F] rounded-xl py-2 px-4 self-start mt-2`}>
               <Text style={tw`text-black font-semibold`}>Complete</Text>
             </View>
           </View>
