@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState, useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, TextInput, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, router } from 'expo-router';
@@ -14,33 +14,33 @@ export default function TrainingLevels() {
     }, [navigation]);
 
     return (
-        <View style={styles.container}>
+        <View style={tw`flex-1 bg-[#F7F7F7]`}>
             {/* Header */}
-            <View style={[tw`px-4 pt-14 pb- flex-row items-center justify-between`]}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.iconButton, tw`shadow-lg`]}>
+            <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
+                <TouchableOpacity onPress={() => navigation.goBack()} style={tw`w-8 h-8 rounded-full bg-white items-center justify-center`}>
                     <Ionicons name="chevron-back" size={18} color="#111827" />
                 </TouchableOpacity>
                 <Text style={[tw`text-black font-bold text-[18px]`]}>Training Levels</Text>
-                <TouchableOpacity style={[styles.iconButton, tw`shadow-lg`]}>
-                  <Image source={require('../../../assets/images/newclock.png')} style={[tw`w-4 h-4`]} />
+                <TouchableOpacity style={tw`w-8 h-8 rounded-full bg-white items-center justify-center`}>
+                    <Image source={require('../../../assets/images/newclock.png')} style={tw`w-4 h-4`} />
                 </TouchableOpacity>
             </View>
 
             <ScrollView contentContainerStyle={{ paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
                 {/* Search */}
-                <View style={[tw`px-4 pt-6`]}>
-                    <View style={styles.searchWrap}>
+                <View style={tw`px-4 pt-6`}>
+                    <View style={tw`bg-white rounded-full px-3.5 py-2.5 flex-row items-center`}>
                         <Ionicons name="search" size={16} color="#9CA3AF" />
                         <TextInput
                             placeholder="Search anything"
                             placeholderTextColor="#9CA3AF"
-                            style={styles.searchInput}
+                            style={tw`flex-1 ml-2 text-[#111827]`}
                             value={query}
                             onChangeText={setQuery}
                             autoCapitalize="none"
                             autoCorrect={false}
                         />
-                        <TouchableOpacity style={styles.searchCTA} onPress={() => setQuery('')}>
+                        <TouchableOpacity style={tw`w-[34px] h-[34px] rounded-[17px] bg-[#6B5DEB] items-center justify-center`} onPress={() => setQuery('')}>
                             <Ionicons name="search" size={16} color="#FFFFFF" />
                         </TouchableOpacity>
                     </View>
@@ -102,10 +102,10 @@ function LevelCard({ level, title, modules, time, progress, locked, tint, bg }: 
                     },
                 })
             }>
-        <View style={[styles.card, { backgroundColor: bg }, tw``]}> 
+            <View style={tw.style('rounded-2xl p-4 mt-3 overflow-hidden', { backgroundColor: bg })}> 
             <View style={[tw`flex-row items-center justify-between`]}>
                 <Text style={[tw`text-black font-bold text-[20px]`]}>Level {level}</Text>
-                <View style={styles.progressPill}>
+                    <View style={tw`bg-white px-2.5 py-1.5 rounded-xl`}>
                     {locked ? (
                         <View style={[tw`flex-row items-center`]}>
                             <Ionicons name="lock-closed" size={12} color="#111827" />
@@ -125,116 +125,27 @@ function LevelCard({ level, title, modules, time, progress, locked, tint, bg }: 
             <View style={[tw`mt-3 flex-row items-center`]}>
                 <View style={[tw`flex-row items-center`]}>
                     <Ionicons name="book" size={12} color="#6B7280" />
-                    <Text style={styles.metaText}>{modules}</Text>
+                        <Text style={tw`text-[#6B7280] text-[12px] ml-1.5`}>{modules}</Text>
                 </View>
-                <View style={styles.metaDot} />
+                    <View style={tw`w-1 h-1 rounded-full bg-[#E5E7EB] mx-2.5`} />
                 <View style={[tw`flex-row items-center`]}>
                     <Ionicons name="time-outline" size={12} color="#6B7280" />
-                    <Text style={styles.metaText}>{time}</Text>
+                        <Text style={tw`text-[#6B7280] text-[12px] ml-1.5`}>{time}</Text>
                 </View>
             </View>
 
             {!locked && typeof progress === 'number' && progress < 100 && (
-                <View style={styles.progressTrack}> 
-                    <View style={[styles.progressFill, { width: `${progress}%` }]} />
-                    <View style={styles.progressEndCap} />
+                    <View style={tw`h-2 bg-[#EDE7FF] rounded-lg mt-4 relative`}>
+                        <View style={[tw`h-2 bg-[#E565B8] rounded-lg`, { width: `${progress}%` }]} />
+                        <View style={tw`absolute right-2 -top-1.5 w-10 h-2 rounded bg-white opacity-80`} />
                 </View>
             )}
 
-            <Image source={require('../../../assets/images/experiment-one.png')} style={[styles.bgFlask, { tintColor: tint }]} resizeMode="contain" />
+                <Image source={require('../../../assets/images/experiment-one.png')} style={tw.style('absolute w-[200px] h-[180px] right-[-12px] top-[-12px] opacity-50', { tintColor: tint })} resizeMode="contain" />
         </View>
         </TouchableOpacity>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#F7F7F7',
-    },
-    iconButton: {
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        backgroundColor: '#FFFFFF',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    searchWrap: {
-        backgroundColor: '#FFFFFF',
-        borderRadius: 22,
-        paddingHorizontal: 14,
-        paddingVertical: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    searchInput: {
-        flex: 1,
-        marginLeft: 8,
-        color: '#111827',
-    },
-    searchCTA: {
-        width: 34,
-        height: 34,
-        borderRadius: 17,
-        backgroundColor: '#6B5DEB',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    card: {
-        borderRadius: 20,
-        padding: 16,
-        marginTop: 14,
-        overflow: 'hidden',
-    },
-    progressPill: {
-        backgroundColor: '#FFFFFF',
-        paddingHorizontal: 10,
-        paddingVertical: 6,
-        borderRadius: 12,
-    },
-    metaText: {
-        color: '#6B7280',
-        fontSize: 12,
-        marginLeft: 6,
-    },
-    metaDot: {
-        width: 4,
-        height: 4,
-        borderRadius: 2,
-        backgroundColor: '#E5E7EB',
-        marginHorizontal: 10,
-    },
-    progressTrack: {
-        height: 8,
-        backgroundColor: '#EDE7FF',
-        borderRadius: 6,
-        marginTop: 16,
-        position: 'relative',
-    },
-    progressFill: {
-        height: 8,
-        backgroundColor: '#E565B8',
-        borderRadius: 6,
-    },
-    progressEndCap: {
-        position: 'absolute',
-        right: 8,
-        top: -6,
-        width: 40,
-        height: 8,
-        borderRadius: 4,
-        backgroundColor: '#FFFFFF',
-        opacity: 0.8,
-    },
-    bgFlask: {
-        position: 'absolute',
-        width: 200,
-        height: 180,
-        right: -12,
-        top: -12,
-        opacity: 0.5,
-    },
-});
+// Tailwind-only: removed StyleSheet
 
 
