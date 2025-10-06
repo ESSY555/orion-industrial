@@ -32,18 +32,18 @@ export default function EditTaskDetailScreen() {
     return (
         <>
             <StatusBar style="dark" backgroundColor="#FFFFFF" />
-            <ScrollView style={[tw`h-full`, { backgroundColor: '#F7F7F7' }]} showsVerticalScrollIndicator={false}>
+            <ScrollView style={tw`h-full bg-[#F7F7F7]`} showsVerticalScrollIndicator={false}>
                 {/* Header */}
-                <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
-                    <TouchableOpacity style={[tw`w-9 h-9 rounded-full bg-white items-center justify-center`, shadow()]} onPress={() => router.back()}>
+                <View style={tw`px-4 pt-14 pb-3 flex-row items-center justify-between`}>
+                    <TouchableOpacity style={tw`w-9 h-9 rounded-full bg-white items-center justify-center border border-[#E5E7EB]`} onPress={() => router.back()}>
                         <Ionicons name="chevron-back" size={20} color="#3A3A3A" />
                     </TouchableOpacity>
-                    <Text style={[tw`text-black font-bold`, { fontSize: 18 }]}>Review Work Order</Text>
+                    <Text style={tw`text-black font-bold text-[18px]`}>Review Work Order</Text>
                     <View style={tw`flex-row items-center`}>
-                        <TouchableOpacity style={[tw`w-9 h-9 rounded-full bg-white items-center justify-center mr-2`, shadow()]}> 
+                        <TouchableOpacity style={tw`w-9 h-9 rounded-full bg-white items-center justify-center mr-2 border border-[#E5E7EB]`}> 
                             <Ionicons name="sparkles" size={16} color="#7F56D9" />
                         </TouchableOpacity>
-                        <TouchableOpacity style={[tw`w-9 h-9 rounded-full bg-white items-center justify-center`, shadow()]}> 
+                        <TouchableOpacity style={tw`w-9 h-9 rounded-full bg-white items-center justify-center border border-[#E5E7EB]`}> 
                             <Ionicons name="ellipsis-vertical" size={16} color="#3A3A3A" />
                         </TouchableOpacity>
                     </View>
@@ -54,13 +54,13 @@ export default function EditTaskDetailScreen() {
 
 
 
-                <View style={[tw`px-4 mt-5 flex-row items-center justify-center`]}>
-                    <View style={[tw`bg-white rounded-2xl flex-row`, shadow()]}>
-                        <TouchableOpacity onPress={() => setActiveTab('time')} style={[tw`px-4 py-3 rounded-2xl`, { backgroundColor: activeTab === 'time' ? '#7F56D9' : 'transparent', margin: 6 }]}>
-                            <Text style={{ color: activeTab === 'time' ? '#FFFFFF' : '#6B7280', fontWeight: '700' }}>Time Tracking</Text>
+                <View style={tw`px-4 mt-5 flex-row items-center justify-center`}>
+                    <View style={tw`bg-white rounded-2xl flex-row border border-[#E5E7EB]`}>
+                        <TouchableOpacity onPress={() => setActiveTab('time')} style={tw.style('px-4 py-3 rounded-2xl m-1.5', activeTab === 'time' ? 'bg-[#7F56D9]' : '')}>
+                            <Text style={tw.style('font-bold', activeTab === 'time' ? 'text-white' : 'text-[#6B7280]')}>Time Tracking</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setActiveTab('evidence')} style={[tw`px-4 py-3 rounded-2xl`, { backgroundColor: activeTab === 'evidence' ? '#7F56D9' : 'transparent', margin: 6 }]}>
-                            <Text style={{ color: activeTab === 'evidence' ? '#FFFFFF' : '#6B7280', fontWeight: '700' }}>Evidence</Text>
+                        <TouchableOpacity onPress={() => setActiveTab('evidence')} style={tw.style('px-4 py-3 rounded-2xl m-1.5', activeTab === 'evidence' ? 'bg-[#7F56D9]' : '')}>
+                            <Text style={tw.style('font-bold', activeTab === 'evidence' ? 'text-white' : 'text-[#6B7280]')}>Evidence</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -70,9 +70,9 @@ export default function EditTaskDetailScreen() {
 
                 {/* Time Tracking */}
                 {activeTab === 'time' && (
-                    <View style={[tw`px-4 mt-4`]}>
-                        <View style={[tw`rounded-2xl p-4`, { backgroundColor: '#FFFFFF' }, shadow()]}>
-                            <Text style={{ color: '#261A3B', fontWeight: '800', fontSize: 18, marginBottom: 12 }}>Time Tracking</Text>
+                    <View style={tw`px-4 mt-4`}>
+                        <View style={tw`rounded-2xl p-4 bg-white border border-[#E5E7EB]`}>
+                            <Text style={tw`text-[#261A3B] font-extrabold text-[18px] mb-3`}>Time Tracking</Text>
                             {[
                                 ['Release to Sanitation', '10:00 AM'],
                                 ['Ready for QA', '15:30 PM'],
@@ -80,20 +80,20 @@ export default function EditTaskDetailScreen() {
                                 ['QA Finish Pre-op', '16:15 PM'],
                                 ['Released to Production', '16:30 PM'],
                             ].map((row, i) => (
-                                <View key={i} style={[tw`flex-row items-center justify-between py-3`]}>
-                                    <Text style={{ color: '#6B7280', fontSize: 14 }}>{row[0]}</Text>
+                                <View key={i} style={tw`flex-row items-center justify-between py-3`}>
+                                    <Text style={tw`text-[#6B7280] text-[14px]`}>{row[0]}</Text>
                                     <View style={tw`flex-row items-center`}>
-                                        <Text style={{ color: '#111827', fontSize: 14, marginRight: 10 }}>{row[1]}</Text>
-                                        <View style={[{ width: 28, height: 28, borderRadius: 14, backgroundColor: '#F3F4F6', alignItems: 'center', justifyContent: 'center' }, shadowLight()]}>
+                                        <Text style={tw`text-[#111827] text-[14px] mr-2.5`}>{row[1]}</Text>
+                                        <View style={tw`w-7 h-7 rounded-full bg-[#F3F4F6] items-center justify-center`}> 
                                             <Ionicons name="arrow-up" size={14} color="#7F56D9" style={{ transform: [{ rotate: '45deg' }] }} />
                                         </View>
                                     </View>
                                 </View>
                             ))}
-                            <View style={{ height: 1, borderBottomWidth: 1, borderStyle: 'dashed', borderColor: '#E5E7EB', marginVertical: 10 }} />
+                            <View style={tw.style('', { height: 1, borderBottomWidth: 1, borderStyle: 'dashed', borderColor: '#E5E7EB', marginVertical: 10 })} />
                             <View style={tw`flex-row items-center justify-between mt-1`}>
-                                <Text style={{ color: '#6B7280' }}>Total Duration</Text>
-                                <Text style={{ color: '#22C55E', fontWeight: '800', fontSize: 14 }}>4 hrs 27 mins</Text>
+                                <Text style={tw`text-[#6B7280]`}>Total Duration</Text>
+                                <Text style={tw`text-[#22C55E] font-extrabold text-[14px]`}>4 hrs 27 mins</Text>
                             </View>
                         </View>
                     </View>
@@ -101,8 +101,8 @@ export default function EditTaskDetailScreen() {
 
                 {/* Evidence */}
                 {activeTab === 'evidence' && (
-                    <View style={[tw`px-4 mt-4`]}>
-                        <View style={[tw`rounded-2xl p-3`, { backgroundColor: '#FFFFFF' }, shadow()]}>
+                    <View style={tw`px-4 mt-4`}>
+                        <View style={tw`rounded-2xl p-3 bg-white border border-[#E5E7EB]`}>
                             <View style={tw`flex-row items-center justify-between mb-2`}>
                                 <Text style={[tw`text-black`, { fontWeight: '800' }]}>Evidence</Text>
                                 <View style={tw`flex-row items-center`}>
@@ -112,20 +112,20 @@ export default function EditTaskDetailScreen() {
                             </View>
 
                             {/* Documentation */}
-                            <Text style={[tw`text-gray-500 mb-2 `, { fontSize: 12 }]}>Documentation</Text>
-                            <View style={[tw`rounded-2xl p-3 mb-3 border-2 border-gray-200`, { backgroundColor: '#FFFFFF' }, shadowLight()]}>
-                                <Text style={[tw`text-gray-700 border-gray-200 pb-2`, { fontSize: 12 }]}>
+                            <Text style={tw`text-gray-500 mb-2 text-[12px]`}>Documentation</Text>
+                            <View style={tw`rounded-2xl p-3 mb-3 border-2 border-gray-200 bg-white`}>
+                                <Text style={tw`text-gray-700 border-gray-200 pb-2 text-[12px]`}>
                                     Foamed and Scrubbed Affected Area with SK-250. Applied Sterile Solution. SFT treatment completed on all drains.
                                 </Text>
                             </View>
 
                             {/* Photo Evidence */}
-                            <Text style={[tw`text-gray-500 mb-2`, { fontSize: 12 }]}>Photo Evidence</Text>
+                            <Text style={tw`text-gray-500 mb-2 text-[12px]`}>Photo Evidence</Text>
                             <View style={tw`flex-row`}>
-                                <View style={[tw`flex-1 rounded-2xl overflow-hidden mr-2`, shadowLight()]}> 
+                                <View style={tw`flex-1 rounded-2xl overflow-hidden mr-2 border border-gray-200`}> 
                                     <Image source={require('../../assets/images/scientists-look-orange-chemicals-glass-laboratory 1.png')} style={[tw`w-full h-26`]} />
                                 </View>
-                                <View style={[tw`flex-1 rounded-2xl overflow-hidden`, shadowLight()]}> 
+                                <View style={tw`flex-1 rounded-2xl overflow-hidden border border-gray-200`}> 
                                     <Image source={require('../../assets/images/new-chemical.png')} style={[tw`w-full h-26`]} />
                                 </View>
                             </View>
@@ -134,9 +134,9 @@ export default function EditTaskDetailScreen() {
                 )}
 
                 {/* Bottom CTA */}
-                <View style={[tw`px-4 mt-6 mb-28`]}>
-                    <TouchableOpacity accessibilityRole="button" activeOpacity={0.9} onPress={() => router.push({ pathname: '/supervisor-flow/review-task', params: { name: person.name } })} style={[tw`rounded-2xl px-4 py-4 items-center justify-center flex-row`, { backgroundColor: '#7F56D9' }, shadow()]}> 
-                        <Text style={[tw`text-white mr-2`, { fontWeight: '800' }]}>Next Step</Text>
+                <View style={tw`px-4 mt-6 mb-28`}>
+                    <TouchableOpacity accessibilityRole="button" activeOpacity={0.9} onPress={() => router.push({ pathname: '/supervisor-flow/review-task', params: { name: person.name } })} style={tw`rounded-2xl px-4 py-4 items-center justify-center flex-row bg-[#7F56D9]`}>
+                        <Text style={tw`text-white mr-2 font-extrabold`}>Next Step</Text>
                         <Ionicons name="arrow-forward" size={16} color="#FFFFFF" />
                     </TouchableOpacity>
                 </View>

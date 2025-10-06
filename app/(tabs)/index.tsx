@@ -1,14 +1,14 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { Redirect } from 'expo-router';
-import CleanerFlow from '@/app/cleaner-flow/index';
+import Dashboard from './../dashboard';
 
 
 
 export default function Home() {
     return (
         // <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-        //     <CleanerFlow />
+        //     <Dashboard />
         // </View>
         <View>
             <Redirect href="/login" />
@@ -16,6 +16,4 @@ export default function Home() {
     );
 }
 
-const styles = StyleSheet.create({
-    // Add any custom styles here
-});
+//
