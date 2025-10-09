@@ -10,6 +10,7 @@ import CleanerFlow from '@/app/cleaner-flow/index';
 import Dashboard from '@/app/dashboard';
 import RequiredCourses from '@/app/cleaner-flow/required-courses';
 import LevelsScreen from '@/app/cleaner-flow/levels';
+import TrainingLevels from '@/app/cleaner-flow/screens/TrainingLevels';
 import ModulsScreen from '@/app/cleaner-flow/moduls';
 import Certification from '@/app/cleaner-flow/certification';
 import TestQuestion from '@/app/cleaner-flow/components/testQuestion';
@@ -24,6 +25,7 @@ export type RootStackParamList = {
     Login: undefined;
     Dashboard: undefined | { username?: string };
     WorkOrders: undefined;
+    TrainingLevels: undefined;
     SupervisorSelectedItems: undefined;
     SupervisorEdit: { id?: number; title?: string; sub?: string; status?: string } | undefined;
     SupervisorEditTask: { id?: number; name?: string } | undefined;
@@ -58,6 +60,7 @@ const StackScreen = () => (
         <Stack.Screen name="Certification" component={Certification} options={{ headerShown: false, title: 'Certification' }} />
         <Stack.Screen name="TestQuestion" component={TestQuestion} options={{ headerShown: false, title: 'Test Question' }} />
         <Stack.Screen name="FinalTest" component={FinalTest} options={{ headerShown: false, title: 'Final Test' }} />
+        <Stack.Screen name="TrainingLevels" component={TrainingLevels} options={{ headerShown: false, title: 'Training Levels' }} />
         <Stack.Screen
             name="WorkOrders"
             component={WorkOrders}
