@@ -6,15 +6,14 @@ import tw from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
-import { useLocalSearchParams } from 'expo-router';
+import { useRoute, RouteProp } from '@react-navigation/native';
+import type { RootStackParamList } from '@/routes/homeStack';
 import { StatusBar } from 'expo-status-bar';
-
-type RootStackParamList = {
-    WorkOrders: undefined;
-};
+import MenuBar from '@/components/MenuBar';
 
 export default function Dashboard() {
-    const { username } = useLocalSearchParams<{ username?: string }>();
+    const route = useRoute<RouteProp<RootStackParamList, 'Dashboard'>>();
+    const username = route.params?.username;
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const [showAll, setShowAll] = useState(false);
     const [refreshTick, setRefreshTick] = useState(0);
@@ -29,7 +28,6 @@ export default function Dashboard() {
 
     // Ensure header is hidden even if navigator defaults change
     useLayoutEffect(() => {
-        // @ts-ignore setOptions exists on any stack screen
         navigation.setOptions?.({ headerShown: false, title: '' });
     }, [navigation]);
 
@@ -131,10 +129,7 @@ export default function Dashboard() {
                 {/* Work Orders list header */}
                 <View style={tw`px-4 mt-5 flex-row items-center justify-between`}>
                     <Text style={[tw`text-black font-bold`]}>Work Orders</Text>
-                    <TouchableOpacity style={tw`bg-[#EFECEF] py-1.5 px-3.5 rounded-2xl`} onPress={() => {
-                        // @ts-ignore navigate is available via useNavigation
-                        (navigation as any).navigate?.('WorkOrders');
-                    }}>
+                    <TouchableOpacity style={tw`bg-[#EFECEF] py-1.5 px-3.5 rounded-2xl`} onPress={() => navigation.navigate('WorkOrders')}>
                         <Text style={[tw`text-black`]}>View All</Text>
                     </TouchableOpacity>
                 </View>
@@ -171,6 +166,7 @@ export default function Dashboard() {
                     ))}
                 </View>
             </ScrollView>
+            <MenuBar />
         </>
     );
 }

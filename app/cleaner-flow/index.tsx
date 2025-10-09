@@ -3,7 +3,7 @@ import { View, Text, Pressable, ScrollView, useWindowDimensions, PixelRatio, Ima
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { Link, useNavigation, useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from 'twrnc';
 import StepTwo from './components/stepTwo';
@@ -131,7 +131,6 @@ export default function CleanerFlowScreen() {
     navigation.setOptions?.({ headerShown: false, title: '' });
   }, [navigation]);
 
-  const router = useRouter();
   const { width } = useWindowDimensions();
   const isSmall = width < 380;
   const isTablet = width >= 768;
@@ -209,15 +208,9 @@ export default function CleanerFlowScreen() {
             onPress={() => {
                   if (step > 1) {
                     setStep(step - 1);
-                  } else if (navigation.canGoBack?.()) {
-                    // Prefer native back only if there's something to go back to
-                    // to avoid GO_BACK warnings in development
-                    // @ts-ignore optional chaining safe
-                    navigation.goBack?.();
+                  } else if ((navigation as any).canGoBack?.()) {
+                    (navigation as any).goBack?.();
                   } else {
-                    // Fallback: stay on screen or move to root route
-                    // Using replace avoids stacking
-                    router.replace('/');
                   }
             }}
                 style={tw`h-11 w-11 rounded-full bg-white border border-[#EEEFF3] items-center justify-center mr-2`}
@@ -231,7 +224,6 @@ export default function CleanerFlowScreen() {
           </View>
               <View style={tw`h-11 w-11 rounded-full bg-white border border-[#EEEFF3] items-center justify-center ml-2`}>
                 <Image source={require('../../assets/images/element-3.png')} style={tw`h-5 w-5`} />
-            {/* <Ionicons name="apps-outline" size={20} color="#2B2140" /> */}
           </View>
         </View>
 
@@ -245,11 +237,7 @@ export default function CleanerFlowScreen() {
         </View>
 
         {step === 1 ? (
-          <>
-            {/* <Text style={{ marginTop: 20, fontSize: scale(20), fontWeight: '800', color: '#2B2B2E' }}>
-              Select Areas to Audit
-            </Text> */}
-
+              <>
                 <ScrollView style={tw`mt-3 bg-white`} contentInsetAdjustmentBehavior="always" contentContainerStyle={tw`pb-30`}>
               {areas.map((area) => (
                 <AreaCard key={area.id} area={area} toggle={toggle} />

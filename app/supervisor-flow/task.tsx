@@ -3,14 +3,14 @@ import { View, Text, TouchableOpacity, ScrollView, Image, TextInput } from 'reac
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { useNavigation } from '@react-navigation/native';
-import { useRouter } from 'expo-router';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '@/routes/homeStack';
+
 import tw from 'twrnc';
 
 export default function TaskScreen() {
-    const router = useRouter();
-    const navigation = useNavigation<any>();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     useLayoutEffect(() => {
-        // @ts-ignore setOptions exists on any stack screen
         navigation.setOptions?.({ headerShown: false, title: '' });
     }, [navigation]);
     const [showSearch, setShowSearch] = React.useState(false);
@@ -49,7 +49,7 @@ export default function TaskScreen() {
                 ) : (
                     <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                         <TouchableOpacity style={[tw`w-9 h-9 rounded-full bg-white items-center justify-center`, shadow()]}
-                            onPress={() => router.back()}>
+                                onPress={() => navigation.goBack()}>
                             <Ionicons name="chevron-back" size={20} color="#3A3A3A" />
                         </TouchableOpacity>
                         <Text style={[tw`text-black font-bold`, { fontSize: 18 }]}>Tasks</Text>
@@ -93,7 +93,7 @@ export default function TaskScreen() {
                             return q.length ? p.name.toLowerCase().includes(q) : true;
                         })
                         .map((p) => (
-                        <TouchableOpacity key={p.id} activeOpacity={0.9} onPress={() => router.push({ pathname: '/supervisor-flow/edit-task', params: { id: p.id, name: p.name } })} style={[tw`bg-white rounded-2xl px-3 py-4 flex-row items-center justify-between mb-3`, shadowLight()]}> 
+                            <TouchableOpacity key={p.id} activeOpacity={0.9} onPress={() => navigation.navigate('SupervisorEditTask', { id: p.id, name: p.name })} style={[tw`bg-white rounded-2xl px-3 py-4 flex-row items-center justify-between mb-3`, shadowLight()]}> 
                             <View style={[tw`flex-row items-center flex-1`]}>
                                 <View style={[tw`w-11 h-11 rounded-full overflow-hidden bg-gray-200 items-center justify-center`]}>
                                     <Image source={p.avatar} style={[tw`w-11 h-11`]} />

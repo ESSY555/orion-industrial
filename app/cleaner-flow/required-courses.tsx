@@ -3,20 +3,22 @@ import { TouchableOpacity, Image, ScrollView, DeviceEventEmitter } from 'react-n
 import { Text, View } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
-import { useLocalSearchParams, useNavigation } from 'expo-router';
+import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '@/routes/homeStack';
 import { StatusBar } from 'expo-status-bar';
 
 export default function requiredCourses() {
-    const { username } = useLocalSearchParams<{ username?: string }>();
-    const navigation = useNavigation<any>();
+    const route = useRoute<RouteProp<RootStackParamList, 'RequiredCourses'>>();
+    const username = route.params?.username;
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'RequiredCourses'>>();
 
     useLayoutEffect(() => {
         // This screen hides any default headers
     }, []);
 
        // Ensure header is hidden even if navigator defaults change
-       useLayoutEffect(() => {
-        // @ts-ignore setOptions exists on any stack screen
+    useLayoutEffect(() => {
         navigation.setOptions?.({ headerShown: false, title: '' });
     }, [navigation]);
     return (

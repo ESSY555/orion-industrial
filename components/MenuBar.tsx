@@ -2,14 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Keyboard, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'twrnc';
-import { router, type Href, usePathname } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '@/routes/homeStack';
 
 export default function MenuBar() {
     const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-    const pathname = usePathname?.() as string | undefined;
-    let isHome = pathname === '/dashboard' || pathname === '/' || pathname === undefined;
-    let isScan = pathname === '/modal';
-    let isWorkOrders = pathname === '/WorkOrders' || pathname === '/cleaner-flow/training-levels';
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    // simple active flags could be driven by route name if needed; default to Home
+    let isHome = true;
+    let isScan = false;
+    let isWorkOrders = false;
     if (!isHome && !isScan && !isWorkOrders) {
         isHome = true;
     }
@@ -28,9 +31,9 @@ export default function MenuBar() {
     return (
         <View style={[tw`items-center`, { position: 'absolute', left: 0, right: 0, bottom: 18, zIndex: 1000 }]}> 
             <View style={[tw`flex-row items-center justify-between px-6 py-4 rounded-2xl`, { width: '92%', backgroundColor: '#2B2140', shadowColor: '#000', shadowOpacity: 0.18, shadowOffset: { width: 0, height: 6 }, shadowRadius: 16, elevation: 8 }]}>
-                <Button icon="home" label="Home" active={!!isHome} onPress={() => router.push('/cleaner-flow/cleaner-dashboard' as Href)} />
-                <Button style={[tw`text-white`]} imageSrc={require('../assets/images/scanner.png')} label="Scan" active={!!isScan} onPress={() => router.push('/modal' as Href)} />
-                <Button style={[tw`text-white`]} imageSrc={require('../assets/images/note.png')} label="Work Orders" active={!!isWorkOrders} onPress={() => router.push('/cleaner-flow/training-levels' as Href)} />
+                <Button icon="home" label="Home" active={!!isHome} onPress={() => navigation.navigate('CleanerDashboard')} />
+                <Button style={[tw`text-white`]} imageSrc={require('../assets/images/scanner.png')} label="Scan" active={!!isScan} onPress={() => { }} />
+                <Button style={[tw`text-white`]} imageSrc={require('../assets/images/note.png')} label="Work Orders" active={!!isWorkOrders} onPress={() => navigation.navigate('WorkOrders')} />
             
             </View>
         </View>

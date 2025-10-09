@@ -2,8 +2,9 @@ import React, { useLayoutEffect, useMemo, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
-import { useRouter, useLocalSearchParams } from 'expo-router';
-import { useNavigation } from '@react-navigation/native';
+import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '@/routes/homeStack';
 import { BlurView } from 'expo-blur';
 import tw from 'twrnc';
 import Signature from 'react-native-signature-canvas';
@@ -21,11 +22,10 @@ type Person = {
 };
 
 export default function ReviewTaskScreen() {
-    const router = useRouter();
-    const navigation = useNavigation<any>();
-    const params = useLocalSearchParams<{ name?: string }>();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const route = useRoute<RouteProp<RootStackParamList, 'SupervisorSelectedItems'>>();
+    const params = route.params ?? {};
     useLayoutEffect(() => {
-        // @ts-ignore setOptions exists on any stack screen
         navigation.setOptions?.({ headerShown: false, title: '' });
     }, [navigation]);
 
@@ -65,7 +65,6 @@ export default function ReviewTaskScreen() {
             signature: signatureDataUrl,
         };
         console.log('Submit Review payload:', payload);
-        // Example: router.push('/success');
     }
 
     return (
@@ -74,7 +73,7 @@ export default function ReviewTaskScreen() {
             <ScrollView style={[tw`h-full pb-28`, { backgroundColor: '#F7F7F7' }]} showsVerticalScrollIndicator={false}>
                 {/* Header */}
                 <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
-                    <TouchableOpacity style={[tw`w-9 h-9 rounded-full bg-white items-center justify-center`, shadow()]} onPress={() => router.back()}>
+                    <TouchableOpacity style={[tw`w-9 h-9 rounded-full bg-white items-center justify-center`, shadow()]} onPress={() => navigation.goBack()}>
                         <Ionicons name="chevron-back" size={20} color="#3A3A3A" />
                     </TouchableOpacity>
                     <Text style={[tw`text-black font-bold`, { fontSize: 18 }]}>Review Task</Text>
@@ -125,59 +124,7 @@ export default function ReviewTaskScreen() {
                 {selectedAction !== 'revise' && (
                     <View style={[tw`px-4 mt-4`]}>
                         <View style={[tw`rounded-2xl p-4`]}>
-                            {/* <View style={tw`flex-row mb-3 items-center`}>
 
-                                {['draw', 'type'].map((k) => (
-                                    <TouchableOpacity key={k} onPress={() => setActiveSignatureTab(k as any)} style={{ marginRight: 16 }}>
-                                        <Text style={{ color: activeSignatureTab === k ? '#7F56D9' : '#6B7280', fontWeight: activeSignatureTab === k ? '800' as const : '600' as const }}>
-                                            {k === 'draw' ? 'Draw' : 'Type'}
-                                        </Text>
-                                    </TouchableOpacity>
-                                ))}
-
-                            </View> */}
-
-                            {/* Signature Canvas */}
-                            {/* {activeSignatureTab === 'draw' ? (
-                                <View style={[tw`rounded-2xl overflow-hidden mb-3`, { height: 190, borderWidth: 1, borderColor: '#E5E7EB', backgroundColor: '#8B4CE814', position: 'relative' }]}>
-
-                                    <View style={[tw`flex-row items-center`, { position: 'absolute', top: 8, right: 8, backgroundColor: '#F6F1FE', paddingHorizontal: 8, paddingVertical: 6, borderRadius: 16, zIndex: 10 }]}>
-                                        {signatureColors.map((c) => (
-                                            <TouchableOpacity key={c}
-                                                onPress={() => setPenColor(c)}
-                                                accessibilityRole="button"
-                                                style={[{ width: 24, height: 24, borderRadius: 14, marginLeft: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: c, borderWidth: penColor === c ? 0 : 0 }]}>
-                                                {penColor === c && (
-                                                    <Ionicons name="checkmark" size={16} color="#FFFFFF" />
-                                                )}
-                                            </TouchableOpacity>
-                                        ))}
-                                    </View>
-
-                                    <Signature
-                                        key={penColor}
-                                        onOK={(sig) => setSignatureDataUrl(sig)}
-                                        onClear={() => setSignatureDataUrl(null)}
-                                        webStyle={`.m-signature-pad{box-shadow:none;border-3;} .m-signature-pad--footer{display:flex;justify-content:flex-end;align-items:center;padding:8px}.button{background:#7F56D9;color:#fff;border:none;border-radius:12px;padding:8px 12px;margin-left:8px}.clear{background:#F3F4F6;color:#111827}`}
-                                        backgroundColor="#8B4CE814"
-                                        penColor={penColor}
-                                        imageType="image/png"
-                                        androidHardwareAccelerationDisabled
-                                    />
-                                </View>
-                            ) : (
-                                <View style={[tw`rounded-2xl mb-3`, { backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#E5E7EB', padding: 12 }]}>
-                                    <TextInput placeholder="Type your name" placeholderTextColor="#9CA3AF" style={[tw`text-gray-800`, { fontSize: 16 }]} />
-                                </View>
-                            )}
-                            {signatureDataUrl && (
-                                <View style={tw`mb-3`}>
-                                    <Text style={[tw`text-gray-600 mb-1`, { fontSize: 12 }]}>Signature preview</Text>
-                                    <View style={[tw`rounded-xl overflow-hidden`, { width: 140, height: 60, backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#E5E7EB' }]}>
-                                        <Image source={{ uri: signatureDataUrl }} style={{ width: '100%', height: '100%' }} resizeMode="contain" />
-                                    </View>
-                                </View>
-                            )} */}
 
                             {/* Comment */}
                             <Text style={[tw`text-gray-500 mb-2`, { fontSize: 12 }]}>Add Comment</Text>
@@ -264,7 +211,7 @@ export default function ReviewTaskScreen() {
 
                 {/* Bottom Buttons */}
                 <View style={[tw`px-4 mt-6 mb-28 flex-row items-center justify-between`]}>
-                    <TouchableOpacity onPress={() => router.back()} style={[tw`rounded-2xl px-4 py-[2px] border-2 border-[#8B5CF6]`, { backgroundColor: '#FFFFFF' }, shadow()]}>
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={[tw`rounded-2xl px-4 py-[2px] border-2 border-[#8B5CF6]`, { backgroundColor: '#FFFFFF' }, shadow()]}>
                         <Text style={[tw`text-[#8B5CF6] p-2`, { fontWeight: '700' }]}>Previous Step</Text>
                     </TouchableOpacity>
                     <TouchableOpacity accessibilityRole="button" activeOpacity={0.9} onPress={handleSubmit} style={[tw`rounded-2xl px-2 py-[2px] items-center justify-center flex-row`, { backgroundColor: '#7F56D9' }, shadow()]}>

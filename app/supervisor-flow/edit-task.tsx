@@ -2,16 +2,17 @@ import React, { useLayoutEffect, useMemo, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
-import { useRouter, useLocalSearchParams } from 'expo-router';
-import { useNavigation } from '@react-navigation/native';
+import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '@/routes/homeStack';
 import tw from 'twrnc';
 import SummaryCard from '@/components/SummaryCard';
 
 export default function EditTaskDetailScreen() {
     const [activeTab, setActiveTab] = useState<'time' | 'evidence'>('time');
-    const router = useRouter();
-    const navigation = useNavigation<any>();
-    const params = useLocalSearchParams<{ id?: string; name?: string }>();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'SupervisorEditTask'>>();
+    const route = useRoute<RouteProp<RootStackParamList, 'SupervisorEditTask'>>();
+    const params = route.params ?? {};
 
     useLayoutEffect(() => {
         // @ts-ignore setOptions exists on any stack screen
@@ -35,7 +36,7 @@ export default function EditTaskDetailScreen() {
             <ScrollView style={tw`h-full bg-[#F7F7F7]`} showsVerticalScrollIndicator={false}>
                 {/* Header */}
                 <View style={tw`px-4 pt-14 pb-3 flex-row items-center justify-between`}>
-                    <TouchableOpacity style={tw`w-9 h-9 rounded-full bg-white items-center justify-center border border-[#E5E7EB]`} onPress={() => router.back()}>
+                    <TouchableOpacity style={tw`w-9 h-9 rounded-full bg-white items-center justify-center border border-[#E5E7EB]`} onPress={() => navigation.goBack()}>
                         <Ionicons name="chevron-back" size={20} color="#3A3A3A" />
                     </TouchableOpacity>
                     <Text style={tw`text-black font-bold text-[18px]`}>Review Work Order</Text>
@@ -135,7 +136,7 @@ export default function EditTaskDetailScreen() {
 
                 {/* Bottom CTA */}
                 <View style={tw`px-4 mt-6 mb-28`}>
-                    <TouchableOpacity accessibilityRole="button" activeOpacity={0.9} onPress={() => router.push({ pathname: '/supervisor-flow/review-task', params: { name: person.name } })} style={tw`rounded-2xl px-4 py-4 items-center justify-center flex-row bg-[#7F56D9]`}>
+                    <TouchableOpacity accessibilityRole="button" activeOpacity={0.9} onPress={() => navigation.navigate('SupervisorSelectedItems')} style={tw`rounded-2xl px-4 py-4 items-center justify-center flex-row bg-[#7F56D9]`}> 
                         <Text style={tw`text-white mr-2 font-extrabold`}>Next Step</Text>
                         <Ionicons name="arrow-forward" size={16} color="#FFFFFF" />
                     </TouchableOpacity>

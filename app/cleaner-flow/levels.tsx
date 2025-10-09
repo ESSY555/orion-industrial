@@ -2,21 +2,16 @@ import React, { useLayoutEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image, ViewStyle } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
-import { useLocalSearchParams, useNavigation, router } from 'expo-router';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '@/routes/homeStack';
 
 export default function LevelsScreen() {
-    const navigation = useNavigation<any>();
-    const params = useLocalSearchParams<{
-        level?: string;
-        title?: string;
-        modules?: string;
-        time?: string;
-        progress?: string;
-        locked?: string;
-    }>();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Levels'>>();
+    const route = useRoute<RouteProp<RootStackParamList, 'Levels'>>();
+    const params = route.params ?? {} as NonNullable<RouteProp<RootStackParamList, 'Levels'>['params']>;
 
     useLayoutEffect(() => {
-        // @ts-ignore
         navigation.setOptions?.({ headerShown: false });
     }, [navigation]);
 
@@ -144,7 +139,8 @@ function StatusBadge({ status, index }: { status: 'done' | 'continue' | 'start' 
     const bg = status === 'start-grey' ? '#E5E7EB' : '#7C5CFF';
     const color = status === 'start-grey' ? '#374151' : '#FFFFFF';
     const isDisabled = status === 'start-grey';
-    const onPress = () => router.push({ pathname: '/cleaner-flow/moduls', params: { module: String(index ?? 1), total: '6' } });
+    const nav = useNavigation<StackNavigationProp<RootStackParamList, 'Levels'>>();
+    const onPress = () => nav.navigate('Moduls', { module: String(index ?? 1), total: '6' });
     const Wrapper: any = isDisabled ? View : TouchableOpacity;
     return (
         <Wrapper onPress={isDisabled ? undefined : onPress} style={tw.style('py-1.5 px-3.5 rounded-lg flex-row items-center', { backgroundColor: bg })}>

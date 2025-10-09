@@ -2,18 +2,19 @@ import React, { useLayoutEffect, useState } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
-import { useLocalSearchParams, useNavigation, router } from 'expo-router';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '@/routes/homeStack';
 
 export default function ModulsScreen() {
-  const navigation = useNavigation<any>();
-  const params = useLocalSearchParams<{ module?: string; total?: string; title?: string }>();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Moduls'>>();
+  const params = useRoute<RouteProp<RootStackParamList, 'Moduls'>>().params ?? ({} as any);
   const moduleNum = params.module ? Number(params.module) : 1;
   const total = params.total ? Number(params.total) : 6;
   const title = params.title || 'Chemical Handling SK-250';
   const [selected, setSelected] = useState<string | null>(null);
 
   useLayoutEffect(() => {
-    // @ts-ignore
     navigation.setOptions?.({ headerShown: false });
   }, [navigation]);
 
@@ -112,7 +113,7 @@ export default function ModulsScreen() {
             </TouchableOpacity>
             <TouchableOpacity
               style={tw`bg-[#7C5CFF] rounded-2xl px-3.5 py-5 flex-row items-center`}
-              onPress={() => router.push({ pathname: '/cleaner-flow/final-test', params: { module: String(moduleNum + 1), total: String(total) } })}
+              onPress={() => navigation.navigate('FinalTest')}
             >
               <Text style={[tw`text-white mr-2`]}>Next Module</Text>
               <Ionicons name="chevron-forward" size={16} color="#FFFFFF" />

@@ -2,7 +2,9 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, Animated, Easing } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'twrnc';
-import { router } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '@/routes/homeStack';
 
 type SidebarItemKey = 'chemical' | 'feedback' | 'evident' | 'tasks' | 'lms' | 'logout';
 
@@ -17,6 +19,7 @@ const ACTIVE_COLOR = '#8B4CE8';
 const ICON_MUTED = '#6B7280';
 
 export default function Sidebar({ isOpen = false, onToggle, onSelect, initialActive = 'chemical' }: SidebarProps) {
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const [open, setOpen] = useState<boolean>(isOpen);
     const slide = useRef(new Animated.Value(isOpen ? 1 : 0)).current; // 0: closed, 1: open
     const backdropOpacity = slide.interpolate({ inputRange: [0, 1], outputRange: [0, 1] });
@@ -63,7 +66,7 @@ export default function Sidebar({ isOpen = false, onToggle, onSelect, initialAct
             onToggle?.(false);
             setOpen(false);
             Animated.timing(slide, { toValue: 0, duration: 200, easing: Easing.in(Easing.cubic), useNativeDriver: true }).start(() => {
-                router.replace('/login');
+                navigation.goBack();
             });
             return;
         }
@@ -71,7 +74,7 @@ export default function Sidebar({ isOpen = false, onToggle, onSelect, initialAct
             onToggle?.(false);
             setOpen(false);
             Animated.timing(slide, { toValue: 0, duration: 200, easing: Easing.in(Easing.cubic), useNativeDriver: true }).start(() => {
-                router.push('/cleaner-flow/required-courses');
+                navigation.navigate('RequiredCourses');
             });
             return;
         }

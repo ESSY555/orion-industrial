@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import tw from 'twrnc';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '@/routes/homeStack';
 import { Ionicons } from '@expo/vector-icons';
 // Tailwind-only: removed StyleSheet and color scheme dependencies
 
 export default function LoginScreen() {
-    const router = useRouter();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Dashboard'>>();
     const [baseUrl, setBaseUrl] = useState('https://api.example.com');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -16,8 +18,7 @@ export default function LoginScreen() {
     const canSubmit = (baseUrl ?? '').trim().length > 0 && (username ?? '').trim().length > 0 && password.length > 0;
 
     const onLogin = () => {
-        // TODO: Add API call with baseUrl/credentials when backend is ready
-        router.replace({ pathname: '/cleaner-flow/cleaner-dashboard', params: { username } });
+        navigation.navigate('CleanerDashboard', { username });
     };
 
     return (

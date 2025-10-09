@@ -6,19 +6,17 @@ import tw from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
-import { useLocalSearchParams, router } from 'expo-router';
+import { useRoute, RouteProp } from '@react-navigation/native';
+import type { RootStackParamList } from '@/routes/homeStack';
 import { StatusBar } from 'expo-status-bar';
 import UiButton from '@/components/UiButton';
 import { DeviceEventEmitter } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-type RootStackParamList = {
-    WorkOrders: undefined;
-};
-
 export default function dashboard() {
-    const { username } = useLocalSearchParams<{ username?: string }>();
-    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const route = useRoute<RouteProp<RootStackParamList, 'CleanerDashboard'>>();
+    const username = route.params?.username;
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'CleanerDashboard'>>();
     const [showAll, setShowAll] = useState(false);
     const [refreshTick, setRefreshTick] = useState(0);
     const [refreshing, setRefreshing] = useState(false);
@@ -32,7 +30,6 @@ export default function dashboard() {
 
     // Ensure header is hidden even if navigator defaults change
     useLayoutEffect(() => {
-        // @ts-ignore setOptions exists on any stack screen
         navigation.setOptions?.({ headerShown: false, title: '' });
     }, [navigation]);
 
@@ -51,12 +48,12 @@ export default function dashboard() {
             const normalized = (saved ?? '').trim().toLowerCase();
             // If no valid draft (or recently cleared), start fresh
             if (!normalized || normalized === 'null' || normalized === 'undefined' || draftClearedAt) {
-                router.push('/cleaner-flow' as any);
+                navigation.navigate('CleanerFlow');
                 return;
             }
-            router.push(saved as any);
+            navigation.navigate('CleanerFlow');
         } catch (e) {
-            router.push('/cleaner-flow' as any);
+            navigation.navigate('CleanerFlow');
         }
     };
 
@@ -74,8 +71,6 @@ export default function dashboard() {
 
     const handleStartTask = (taskId: number) => {
         Alert.alert('Start Task', `Starting task #${taskId}`);
-        // TODO: navigate to the task detail screen when available
-        // router.push('/cleaner-flow/task');
     };
 
     
@@ -105,7 +100,7 @@ export default function dashboard() {
                         <TouchableOpacity style={[tw`mr-3 bg-white rounded-full shadow-lg p-2`]} onPress={handleRefresh}>
                             <Image source={require('../../assets/images/refresh.png')} style={[tw`w-6 h-6 p-2 bg-white rounded-full`]} />
                         </TouchableOpacity>
-                        <TouchableOpacity style={[tw`bg-white rounded-full shadow-lg p-2`]}>
+                        <TouchableOpacity style={[tw`bg-white rounded-full shadow-lg p-2`]}> 
                             <Image source={require('../../assets/images/new-bell.png')} style={[tw`w-6 h-6 bg-white rounded-full`]} />
                         </TouchableOpacity>
                     </View>
@@ -184,7 +179,7 @@ export default function dashboard() {
                   textColor="#FFFFFF"
                   rounded={18}
                   size="lg"
-                        onPress={() => router.push('/cleaner-flow')}
+                        onPress={() => navigation.navigate('CleanerFlow')}
                 />
                </View>
 

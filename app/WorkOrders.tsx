@@ -5,14 +5,15 @@ import { StatusBar } from 'expo-status-bar';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
-import { useRouter } from 'expo-router';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '@/routes/homeStack';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Image } from 'react-native';
+import MenuBar from '@/components/MenuBar';
 
 
 export default function WorkOrders() {
-    const navigation = useNavigation<any>();
-    const router = useRouter();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'WorkOrders'>>();
     const [selectedTab, setSelectedTab] = useState<'yesterday' | 'today' | 'tomorrow'>('yesterday');
     const [showAll, setShowAll] = useState(false);
     const [showNativePicker, setShowNativePicker] = useState(false);
@@ -55,12 +56,12 @@ export default function WorkOrders() {
         if (selectedItems.size === 0) return;
         const ids = Array.from(selectedItems);
         const first = orders.find(o => o.id === ids[0]);
-        router.push({ pathname: '/supervisor-flow/edit', params: {
+        navigation.navigate('SupervisorEdit', {
             id: first?.id,
             title: first?.title,
             sub: first?.sub,
             status: first?.status,
-        }});
+        });
     }
     useLayoutEffect(() => {
         // @ts-ignore setOptions exists on any stack screen
@@ -209,12 +210,12 @@ export default function WorkOrders() {
                                         return;
                                     }
                                     // Navigate to edit on single tap when not selected
-                                    router.push({ pathname: '/supervisor-flow/edit', params: {
+                                    navigation.navigate('SupervisorEdit', {
                                         id: item.id,
                                         title: item.title,
                                         sub: item.sub,
                                         status: item.status,
-                                    }});
+                                    });
                                 }}
                                 onLongPress={() => {
                                     // Long press selects the item and reveals header actions
@@ -376,6 +377,7 @@ export default function WorkOrders() {
                     }}
                 />
             )}
+            <MenuBar />
         </>
     );
 }

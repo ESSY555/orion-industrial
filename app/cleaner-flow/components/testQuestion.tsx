@@ -2,7 +2,9 @@ import React, { useLayoutEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation, router, useLocalSearchParams } from 'expo-router';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '@/routes/homeStack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // Tailwind-only: removed StyleSheet and unused UiButton
 import { mockCourseWithAssignment } from '@/db/mock-db';
@@ -41,8 +43,9 @@ const RIGHT_ANSWERS: string[] = [
 ];
 
 export default function TestQuestion() {
-  const navigation = useNavigation<any>();
-    const { username } = useLocalSearchParams<{ username?: string }>();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'TestQuestion'>>();
+  const route = useRoute<RouteProp<RootStackParamList, 'TestQuestion'>>();
+  const username = route.params?.username;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedByIndex, setSelectedByIndex] = useState<Record<number, string | null>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -51,7 +54,6 @@ export default function TestQuestion() {
   const [remainingSec, setRemainingSec] = useState<number>(totalDurationSec);
 
   useLayoutEffect(() => {
-    // @ts-ignore
     navigation.setOptions?.({ headerShown: false });
   }, [navigation]);
 
@@ -97,7 +99,7 @@ export default function TestQuestion() {
           if (pct >= 70) {
             (async () => {
               await addCertificate('Chemical Handling Sk-148');
-              router.push({ pathname: '/cleaner-flow/certification', params: { username: username ? String(username) : undefined } });
+              navigation.navigate('Certification', { username: username ? String(username) : undefined });
             })();
           }
         },
@@ -186,7 +188,4 @@ export default function TestQuestion() {
     </View>
   );
 }
-
-// Tailwind-only: StyleSheet removed
-
 

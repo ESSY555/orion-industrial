@@ -2,14 +2,15 @@ import React, { useLayoutEffect, useMemo, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation, router } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '@/routes/homeStack';
 import { mockCourseWithAssignment } from '@/db/mock-db';
 
 export default function FinalTest() {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'FinalTest'>>();
 
   useLayoutEffect(() => {
-    // @ts-ignore
     navigation.setOptions?.({ headerShown: false });
   }, [navigation]);
 
@@ -89,7 +90,7 @@ export default function FinalTest() {
               <Ionicons name="chevron-back" size={16} color="#111827" />
               <Text style={[tw`ml-2 text-black text-[12px]`]}>Go Back to Modules</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={tw`bg-[#7C5CFF] rounded-2xl px-4 py-3 flex-row items-center`} onPress={() => router.push('/cleaner-flow/test-question')}>
+            <TouchableOpacity style={tw`bg-[#7C5CFF] rounded-2xl px-4 py-3 flex-row items-center`} onPress={() => navigation.navigate('TestQuestion')}>
               <Text style={[tw`text-white mr-2 text-[12px]`]}>Start Test</Text>
               <Ionicons name="arrow-forward" size={16} color="#FFFFFF" />
             </TouchableOpacity>

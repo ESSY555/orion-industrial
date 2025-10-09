@@ -2,14 +2,16 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation, useLocalSearchParams } from 'expo-router';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '@/routes/homeStack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Certification() {
-  const navigation = useNavigation<any>();
-    const { username } = useLocalSearchParams<{ username?: string }>();
-    const [recent, setRecent] = useState<{ title: string; date: string }[]>([]);
-    //   const { name } = useLocalSearchParams<{ name?: string }>();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Certification'>>();
+  const route = useRoute<RouteProp<RootStackParamList, 'Certification'>>();
+  const username = route.params?.username;
+  const [recent, setRecent] = useState<{ title: string; date: string }[]>([]);
 
   useLayoutEffect(() => {
     // @ts-ignore

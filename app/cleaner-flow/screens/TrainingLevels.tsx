@@ -2,14 +2,15 @@ import React, { useLayoutEffect, useState, useMemo } from 'react';
 import { View, Text, ScrollView, Image, TextInput, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation, router } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RootStackParamList } from '@/routes/homeStack';
 
 export default function TrainingLevels() {
-    const navigation = useNavigation<any>();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Levels'>>();
     const [query, setQuery] = useState('');
 
     useLayoutEffect(() => {
-        // @ts-ignore
         navigation.setOptions?.({ headerShown: false });
     }, [navigation]);
 
@@ -86,22 +87,18 @@ type LevelCardProps = {
 };
 
 function LevelCard({ level, title, modules, time, progress, locked, tint, bg }: LevelCardProps) {
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Levels'>>();
     return (
         <TouchableOpacity
             activeOpacity={0.9}
-            onPress={() =>
-                router.push({
-                    pathname: '/cleaner-flow/levels',
-                    params: {
-                        level: String(level),
-                        title,
-                        modules,
-                        time,
-                        progress: typeof progress === 'number' ? String(progress) : undefined,
-                        locked: locked ? 'true' : 'false',
-                    },
-                })
-            }>
+            onPress={() => navigation.navigate('Levels', {
+                level: String(level),
+                title,
+                modules,
+                time,
+                progress: typeof progress === 'number' ? String(progress) : undefined,
+                locked: locked ? 'true' : 'false',
+            })}>
             <View style={tw.style('rounded-2xl p-4 mt-3 overflow-hidden', { backgroundColor: bg })}> 
             <View style={[tw`flex-row items-center justify-between`]}>
                 <Text style={[tw`text-black font-bold text-[20px]`]}>Level {level}</Text>

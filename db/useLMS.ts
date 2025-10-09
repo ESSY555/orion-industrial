@@ -10,14 +10,7 @@ try {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useState } from "react";
-// Toast shim: dynamically require to avoid TS/type resolution issues
-let Toast: any;
-try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  Toast = require("react-native-root-toast");
-} catch (e) {
-  Toast = { show: (_msg?: string) => {}, hide: (_t?: any) => {} };
-}
+import Toast from "react-native-root-toast";
 
 export type Course = {
   _id: string;
