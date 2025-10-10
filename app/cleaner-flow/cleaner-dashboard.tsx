@@ -11,6 +11,9 @@ import type { RootStackParamList } from '@/routes/homeStack';
 import { StatusBar } from 'expo-status-bar';
 import UiButton from '@/components/UiButton';
 import { DeviceEventEmitter } from 'react-native';
+import ladyHome from '../../assets/images/lady-home.png';
+import newBell from '../../assets/images/new-bell.png';
+import teamsAssigned from '../../assets/images/teams-assigned.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function dashboard() {
@@ -45,7 +48,6 @@ export default function dashboard() {
         try {
             const saved = await AsyncStorage.getItem(DRAFT_KEY);
             const normalized = (saved ?? '').trim().toLowerCase();
-            // If no valid draft (or recently cleared), start fresh
             if (!normalized || normalized === 'null' || normalized === 'undefined' || draftClearedAt) {
                 navigation.navigate('CleanerFlow');
                 return;
@@ -87,7 +89,7 @@ export default function dashboard() {
 
                 <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                     <View style={[tw`flex-row items-center`]}>
-                        <Image source={require('../../assets/images/lady-home.png')} style={{ width: 42, height: 42, borderRadius: 21 }} />
+                        <Image source={ladyHome} style={{ width: 42, height: 42, borderRadius: 21 }} />
                         <View style={[tw`pl-3`]}>
                             <Text style={[tw`text-black font-bold text-[18px]`]}>
                                 Hello {username ? String(username) : 'Emmanuella'}
@@ -100,7 +102,7 @@ export default function dashboard() {
                             <Image source={require('../../assets/images/refresh.png')} style={[tw`w-6 h-6 p-2 bg-white rounded-full`]} />
                         </TouchableOpacity>
                         <TouchableOpacity style={[tw`bg-white rounded-full shadow-lg p-2`]}> 
-                            <Image source={require('../../assets/images/new-bell.png')} style={[tw`w-6 h-6 bg-white rounded-full`]} />
+                            <Image source={newBell} style={[tw`w-6 h-6 bg-white rounded-full`]} />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -196,7 +198,7 @@ export default function dashboard() {
                                     {idx % 2 === 0 ? (
                                         <Ionicons name="bed-outline" size={18} color="#FFFFFF" />
                                     ) : (
-                                        <Image source={require('../../assets/images/teams-assigned.png')} style={{ width: 20, height: 20, tintColor: '#FFFFFF' }} />
+                                        <Image source={teamsAssigned} style={{ width: 20, height: 20, tintColor: '#FFFFFF' }} />
                                     )}
                                 </View>
                                 <View style={tw`pl-3`}>

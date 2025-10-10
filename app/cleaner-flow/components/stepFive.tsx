@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Pressable, ScrollView, TextInput, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'twrnc';
+import areasCleaned from '../../../assets/images/areas-cleaned.png';
 
 function Dropdown({ label, value, options, onChange }: { label: string; value: string; options: string[]; onChange: (v: string) => void }) {
   const [open, setOpen] = useState(false);
@@ -33,7 +34,7 @@ function SummaryCard({ label, value, tint }: { label: string; value: string; tin
   const bgClass = tint === 'left' ? 'bg-[#F4F1FF]' : 'bg-[#EFE8FF]';
   const iconBgClass = tint === 'left' ? 'bg-[#2B2140]' : 'bg-black';
   const iconSrc = tint === 'left'
-    ? require('../../../assets/images/areas-cleaned.png')
+    ? <Image source={areasCleaned} />
     : require('../../../assets/images/new-pot.png');
   return (
     <View style={tw`flex-1`}> 
