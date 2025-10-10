@@ -6,6 +6,7 @@ import WorkOrders from '@/app/WorkOrders';
 import SelectedItemsScreen from '@/app/supervisor-flow/selected-items';
 import SupervisorEditScreen from '@/app/supervisor-flow/edit';
 import EditTaskScreen from '@/app/supervisor-flow/edit-task';
+import TaskScreen from '@/app/supervisor-flow/task';
 import CleanerFlow from '@/app/cleaner-flow/index';
 import Dashboard from '@/app/dashboard';
 import RequiredCourses from '@/app/cleaner-flow/required-courses';
@@ -29,6 +30,7 @@ export type RootStackParamList = {
     SupervisorSelectedItems: undefined;
     SupervisorEdit: { id?: number; title?: string; sub?: string; status?: string } | undefined;
     SupervisorEditTask: { id?: number; name?: string } | undefined;
+    SupervisorTask: undefined;
     CleanerFlow: undefined;
     CleanerDashboard: { username?: string } | undefined;
     RequiredCourses: { username?: string } | undefined;
@@ -82,10 +84,16 @@ const StackScreen = () => (
             options={{ headerShown: false, title: 'Edit task' }}
         />
         <Stack.Screen
+            name="SupervisorTask"
+            component={TaskScreen}
+            options={{ headerShown: false, title: 'Tasks' }}
+        />
+        <Stack.Screen
             name="CleanerFlow"
             component={CleanerFlow}
             options={{ headerShown: false, title: 'Cleaner Flow' }}
         />
+
      
 
     </Stack.Navigator>

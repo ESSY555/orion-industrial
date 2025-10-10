@@ -10,6 +10,13 @@ import { useRoute, RouteProp } from '@react-navigation/native';
 import type { RootStackParamList } from '@/routes/homeStack';
 import { StatusBar } from 'expo-status-bar';
 import MenuBar from '@/components/MenuBar';
+import ladyHome from '../assets/images/lady-home.png';
+import refresh from '../assets/images/refresh.png';
+import newBell from '../assets/images/new-bell.png';
+import activeTask from '../assets/images/active-task.png';
+import teamsAssigned from '../assets/images/teams-assigned.png';
+import reportReview from '../assets/images/report-review.png';
+import areasCleaned from '../assets/images/areas-cleaned.png';
 
 export default function Dashboard() {
     const route = useRoute<RouteProp<RootStackParamList, 'Dashboard'>>();
@@ -22,19 +29,18 @@ export default function Dashboard() {
     const handleRefresh = () => {
         setRefreshing(true);
         setRefreshTick((t) => t + 1);
-        // simulate brief refresh feedback; remove timeout when wiring to real fetch
+
         setTimeout(() => setRefreshing(false), 400);
     };
 
-    // Ensure header is hidden even if navigator defaults change
+
     useLayoutEffect(() => {
         navigation.setOptions?.({ headerShown: false, title: '' });
     }, [navigation]);
 
-    // Example effect to refetch or re-run any calculations when refreshed
+
     useEffect(() => {
-        // Place data refetch logic here.
-        // For now this just triggers re-render through state change.
+
     }, [refreshTick]);
 
     return (
@@ -49,7 +55,7 @@ export default function Dashboard() {
 
                 <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                     <View style={[tw`flex-row items-center`]}>
-                        <Image source={require('../assets/images/lady-home.png')} style={{ width: 42, height: 42, borderRadius: 21 }} />
+                        <Image source={ladyHome} style={{ width: 42, height: 42, borderRadius: 21 }} />
                         <View style={[tw`pl-3`]}>
                             <Text style={[tw`text-black font-bold text-[18px]`]}>
                                 Hello {username ? String(username) : 'Emmanuella'}
@@ -59,10 +65,10 @@ export default function Dashboard() {
                     </View>
                     <View style={[tw`flex-row items-center`]}>
                         <TouchableOpacity style={[tw`mr-3 bg-white rounded-full shadow-lg p-2`]} onPress={handleRefresh}>
-                            <Image source={require('../assets/images/refresh.png')} style={[tw`w-6 h-6 p-2 bg-white rounded-full`]} />
+                            <Image source={refresh} style={[tw`w-6 h-6 p-2 bg-white rounded-full`]} />
                         </TouchableOpacity>
                         <TouchableOpacity style={[tw`bg-white rounded-full shadow-lg p-2`]}>
-                            <Image source={require('../assets/images/new-bell.png')} style={[tw`w-6 h-6 bg-white rounded-full`]} />
+                            <Image source={newBell} style={[tw`w-6 h-6 bg-white rounded-full`]} />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -72,14 +78,14 @@ export default function Dashboard() {
                     <View style={[tw`flex-row`]}>
                         <View style={tw`flex-1 rounded-2xl p-3 mr-3 bg-white`}>
                             <View style={tw`w-8 h-8 rounded-full bg-[#F1EEF6] items-center justify-center mb-2`}>
-                                <Image source={require('../assets/images/active-task.png')} style={tw`w-[30px] h-[30px]`} />
+                                <Image source={activeTask} style={tw`w-[30px] h-[30px]`} />
                             </View>
                             <Text style={tw`text-[#3A3A3A] mb-2 text-[13.6px]`}>Active Tasks</Text>
                             <Text style={tw`text-black font-bold text-[42px]`}>2</Text>
                         </View>
                         <View style={tw`flex-1 rounded-2xl p-3 bg-[#EAE2F8]`}>
                             <View style={tw`bg-[#2D1B3D] rounded-full p-2 w-8 h-8 items-center justify-center`}>
-                                <Image source={require('../assets/images/teams-assigned.png')} style={tw`w-[14px] h-[14px]`} />
+                                <Image source={teamsAssigned} style={tw`w-[14px] h-[14px]`} />
                             </View>
                             <Text style={tw`text-[#3A3A3A] mb-2 pt-2 text-[13.6px]`}>Teams Assigned</Text>
                             <Text style={tw`text-black font-bold text-[42px]`}>2</Text>
@@ -88,14 +94,14 @@ export default function Dashboard() {
                     <View style={[tw`flex-row mt-5`]}>
                         <View style={tw`flex-1 rounded-2xl p-3 mr-3 bg-[#EAE2F8]`}>
                             <View style={tw`w-8 h-8 rounded-full bg-[#F1EEF6] items-center justify-center mb-2`}>
-                                <Image source={require('../assets/images/report-review.png')} style={tw`w-[30px] h-[30px]`} />
+                                <Image source={reportReview} style={tw`w-[30px] h-[30px]`} />
                             </View>
                             <Text style={tw`text-[#3A3A3A] mb-2 text-[13.6px]`}>Reports to Review</Text>
                             <Text style={tw`text-black font-bold text-[42px]`}>12</Text>
                         </View>
                         <View style={tw`flex-1 rounded-2xl p-3 bg-white`}>
                             <View style={tw`bg-[#2D1B3D] rounded-full p-2 w-8 h-8 items-center justify-center`}>
-                                <Image source={require('../assets/images/areas-cleaned.png')} style={tw`w-[14px] h-[14px]`} />
+                                <Image source={areasCleaned} style={tw`w-[14px] h-[14px]`} />
                             </View>
                             <Text style={tw`text-[#3A3A3A] mb-2 pt-2 text-[13.6px]`}>Areas Cleaned</Text>
                             <Text style={tw`text-black font-bold text-[42px]`}>6</Text>

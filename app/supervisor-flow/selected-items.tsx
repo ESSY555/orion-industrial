@@ -3,6 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'twrnc';
+import calender from '../../assets/images/calender.png';
 
 export default function SelectedItemsScreen() {
     const [selectedTab, setSelectedTab] = useState<'yesterday' | 'today' | 'tomorrow'>('yesterday');
@@ -42,7 +43,7 @@ export default function SelectedItemsScreen() {
                             </TouchableOpacity>
                         ))}
                         <TouchableOpacity style={[tw`w-9 h-9 rounded-xl items-center justify-center ml-3 bg-white`]}>
-                            <Image source={require('../../assets/images/calender.png')} style={[tw`w-8 h-8`]} />
+                            <Image source={calender} style={[tw`w-8 h-8`]} />
                         </TouchableOpacity>
                     </View>
                 </View>

@@ -7,6 +7,9 @@ import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '@/routes/homeStack';
 import tw from 'twrnc';
 import SummaryCard from '@/components/SummaryCard';
+import scientistsLookOrangeChemicalsGlassLaboratory from '../../assets/images/scientists-look-orange-chemicals-glass-laboratory 1.png';
+import newChemical from '../../assets/images/new-chemical.png';
+import manSmile from '../../assets/images/man-smile.png';
 
 export default function EditTaskDetailScreen() {
     const [activeTab, setActiveTab] = useState<'time' | 'evidence'>('time');
@@ -20,7 +23,7 @@ export default function EditTaskDetailScreen() {
 
     const person = useMemo(() => ({
         name: params.name || 'Bayo Sydney',
-        avatar: require('../../assets/images/man-smile.png'),
+        avatar: manSmile,
         status: 'Cleaned',
         assets: ['Shelf', 'Cabinet'],
         frequency: 'Daily',
@@ -50,8 +53,6 @@ export default function EditTaskDetailScreen() {
                 </View>
 
              <SummaryCard person={person} />
-
-
 
                 <View style={tw`px-4 mt-5 flex-row items-center justify-center`}>
                     <View style={tw`bg-white rounded-2xl flex-row border border-[#E5E7EB]`}>
@@ -122,10 +123,10 @@ export default function EditTaskDetailScreen() {
                             <Text style={tw`text-gray-500 mb-2 text-[12px]`}>Photo Evidence</Text>
                             <View style={tw`flex-row`}>
                                 <View style={tw`flex-1 rounded-2xl overflow-hidden mr-2 border border-gray-200`}> 
-                                    <Image source={require('../../assets/images/scientists-look-orange-chemicals-glass-laboratory 1.png')} style={[tw`w-full h-26`]} />
+                                    <Image source={scientistsLookOrangeChemicalsGlassLaboratory} style={[tw`w-full h-26`]} />
                                 </View>
                                 <View style={tw`flex-1 rounded-2xl overflow-hidden border border-gray-200`}> 
-                                    <Image source={require('../../assets/images/new-chemical.png')} style={[tw`w-full h-26`]} />
+                                    <Image source={newChemical} style={[tw`w-full h-26`]} />
                                 </View>
                             </View>
                         </View>

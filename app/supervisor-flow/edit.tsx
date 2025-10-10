@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import tw from 'twrnc';
+import calendar2 from '../../assets/images/calendar-2.png';
 
 type RouteParams = {
     title?: string;
@@ -70,7 +71,7 @@ export default function SupervisorEditScreen() {
                                     <View style={tw`flex-row items-center`}>
                                         <Text style={[tw`text-gray-800`, { marginRight: row.icon ? 8 : 0 }]}>{row.value}</Text>
                                         {!!row.icon && (
-                                            <Image source={require('../../assets/images/calendar-2.png')} style={[tw`w-8 h-8`]} />
+                                            <Image source={calendar2} style={[tw`w-8 h-8`]} />
                                         )}
                                     </View>
                                 </View>

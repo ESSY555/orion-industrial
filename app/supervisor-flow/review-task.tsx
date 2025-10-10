@@ -9,6 +9,7 @@ import { BlurView } from 'expo-blur';
 import tw from 'twrnc';
 import Signature from 'react-native-signature-canvas';
 import SummaryCard from '@/components/SummaryCard';
+import smileyAfricanWomanWithGoldenEarrings from '../../assets/images/smiley-african-woman-with-golden-earrings.png';
 
 type Person = {
     name: string;
@@ -31,7 +32,7 @@ export default function ReviewTaskScreen() {
 
     const person = useMemo<Person>(() => ({
         name: params.name || 'Bayo Sydney',
-        avatar: require('../../assets/images/smiley-african-woman-with-golden-earrings.png'),
+        avatar: smileyAfricanWomanWithGoldenEarrings,
         status: 'Cleaned',
         start: '12:00 PM',
         end: '16:30 PM',

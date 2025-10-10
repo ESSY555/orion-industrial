@@ -5,6 +5,10 @@ import { StatusBar } from 'expo-status-bar';
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '@/routes/homeStack';
+import manSmile from '../../assets/images/man-smile.png';
+import peoplePro3 from '../../assets/images/people-pro3.png';
+import pro3Lady from '../../assets/images/pro3-lady.png';
+import calendar2 from '../../assets/images/calendar-2.png';
 
 import tw from 'twrnc';
 
@@ -17,9 +21,9 @@ export default function TaskScreen() {
     const [query, setQuery] = React.useState('');
 
     const people = [
-        { id: 1, name: 'Bayo Sydney', tags: ['Shelf', 'Cabinet'], status: 'Cleaned', avatar: require('../../assets/images/man-smile.png') },
-        { id: 2, name: 'Kachi Chisom', tags: ['Cabinet', 'Shelf'], status: 'Cleaned', avatar: require('../../assets/images/people-pro3.png') },
-        { id: 3, name: 'Eyefian Bambi', tags: ['Cabinet'], status: 'Cleaned', avatar: require('../../assets/images/pro3-lady.png') },
+        { id: 1, name: 'Bayo Sydney', tags: ['Shelf', 'Cabinet'], status: 'Cleaned', avatar: manSmile },
+        { id: 2, name: 'Kachi Chisom', tags: ['Cabinet', 'Shelf'], status: 'Cleaned', avatar: peoplePro3 },
+        { id: 3, name: 'Eyefian Bambi', tags: ['Cabinet'], status: 'Cleaned', avatar: pro3Lady },
     ];
 
     return (
@@ -80,7 +84,7 @@ export default function TaskScreen() {
                             <Ionicons name="chevron-down" size={14} color="#6B7280" style={{ marginLeft: 6 }} />
                         </TouchableOpacity>
                         <TouchableOpacity style={[tw`w-9 h-9 rounded-xl items-center justify-center bg-white`, shadow()]}> 
-                            <Image source={require('../../assets/images/calendar-2.png')} style={[tw`w-8 h-8`]} />
+                            <Image source={calendar2} style={[tw`w-8 h-8`]} />
                         </TouchableOpacity>
                     </View>
                 </View>

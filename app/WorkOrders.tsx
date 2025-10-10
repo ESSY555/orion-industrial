@@ -10,6 +10,9 @@ import type { RootStackParamList } from '@/routes/homeStack';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Image } from 'react-native';
 import MenuBar from '@/components/MenuBar';
+import calender from '../assets/images/calender.png';
+import arrowRight from '../assets/images/arrow-right.png';
+import floating from '../assets/images/floating.png';
 
 
 export default function WorkOrders() {
@@ -145,7 +148,7 @@ export default function WorkOrders() {
                                 <Text style={[selectedTab === 'tomorrow' ? tw`text-white` : tw`text-gray-700`, { fontSize: 12 }]}>Tomorrow</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={[tw`w-9 h-9 rounded-xl items-center justify-center ml-3`, { backgroundColor: '#FFFFFF' }]} onPress={() => setShowNativePicker(true)}>
-                                <Image source={require('../assets/images/calender.png')} style={[tw`w-8 h-8`]} />
+                                <Image source={calender} style={[tw`w-8 h-8`]} />
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -250,7 +253,7 @@ export default function WorkOrders() {
                                                 onPress={() => { }}
                                             style={[tw`w-9 h-9 rounded-full items-center justify-center ml-2`]}
                                         >
-                                                <Image source={require('../assets/images/arrow-right.png')} style={[tw`w-8 h-8`]} />
+                                                <Image source={arrowRight} style={[tw`w-8 h-8`]} />
                                         </TouchableOpacity>
                                     ) : (
                                         <TouchableOpacity
@@ -339,7 +342,7 @@ export default function WorkOrders() {
 
             <TouchableOpacity activeOpacity={0.9} style={[tw`items-center justify-center`, { position: 'absolute', right: 18, bottom: 110, width: 56, elevation: 6 }]}> 
                
-                <Image source={require('../assets/images/floating.png')} style={[tw`w-20 h-20`]} />
+                <Image source={floating} style={[tw`w-20 h-20`]} />
             </TouchableOpacity>
 
             {/* Native Date Picker */}
