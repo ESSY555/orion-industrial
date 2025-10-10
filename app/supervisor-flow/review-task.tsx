@@ -24,7 +24,7 @@ type Person = {
 export default function ReviewTaskScreen() {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const route = useRoute<RouteProp<RootStackParamList, 'SupervisorSelectedItems'>>();
-    const params = route.params ?? {};
+    const params: { name?: string } = (route.params as { name?: string } | undefined) ?? {};
     useLayoutEffect(() => {
         navigation.setOptions?.({ headerShown: false, title: '' });
     }, [navigation]);
@@ -71,7 +71,7 @@ export default function ReviewTaskScreen() {
         <>
             <StatusBar style="dark" backgroundColor="#FFFFFF" />
             <ScrollView style={[tw`h-full pb-28`, { backgroundColor: '#F7F7F7' }]} showsVerticalScrollIndicator={false}>
-                {/* Header */}
+
                 <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                     <TouchableOpacity style={[tw`w-9 h-9 rounded-full bg-white items-center justify-center`, shadow()]} onPress={() => navigation.goBack()}>
                         <Ionicons name="chevron-back" size={20} color="#3A3A3A" />
@@ -88,14 +88,11 @@ export default function ReviewTaskScreen() {
                 </View>
 
 
-                {/* Summary Card - Glassmorphism */}
+
 
                 <SummaryCard person={person} />
 
 
-
-
-                {/* Action Pills */}
                 <View style={[tw`px-2 mt-4`]}>
                     <View style={[tw`bg-white rounded-2xl p-3 flex-row`, { flexWrap: 'nowrap' }, shadow()]}>
                         {[
@@ -120,13 +117,13 @@ export default function ReviewTaskScreen() {
                     </View>
                 </View>
 
-                {/* Signature Card or Request Revision Panel */}
+
                 {selectedAction !== 'revise' && (
                     <View style={[tw`px-4 mt-4`]}>
                         <View style={[tw`rounded-2xl p-4`]}>
 
 
-                            {/* Comment */}
+
                             <Text style={[tw`text-gray-500 mb-2`, { fontSize: 12 }]}>Add Comment</Text>
                             <View style={[tw`rounded-2xl p-0 border-2 border-[#2D1B3D33]`, { backgroundColor: '#FFFFFF' }, shadowLight()]}>
                                 <TextInput
@@ -209,7 +206,7 @@ export default function ReviewTaskScreen() {
                     </View>
                 )}
 
-                {/* Bottom Buttons */}
+
                 <View style={[tw`px-4 mt-6 mb-28 flex-row items-center justify-between`]}>
                     <TouchableOpacity onPress={() => navigation.goBack()} style={[tw`rounded-2xl px-4 py-[2px] border-2 border-[#8B5CF6]`, { backgroundColor: '#FFFFFF' }, shadow()]}>
                         <Text style={[tw`text-[#8B5CF6] p-2`, { fontWeight: '700' }]}>Previous Step</Text>

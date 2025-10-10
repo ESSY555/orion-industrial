@@ -16,7 +16,7 @@ export default function TrainingLevels() {
 
     return (
         <View style={tw`flex-1 bg-[#F7F7F7]`}>
-            {/* Header */}
+
             <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={tw`w-8 h-8 rounded-full bg-white items-center justify-center`}>
                     <Ionicons name="chevron-back" size={18} color="#111827" />
@@ -28,7 +28,7 @@ export default function TrainingLevels() {
             </View>
 
             <ScrollView contentContainerStyle={{ paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
-                {/* Search */}
+
                 <View style={tw`px-4 pt-6`}>
                     <View style={tw`bg-white rounded-full px-3.5 py-2.5 flex-row items-center`}>
                         <Ionicons name="search" size={16} color="#9CA3AF" />
@@ -47,7 +47,7 @@ export default function TrainingLevels() {
                     </View>
                 </View>
 
-                {/* Levels */}
+
                 <View style={[tw`px-4 mt-3`]}>
                     {useMemo(() => {
                         const levels = [
@@ -80,7 +80,7 @@ type LevelCardProps = {
     title: string;
     modules: string;
     time: string;
-    progress?: number; // 0-100, if provided shows "x% Complete"
+    progress?: number; 
     locked?: boolean;
     tint: string;
     bg: string;
@@ -143,6 +143,5 @@ function LevelCard({ level, title, modules, time, progress, locked, tint, bg }: 
         </TouchableOpacity>
     );
 }
-// Tailwind-only: removed StyleSheet
 
 

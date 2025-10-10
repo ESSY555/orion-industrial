@@ -20,7 +20,7 @@ export default function ModulsScreen() {
 
   return (
     <View style={tw`flex-1 bg-[#F7F7F7]`}>
-      {/* Header */}
+
       <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={tw`w-8 h-8 rounded-full bg-white items-center justify-center`}>
           <Ionicons name="chevron-back" size={18} color="#111827" />
@@ -33,7 +33,7 @@ export default function ModulsScreen() {
 
       <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
         <View style={[tw`px-4`]}>
-          {/* Video thumbnail */}
+
           <View style={tw`bg-white p-2 rounded-xl`}>
             <Image source={require('../../assets/images/scientists-look-orange-chemicals-glass-laboratory 1.png')} style={tw`w-full h-40 rounded-xl`} resizeMode="cover" />
             <View style={tw`absolute inset-0 items-center justify-center`}>
@@ -41,7 +41,7 @@ export default function ModulsScreen() {
             </View>
           </View>
 
-          {/* Title row */}
+
           <View style={[tw`mt-3 flex-row justify-between`]}>
             <View>
               <Text style={[tw`text-black font-bold text[12px]`]}> {title} </Text>
@@ -53,7 +53,7 @@ export default function ModulsScreen() {
             </TouchableOpacity>
           </View>
 
-          {/* Content card */}
+
           <View style={tw`mt-3 bg-white rounded-xl p-3`}>
             <View style={[tw`flex-row items-center`]}>
               <Ionicons name="information-circle-outline" size={16} color="#7C5CFF" />
@@ -68,7 +68,6 @@ export default function ModulsScreen() {
               {['1:128 - General cleaning', '1:128 - General cleaning', '1:128 - General cleaning'].map((t, i) => (
                 <View key={i} style={[tw`flex-row items-center mt-2`]}>
                   <Image source={require('../../assets/images/conflask.png')} style={tw`w-[25px] h-[25px]`} resizeMode="contain" />
-                  {/* <Ionicons name="alert-circle-outline" size={14} color="#7C5CFF" /> */}
                   <Text style={[tw`ml-2 text-[#6B7280] text-[12px]`]}>{t}</Text>
                 </View>
               ))}
@@ -78,7 +77,7 @@ export default function ModulsScreen() {
             </Text>
           </View>
 
-          {/* Quiz block */}
+
           <View style={tw`mt-3 bg-[#8B4CE81A] rounded-xl p-3`}>
             <View style={[tw`flex-row items-center`]}>
               <Image source={require('../../assets/images/lamp.png')} style={tw`w-[25px] h-[25px]`} resizeMode="contain" />
@@ -105,7 +104,7 @@ export default function ModulsScreen() {
             })}
           </View>
 
-          {/* Footer nav */}
+
           <View style={[tw`mt-3 flex-row items-center justify-between`]}>
             <TouchableOpacity style={tw`bg-white border border-[#EFEFEF] rounded-2xl px-3.5 py-5 flex-row items-center`} onPress={() => navigation.goBack()}>
               <Ionicons name="chevron-back" size={16} color="#111827" />
@@ -124,7 +123,5 @@ export default function ModulsScreen() {
     </View>
   );
 }
-
-// Tailwind-only: removed StyleSheet block
 
 

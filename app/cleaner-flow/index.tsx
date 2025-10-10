@@ -127,7 +127,6 @@ function AreaCard({ area, toggle }: { area: Area; toggle: (id: string) => void }
 export default function CleanerFlowScreen() {
   const navigation = useNavigation();
   useLayoutEffect(() => {
-    // @ts-ignore setOptions exists on any stack screen
     navigation.setOptions?.({ headerShown: false, title: '' });
   }, [navigation]);
 
@@ -202,7 +201,6 @@ export default function CleanerFlowScreen() {
       <SafeAreaView style={tw`flex-1 bg-white pb-28`}>
         <View style={tw`flex-1 bg-white items-center`}>
           <View style={tw.style('flex-1 w-full', { maxWidth: 840, paddingHorizontal: isTablet ? 24 : 16 })}>
-        {/* Header */}
             <View style={tw`flex-row items-center mt-2`}>
           <Pressable
             onPress={() => {
@@ -227,7 +225,6 @@ export default function CleanerFlowScreen() {
           </View>
         </View>
 
-        {/* Stepper */}
           <View style={{ marginTop: 10 }}>
               <Stepper steps={5} current={step} onPress={(s) => setStep(s)} />
           <View style={tw.style(isSmall ? 'flex-col' : 'flex-row', 'justify-between', 'items-center', 'mt-[6px]')}>
@@ -253,8 +250,7 @@ export default function CleanerFlowScreen() {
                 ) : (
                   <StepFive />
         )}
-        
-        {/* Footer Actions */}
+
             <View style={tw.style('absolute left-0 right-0 bottom-0 bg-white border-t border-[#EFEFF5] z-10', { padding: isSmall ? 12 : 16 })}>
           <View style={tw`flex-row justify-between`}>
             <Pressable
@@ -282,7 +278,6 @@ export default function CleanerFlowScreen() {
                   <View style={tw`flex-row items-center`}>
                     <Text style={tw.style('text-white font-extrabold', { fontSize: scale(12) })}>{nextButtonLabel}</Text>
                     <Ionicons name="arrow-forward-outline" size={18} color="#FFFFFF" style={tw`ml-2`} />
-                {/* <Text style={{ color: 'white', fontWeight: '800', fontSize: scale(14) }}> ({selectedCount})</Text> */}
               </View>
             </Pressable>
           </View>

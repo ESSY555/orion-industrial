@@ -10,14 +10,12 @@ function DropdownSelect({
   options,
   value,
   onChange,
-  // Tailwind-only; external style injection removed
   showLabel = true,
 }: {
   label: string;
   options: string[];
   value: string;
-  onChange: (v: string) => void;
-    // style props removed for Tailwind-only
+    onChange: (v: string) => void;
   showLabel?: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -139,8 +137,7 @@ export default function StepFour() {
                  </View>
                ) : null}
            </View>
-      
-        {/* Section: Header dropdown chip */}
+
         <View style={tw`bg-white rounded-2xl border border-[#F0F1F5] p-4 mt-3`}>
           <Text style={tw`text-[#2B2B2E] font-extrabold mb-2 text-[16px]`}>Documentation Evidence</Text>
 
@@ -161,7 +158,6 @@ export default function StepFour() {
           </View>
         </View>
 
-        {/* Photo Evidence */}
         <View style={tw`bg-white rounded-2xl border border-[#F0F1F5] p-4 mt-4`}>
           <Text style={tw`text-[#2B2B2E] font-extrabold mb-3 text-[16px]`}>Photo Evidence</Text>
 

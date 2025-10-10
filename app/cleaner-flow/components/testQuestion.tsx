@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import React, { useLayoutEffect, useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, Alert, Modal, BackHandler } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
@@ -8,6 +8,7 @@ import type { RootStackParamList } from '@/routes/homeStack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // Tailwind-only: removed StyleSheet and unused UiButton
 import { mockCourseWithAssignment } from '@/db/mock-db';
+import { useKeepAwake } from 'expo-keep-awake';
 
 type Question = {
   text: string;
@@ -46,16 +47,58 @@ export default function TestQuestion() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'TestQuestion'>>();
   const route = useRoute<RouteProp<RootStackParamList, 'TestQuestion'>>();
   const username = route.params?.username;
+  useKeepAwake();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedByIndex, setSelectedByIndex] = useState<Record<number, string | null>>({});
   const [submitted, setSubmitted] = useState(false);
+
+  // Attempts handling: if maxAttempts is undefined -> unlimited/open attempts until user passes
+  const courseId = mockCourseWithAssignment._id;
+  const maxAttempts = mockCourseWithAssignment.courseAssignment?.maxAttempts; // undefined => unlimited
+  const ATTEMPTS_KEY = `sanitrack:attempts:${courseId}`;
+  const [attempts, setAttempts] = useState<number>(0);
+  const [blocked, setBlocked] = useState<boolean>(false);
 
   const totalDurationSec = (mockCourseWithAssignment.assessmentDuration || 0) * 60;
   const [remainingSec, setRemainingSec] = useState<number>(totalDurationSec);
 
   useLayoutEffect(() => {
-    navigation.setOptions?.({ headerShown: false });
+    navigation.setOptions?.({ headerShown: false, gestureEnabled: false });
   }, [navigation]);
+
+  // Prevent navigating away or using hardware back until submitted
+  useEffect(() => {
+    const beforeRemove = navigation.addListener('beforeRemove', (e: any) => {
+      if (submitted || blocked) return; // allow leaving if submitted or blocked
+      e.preventDefault();
+      Alert.alert('Finish test', 'You must submit the test before leaving this screen.');
+    });
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (submitted || blocked) return false; // allow
+      Alert.alert('Finish test', 'You must submit the test before leaving this screen.');
+      return true; // block
+    });
+    return () => {
+      beforeRemove();
+      backHandler.remove();
+    };
+  }, [navigation, submitted, blocked]);
+
+  // Load attempts and enforce cap only if maxAttempts is defined
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const raw = await AsyncStorage.getItem(ATTEMPTS_KEY);
+        const num = raw ? parseInt(raw, 10) || 0 : 0;
+        setAttempts(num);
+        if (typeof maxAttempts === 'number' && maxAttempts > 0 && num >= maxAttempts) {
+          setBlocked(true);
+          setRemainingSec(0);
+          Alert.alert('Attempts exhausted', 'You have reached the maximum attempts for this assessment.');
+        }
+      } catch { }
+    })();
+  }, [ATTEMPTS_KEY, maxAttempts]);
 
   const total = QUESTIONS.length;
   const q = QUESTIONS[currentIndex];
@@ -101,6 +144,20 @@ export default function TestQuestion() {
               await addCertificate('Chemical Handling Sk-148');
               navigation.navigate('Certification', { username: username ? String(username) : undefined });
             })();
+          } else {
+            // Failed attempt: increment attempts; only block if maxAttempts is defined and reached
+            (async () => {
+              try {
+                const next = attempts + 1;
+                setAttempts(next);
+                await AsyncStorage.setItem(ATTEMPTS_KEY, String(next));
+                if (typeof maxAttempts === 'number' && maxAttempts > 0 && next >= maxAttempts) {
+                  setBlocked(true);
+                  setRemainingSec(0);
+                  Alert.alert('Attempts exhausted', 'You have reached the maximum attempts for this assessment.');
+                }
+              } catch { }
+            })();
           }
         },
       },
@@ -110,6 +167,7 @@ export default function TestQuestion() {
   // countdown effect
   React.useEffect(() => {
     if (submitted) return;
+    if (blocked) return;
     if (remainingSec <= 0) {
       handleSubmit();
       return;
@@ -118,11 +176,16 @@ export default function TestQuestion() {
       setRemainingSec((s) => (s > 0 ? s - 1 : 0));
     }, 1000);
     return () => clearInterval(id);
-  }, [remainingSec, submitted]);
+  }, [remainingSec, submitted, blocked]);
+
+  React.useEffect(() => {
+    if (blocked) {
+      setRemainingSec(0);
+    }
+  }, [blocked]);
 
   return (
     <View style={[tw`flex-1 bg-[#F7F7F7]`]}>
-      {/* Header */}
       <View style={[tw`px-4 pt-14 flex-row items-center justify-between`]}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={tw`w-9 h-9 rounded-full bg-white items-center justify-center`}>
           <Ionicons name="chevron-back" size={18} color="#111827" />
@@ -136,15 +199,12 @@ export default function TestQuestion() {
 
       <ScrollView contentContainerStyle={{ paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
         <View style={[tw`px-4 pt-12`]}>
-          {/* Progress */}
           <View style={tw`h-2 bg-[#E5E7EB] rounded-lg overflow-hidden`}>
             <View style={[tw`h-2 bg-[#7C5CFF] rounded-lg` as any, { width: `${progressPct}%` }]} />
           </View>
 
-          {/* Question Text */}
           <Text style={[tw`text-black mt-4`, { fontSize: 15, lineHeight: 22 }]}>{q.text}</Text>
 
-          {/* Options */}
           <View style={[tw`mt-4`]}>
             {q.options.map((opt) => {
               const isSelected = selected === opt;
@@ -185,6 +245,19 @@ export default function TestQuestion() {
           </View>
         </View>
       </ScrollView>
+
+     
+      <Modal transparent animationType="fade" visible={blocked} onRequestClose={() => { }}>
+        <View style={[tw`flex-1 items-center justify-center`, { backgroundColor: 'rgba(0,0,0,0.25)' }]}>
+          <View style={tw`bg-white rounded-2xl px-5 py-6 w-11/12`}>
+            <Text style={[tw`text-black font-bold text-[18px]`, { textAlign: 'center', marginBottom: 12 }]}>No more attempts</Text>
+            <Text style={[tw`text-gray-700`, { textAlign: 'center' }]}>You have reached the maximum attempts for this assessment.</Text>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mt-5 bg-[#7C5CFF] rounded-2xl px-5 py-3`}>
+              <Text style={tw`text-white font-bold text-center`}>Go Back</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }

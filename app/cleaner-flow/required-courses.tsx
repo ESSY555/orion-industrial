@@ -14,10 +14,10 @@ export default function requiredCourses() {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'RequiredCourses'>>();
 
     useLayoutEffect(() => {
-        // This screen hides any default headers
+
     }, []);
 
-       // Ensure header is hidden even if navigator defaults change
+
     useLayoutEffect(() => {
         navigation.setOptions?.({ headerShown: false, title: '' });
     }, [navigation]);
@@ -26,7 +26,7 @@ export default function requiredCourses() {
              <StatusBar style="dark" backgroundColor="#FFFFFF" />
             <ScrollView style={[tw`h-full`]} contentContainerStyle={tw`pb-30`} showsVerticalScrollIndicator={false}>
                 <View style={tw`flex-1`}>
-                {/* Header */}
+
                 <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                         <View style={[tw`flex-row items-center`]}>
                         <Image source={require('../../assets/images/lady-home.png')} style={{ width: 42, height: 42, borderRadius: 21 }} />
@@ -45,9 +45,9 @@ export default function requiredCourses() {
                     </View>
                 </View>
 
-                {/* Stats */}
+
                 <View style={[tw`px-4 mt-2 flex-row`]}>
-                    {/* Completed */}
+
                         <View style={tw`flex-1 rounded-2xl p-3 mr-3 overflow-hidden bg-white`}>
                             <View style={tw`w-7 h-7 rounded-full bg-[#2B2140] items-center justify-center mb-2`}>
                             <Ionicons name="time-outline" size={14} color="#FFFFFF" />
@@ -59,7 +59,7 @@ export default function requiredCourses() {
                                 style={tw`absolute right-[10px] bottom-[-6px] w-16 h-16 opacity-80`}
                         />
                     </View>
-                    {/* Remaining */}
+
                         <View style={tw`flex-1 rounded-2xl p-3 overflow-hidden bg-[#EDE3FF]`}>
                             <View style={tw`w-7 h-7 rounded-full bg-[#2B2140] items-center justify-center mb-2`}>
                             <Ionicons name="time-outline" size={14} color="#FFFFFF" />
@@ -73,7 +73,7 @@ export default function requiredCourses() {
                     </View>
                 </View>
 
-                {/* Highlight Course */}
+
                 <View style={[tw`px-4 mt-4`]}>
                         <View style={tw`bg-[#2D163E] rounded-2xl p-4`}>
                         <View style={[tw`flex-row items-center justify-between`]}>
@@ -95,7 +95,7 @@ export default function requiredCourses() {
                     </View>
                 </View>
 
-                {/* Required Courses */}
+
                 <SectionHeader title="Required Courses" />
                 <CourseCard
                     badgeText="Required Training"
@@ -119,7 +119,7 @@ export default function requiredCourses() {
                     progress={50}
                 />
 
-                {/* Recommendations */}
+
                 <SectionHeader title="Recommendations" optional />
                 <CourseCard
                     badgeText="Optional"
@@ -235,6 +235,4 @@ function SectionHeader({ title, optional }: { title: string; optional?: boolean 
         </View>
     );
 }
-
-// Tailwind-only: removed StyleSheet block
 

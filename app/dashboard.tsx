@@ -46,7 +46,6 @@ export default function Dashboard() {
                 showsVerticalScrollIndicator={false}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor="#7F56D9" />}
             >
-                {/* Header */}
 
                 <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                     <View style={[tw`flex-row items-center`]}>
@@ -68,7 +67,7 @@ export default function Dashboard() {
                     </View>
                 </View>
 
-                {/* KPI Grid */}
+
                 <View style={[tw`px-4 mt-8 mb-5`]}>
                     <View style={[tw`flex-row`]}>
                         <View style={tw`flex-1 rounded-2xl p-3 mr-3 bg-white`}>
@@ -105,7 +104,7 @@ export default function Dashboard() {
                     </View>
                 </View>
 
-                {/* Work Orders banner */}
+
                 <View style={[tw`px-4 mt-4 mb-5`]}>
                     <View style={tw`bg-[#2D163E] rounded-2xl p-4 flex-row items-center justify-between`}>
                         <View>
@@ -126,7 +125,7 @@ export default function Dashboard() {
                     </View>
                 </View>
 
-                {/* Work Orders list header */}
+
                 <View style={tw`px-4 mt-5 flex-row items-center justify-between`}>
                     <Text style={[tw`text-black font-bold`]}>Work Orders</Text>
                     <TouchableOpacity style={tw`bg-[#EFECEF] py-1.5 px-3.5 rounded-2xl`} onPress={() => navigation.navigate('WorkOrders')}>
@@ -134,7 +133,7 @@ export default function Dashboard() {
                     </TouchableOpacity>
                 </View>
 
-                {/* Work Orders list */}
+
                 <View style={[tw`px-4 mt-3 mb-26`]}>
                     {(showAll ? [
                         { id: 1, title: 'Fresh Kitchen Room', subtitle: 'Shelf and Cabinet', status: 'Not Cleaned', color: '#E74C3C' },
@@ -171,9 +170,7 @@ export default function Dashboard() {
     );
 }
 
-// Tailwind-only: removed StyleSheet block
 
-// Animated progress ring that starts on mount
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 type ProgressRingProps = {
@@ -217,7 +214,6 @@ function ProgressRing({ percent, size = 92, strokeWidth = 10 }: ProgressRingProp
                         fill="none"
                         strokeLinecap="round"
                     />
-                    {/* Progress */}
                     <AnimatedCircle
                         cx={center}
                         cy={center}
@@ -231,11 +227,9 @@ function ProgressRing({ percent, size = 92, strokeWidth = 10 }: ProgressRingProp
                     />
                 </G>
             </Svg>
-            {/* Center percent */}
             <View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={[tw`text-white font-bold`]}>69%</Text>
             </View>
-            {/* Knob: overlay small circle positioned on arc via rotation */}
             <View style={{ position: 'absolute', width: size, height: size, alignItems: 'center', justifyContent: 'flex-start' }}>
                 <Animated.View
                     style={{

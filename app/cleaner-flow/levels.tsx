@@ -24,7 +24,7 @@ export default function LevelsScreen() {
 
     return (
         <View style={tw`flex-1 bg-[#F7F7F7]`}>
-            {/* Header */}
+
             <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={tw`w-8 h-8 rounded-full bg-white items-center justify-center`}>
                     <Ionicons name="chevron-back" size={18} color="#111827" />
@@ -36,7 +36,7 @@ export default function LevelsScreen() {
             </View>
 
             <ScrollView contentContainerStyle={{ paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
-                {/* Hero Card */}
+
                 <View style={[tw`px-4 mt-2`]}>
                     <View style={tw`rounded-2xl p-4 overflow-hidden`}>
                         <View style={[tw`flex-row items-center justify-between`]}>
@@ -77,7 +77,7 @@ export default function LevelsScreen() {
                     </View>
                 </View>
 
-                {/* Tabs */}
+
                 <View style={[tw`px-4 mt-3`]}>
                     <View style={tw`bg-white rounded-2xl p-2 flex-row items-center justify-between`}>
                         <TouchableOpacity
@@ -104,7 +104,7 @@ export default function LevelsScreen() {
                     </View>
                 </View>
 
-                {/* Module List */}
+
                 <View style={[tw`px-4 mt-2`]}>
                     <ModuleRow style={[tw`mb-2`]} index={1} title="Module 1" status="done" />
                     <ModuleRow index={2} title="Module 2" status="done" />
@@ -119,7 +119,7 @@ export default function LevelsScreen() {
     );
 }
 
-// Tailwind-only: removed StyleSheet block
+
 
 function StatusBadge({ status, index }: { status: 'done' | 'continue' | 'start' | 'start-grey'; index?: number }) {
     if (status === 'done') {

@@ -16,7 +16,7 @@ export default function SupervisorEditScreen() {
     const navigation = useNavigation<any>();
     const route = useRoute<any>();
     useLayoutEffect(() => {
-        // @ts-ignore setOptions exists on any stack screen
+
         navigation.setOptions?.({ headerShown: false, title: '' });
     }, [navigation]);
     const params: RouteParams = (route.params || {}) as RouteParams;
@@ -27,7 +27,7 @@ export default function SupervisorEditScreen() {
         <>
             <StatusBar style="dark" backgroundColor="#FFFFFF" />
             <ScrollView style={[tw`h-full pb-26`, { backgroundColor: '#F7F7F7' }]} showsVerticalScrollIndicator={false}>
-                {/* Header */}
+
                 <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                     <CircleButton onPress={() => navigation.goBack()}>
                         <Ionicons name="chevron-back" size={20} color="#3A3A3A" />
@@ -38,7 +38,7 @@ export default function SupervisorEditScreen() {
                     </CircleButton>
                 </View>
 
-                {/* Avatar and CTA */}
+
                 <View style={[tw`items-center mt-2`]}>
                     <View style={[tw`w-28 h-28 rounded-full shadow-xl items-center justify-center`, { backgroundColor: '#EFEFEF', overflow: 'hidden' }]}>
                         <Text style={[tw`text-black text-2xl font-bold`, { fontWeight: '800' }]}>AI</Text>
@@ -51,7 +51,7 @@ export default function SupervisorEditScreen() {
                     </TouchableOpacity>
                 </View>
 
-                {/* Details Card */}
+
                 <View style={[tw`px-4 mt-6 pb-6`]}>
                     <View style={[tw`rounded-2xl p-3`, { backgroundColor: '#FFFFFF', shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 8, elevation: 2 }]}> 
                         {[
@@ -71,7 +71,6 @@ export default function SupervisorEditScreen() {
                                         <Text style={[tw`text-gray-800`, { marginRight: row.icon ? 8 : 0 }]}>{row.value}</Text>
                                         {!!row.icon && (
                                             <Image source={require('../../assets/images/calendar-2.png')} style={[tw`w-8 h-8`]} />
-                                            // <Ionicons name={row.icon as any} size={16} color="#9CA3AF" />
                                         )}
                                     </View>
                                 </View>

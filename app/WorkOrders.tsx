@@ -119,7 +119,7 @@ export default function WorkOrders() {
                     </View>
                 )}
 
-                {/* Segmented Tabs */}
+            
                 {!showSearch && (
                     <View style={[tw`px-4`]}>
                         <View style={[tw`flex-row bg-white rounded-2xl p-2`, { shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 8, elevation: 2 }]}>
@@ -146,16 +146,15 @@ export default function WorkOrders() {
                             </TouchableOpacity>
                             <TouchableOpacity style={[tw`w-9 h-9 rounded-xl items-center justify-center ml-3`, { backgroundColor: '#FFFFFF' }]} onPress={() => setShowNativePicker(true)}>
                                 <Image source={require('../assets/images/calender.png')} style={[tw`w-8 h-8`]} />
-                                {/* <Ionicons name="calendar-clear" size={16} color="#3A3A3A" /> */}
                             </TouchableOpacity>
                         </View>
                     </View>
                 )}
 
-                {/* Section header */}
+           
                 {!showSearch && (
                     <View style={[tw`px-4 mt-4 flex-row items-center justify-between`]}>
-                        {/* Left: All dropdown pill */}
+                   
                         <TouchableOpacity
                             accessibilityRole="button"
                             onPress={() => setShowAll(prev => !prev)}
@@ -168,7 +167,7 @@ export default function WorkOrders() {
                             <Ionicons name="chevron-down" size={14} color="#6B7280" style={{ marginLeft: 6 }} />
                         </TouchableOpacity>
 
-                        {/* Right: Choose Filter pill */}
+                  
                         <TouchableOpacity
                             accessibilityRole="button"
                             onPress={() => setShowFilter(true)}
@@ -183,7 +182,7 @@ export default function WorkOrders() {
                     </View>
                 )}
 
-                {/* List */}
+            
                 <View style={[tw`px-4 mt-3 mb-6`]}> 
                     {orders
                         .filter(item => showAll ? true : item.when === selectedTab)
@@ -205,11 +204,11 @@ export default function WorkOrders() {
                                 activeOpacity={0.9}
                                 onPress={() => {
                                     if (isSelected) {
-                                        // If already selected, unselect on tap
+                                  
                                         setSelectedItems(new Set());
                                         return;
                                     }
-                                    // Navigate to edit on single tap when not selected
+                               
                                     navigation.navigate('SupervisorEdit', {
                                         id: item.id,
                                         title: item.title,
@@ -218,7 +217,7 @@ export default function WorkOrders() {
                                     });
                                 }}
                                 onLongPress={() => {
-                                    // Long press selects the item and reveals header actions
+                                  
                                     setSelectedItems(new Set([item.id]));
                                 }}
                                 delayLongPress={200}
@@ -248,12 +247,10 @@ export default function WorkOrders() {
                                     isTyping ? (
                                         <TouchableOpacity
                                             accessibilityRole="button"
-                                            onPress={() => { /* keep current flow; no action change while typing */ }}
+                                                onPress={() => { }}
                                             style={[tw`w-9 h-9 rounded-full items-center justify-center ml-2`]}
                                         >
-                                     <Image source={require('../assets/images/arrow-right.png')} style={[tw`w-8 h-8`]} />
-
-                                            {/* <Ionicons name="chevron-forward" size={16} color="#3A3A3A" /> */}
+                                                <Image source={require('../assets/images/arrow-right.png')} style={[tw`w-8 h-8`]} />
                                         </TouchableOpacity>
                                     ) : (
                                         <TouchableOpacity
@@ -340,11 +337,9 @@ export default function WorkOrders() {
 
             <Toast visible={showSuccess} text="Deleted successfully" iconName="checkmark" />
 
-            {/* Floating Action Button */}
             <TouchableOpacity activeOpacity={0.9} style={[tw`items-center justify-center`, { position: 'absolute', right: 18, bottom: 110, width: 56, elevation: 6 }]}> 
                
                 <Image source={require('../assets/images/floating.png')} style={[tw`w-20 h-20`]} />
-                {/* <Ionicons name="create" size={20} color="#FFFFFF" /> */}
             </TouchableOpacity>
 
             {/* Native Date Picker */}

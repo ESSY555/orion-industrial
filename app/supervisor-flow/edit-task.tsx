@@ -15,7 +15,6 @@ export default function EditTaskDetailScreen() {
     const params = route.params ?? {};
 
     useLayoutEffect(() => {
-        // @ts-ignore setOptions exists on any stack screen
         navigation.setOptions?.({ headerShown: false, title: '' });
     }, [navigation]);
 
@@ -34,7 +33,7 @@ export default function EditTaskDetailScreen() {
         <>
             <StatusBar style="dark" backgroundColor="#FFFFFF" />
             <ScrollView style={tw`h-full bg-[#F7F7F7]`} showsVerticalScrollIndicator={false}>
-                {/* Header */}
+
                 <View style={tw`px-4 pt-14 pb-3 flex-row items-center justify-between`}>
                     <TouchableOpacity style={tw`w-9 h-9 rounded-full bg-white items-center justify-center border border-[#E5E7EB]`} onPress={() => navigation.goBack()}>
                         <Ionicons name="chevron-back" size={20} color="#3A3A3A" />
@@ -49,8 +48,7 @@ export default function EditTaskDetailScreen() {
                         </TouchableOpacity>
                     </View>
                 </View>
- 
-                {/* Avatar and summary card */}
+
              <SummaryCard person={person} />
 
 
@@ -69,7 +67,7 @@ export default function EditTaskDetailScreen() {
 
 
 
-                {/* Time Tracking */}
+
                 {activeTab === 'time' && (
                     <View style={tw`px-4 mt-4`}>
                         <View style={tw`rounded-2xl p-4 bg-white border border-[#E5E7EB]`}>
@@ -100,7 +98,7 @@ export default function EditTaskDetailScreen() {
                     </View>
                 )}
 
-                {/* Evidence */}
+
                 {activeTab === 'evidence' && (
                     <View style={tw`px-4 mt-4`}>
                         <View style={tw`rounded-2xl p-3 bg-white border border-[#E5E7EB]`}>
@@ -112,7 +110,7 @@ export default function EditTaskDetailScreen() {
                                 </View>
                             </View>
 
-                            {/* Documentation */}
+
                             <Text style={tw`text-gray-500 mb-2 text-[12px]`}>Documentation</Text>
                             <View style={tw`rounded-2xl p-3 mb-3 border-2 border-gray-200 bg-white`}>
                                 <Text style={tw`text-gray-700 border-gray-200 pb-2 text-[12px]`}>
@@ -120,7 +118,7 @@ export default function EditTaskDetailScreen() {
                                 </Text>
                             </View>
 
-                            {/* Photo Evidence */}
+
                             <Text style={tw`text-gray-500 mb-2 text-[12px]`}>Photo Evidence</Text>
                             <View style={tw`flex-row`}>
                                 <View style={tw`flex-1 rounded-2xl overflow-hidden mr-2 border border-gray-200`}> 
@@ -134,7 +132,7 @@ export default function EditTaskDetailScreen() {
                     </View>
                 )}
 
-                {/* Bottom CTA */}
+
                 <View style={tw`px-4 mt-6 mb-28`}>
                     <TouchableOpacity accessibilityRole="button" activeOpacity={0.9} onPress={() => navigation.navigate('SupervisorSelectedItems')} style={tw`rounded-2xl px-4 py-4 items-center justify-center flex-row bg-[#7F56D9]`}> 
                         <Text style={tw`text-white mr-2 font-extrabold`}>Next Step</Text>

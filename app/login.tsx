@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '@/routes/homeStack';
 import { Ionicons } from '@expo/vector-icons';
-// Tailwind-only: removed StyleSheet and color scheme dependencies
+
 
 export default function LoginScreen() {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Dashboard'>>();

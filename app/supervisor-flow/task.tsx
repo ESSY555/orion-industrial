@@ -26,7 +26,7 @@ export default function TaskScreen() {
         <>
             <StatusBar style="dark" backgroundColor="#FFFFFF" />
             <ScrollView style={[tw`h-full pb-26`, { backgroundColor: '#F7F7F7' }]} showsVerticalScrollIndicator={false}>
-                {/* Header */}
+
                 {showSearch ? (
                     <View style={[tw`px-4 pt-14 pb-3`]}>
                         <View style={[tw`flex-row items-center bg-white rounded-2xl px-3 py-2`, { shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 8, elevation: 2 }]}>
@@ -59,7 +59,7 @@ export default function TaskScreen() {
                     </View>
                 )}
 
-                {/* Top segmented filters */}
+
                 <View style={[tw`px-4`]}>
                     <View style={[tw`flex-row bg-white rounded-2xl py-4`, shadow()]}> 
                         <Pill label="All Work Orders" active={false} />
@@ -68,7 +68,7 @@ export default function TaskScreen() {
                     </View>
                 </View>
 
-                {/* Secondary filters row */}
+
                 <View style={[tw`px-4 mt-4 flex-row items-center justify-between`]}>
                     <TouchableOpacity style={[pillBox()]}> 
                         <Text style={[tw`text-gray-700`, { fontWeight: '600' }]}>Ready for Review</Text>
@@ -85,7 +85,7 @@ export default function TaskScreen() {
                     </View>
                 </View>
 
-                {/* People list */}
+
                 <View style={[tw`px-4 mt-4 mb-10`]}> 
                     {people
                         .filter(p => {

@@ -15,7 +15,6 @@ export default function FinalTest() {
   }, [navigation]);
 
   const totalDurationSec = (mockCourseWithAssignment.assessmentDuration || 0) * 60;
-  const [remainingSec, setRemainingSec] = useState<number>(totalDurationSec);
 
   const formatTime = (sec: number) => {
     const m = Math.floor(sec / 60).toString().padStart(2, '0');
@@ -23,17 +22,9 @@ export default function FinalTest() {
     return `${m}:${s}`;
   };
 
-  useEffect(() => {
-    if (remainingSec <= 0) return;
-    const id = setInterval(() => {
-      setRemainingSec((s) => (s > 0 ? s - 1 : 0));
-    }, 1000);
-    return () => clearInterval(id);
-  }, [remainingSec]);
 
   return (
     <View style={[tw`flex-1 bg-[#F7F7F7]`]}>
-      {/* Header */}
       <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={tw`w-9 h-9 rounded-full bg-white items-center justify-center`}>
           <Ionicons name="chevron-back" size={18} color="#111827" />
@@ -41,13 +32,12 @@ export default function FinalTest() {
         <Text style={[tw`text-black font-bold text-[24px]`]}>Final Assessment</Text>
         <View style={tw`w-9 h-9 rounded-full bg-white items-center justify-center flex-row`}>
           <Ionicons name="time-outline" size={18} color="#111827" />
-          <Text style={[tw`ml-1 text-black`, { fontSize: 12 }]}>{formatTime(remainingSec)}</Text>
+          <Text style={[tw`ml-1 text-black`, { fontSize: 12 }]}>{formatTime(totalDurationSec)}</Text>
         </View>
       </View>
 
       <ScrollView contentContainerStyle={{ paddingBottom: 120 }} showsVerticalScrollIndicator={true}>
         <View style={[tw`px-4 mt-8`]}>
-          {/* White Info Card */}
           <View style={tw`bg-white rounded-2xl p-4`}>
             <BulletRow icon="help-circle-outline" text={
               <Text style={tw`text-black`}>
@@ -71,7 +61,6 @@ export default function FinalTest() {
             } />
           </View>
 
-          {/* Purple Tips Card */}
           <View style={tw`bg-[#EDE7FF] rounded-2xl p-4 mt-4`}>
             <View style={[tw`flex-row items-center mb-2`]}>
               <Ionicons name="bulb-outline" size={16} color="#7C5CFF" />
@@ -84,7 +73,6 @@ export default function FinalTest() {
             </View>
           </View>
 
-          {/* Footer Buttons */}
           <View style={[tw`mt-6 flex-row items-center justify-between`]}>
             <TouchableOpacity style={tw`bg-[#EEEEEE] border border-[#E5E7EB] rounded-2xl px-3.5 py-4 flex-row items-center`} onPress={() => navigation.goBack()}>
               <Ionicons name="chevron-back" size={16} color="#111827" />

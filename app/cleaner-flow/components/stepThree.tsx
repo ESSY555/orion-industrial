@@ -139,7 +139,7 @@ export default function StepThree() {
                           label="Fogging Rooms"
                           options={["None", "Room 1", "Room 2", "Room 3"]}
                           value={fogging}
-                          onChange={setFogging}
+                          onChange={setFogging} 
                       />
                   </View>
               </ScrollView>

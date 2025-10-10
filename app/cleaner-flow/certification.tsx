@@ -14,7 +14,6 @@ export default function Certification() {
   const [recent, setRecent] = useState<{ title: string; date: string }[]>([]);
 
   useLayoutEffect(() => {
-    // @ts-ignore
     navigation.setOptions?.({ headerShown: false });
   }, [navigation]);
 
@@ -49,7 +48,6 @@ export default function Certification() {
 
       <ScrollView contentContainerStyle={{ paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
         <View style={[tw`px-4 mt-10`]}>
-          {/* Top certificate card */}
           <View style={tw`rounded-2xl bg-white`}>
             <View style={tw`rounded-2xl border-2 border-[#F5C88F] p-4 bg-white overflow-hidden`}>
               <View style={tw`absolute left-[-6px] top-[-6px] w-7 h-7 rounded-full bg-[#FF9800] border-4 border-white`} />
@@ -70,7 +68,7 @@ export default function Certification() {
             </View>
           </View>
 
-          {/* Authorized Chemicals */}
+
           <View style={tw`bg-white rounded-2xl p-4 mt-4`}>
             <View style={[tw`flex-row items-center justify-between mb-3`]}>
               <Text style={[tw`text-black font-bold`]}>Authorized Chemicals</Text>
@@ -91,7 +89,7 @@ export default function Certification() {
             </View>
           </View>
 
-          {/* Recent Certifications */}
+
           <View style={tw`bg-white rounded-2xl p-4 mt-4`}>
             <View style={[tw`flex-row items-center justify-between mb-3`]}>
               <Text style={[tw`text-black font-bold`]}>Recent Certifications</Text>
@@ -128,7 +126,7 @@ export default function Certification() {
             ))}
           </View>
 
-          {/* Download All */}
+
           <TouchableOpacity style={tw`mt-3 bg-[#7C5CFF] rounded-2xl py-3.5 items-center justify-center flex-row`}>
             <Ionicons name="cloud-download-outline" size={16} color="#FFFFFF" />
             <Text style={[tw`text-white ml-2`]}>Download All Certificates</Text>
@@ -138,7 +136,5 @@ export default function Certification() {
     </View>
   );
 }
-
-// Tailwind-only: removed StyleSheet block
 
 

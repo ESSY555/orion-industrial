@@ -94,7 +94,7 @@ export default function Sidebar({ isOpen = false, onToggle, onSelect, initialAct
                     <Ionicons name={open ? 'close' : 'menu'} size={18} color="#111827" />
                 </TouchableOpacity>
 
-                <View style={[tw``]}>
+                <View style={[tw``]}> 
                     <View>
                         <Text style={[tw`text-black font-bold text-[18px] text-center py-3`]}>Cleaner Tabs</Text>
                    </View>

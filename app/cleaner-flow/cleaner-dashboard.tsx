@@ -24,19 +24,18 @@ export default function dashboard() {
     const handleRefresh = () => {
         setRefreshing(true);
         setRefreshTick((t) => t + 1);
-        // simulate brief refresh feedback; remove timeout when wiring to real fetch
+
         setTimeout(() => setRefreshing(false), 400);
     };
 
-    // Ensure header is hidden even if navigator defaults change
+
     useLayoutEffect(() => {
         navigation.setOptions?.({ headerShown: false, title: '' });
     }, [navigation]);
 
-    // Example effect to refetch or re-run any calculations when refreshed
+
     useEffect(() => {
-        // Place data refetch logic here.
-        // For now this just triggers re-render through state change.
+
     }, [refreshTick]);
 
     const DRAFT_KEY = 'sanitrack:reportDraftRoute';
@@ -59,7 +58,7 @@ export default function dashboard() {
 
     const handleClearDraft = async () => {
         try {
-            // Remove and also overwrite to an empty string to avoid stale cached reads
+
             await AsyncStorage.removeItem(DRAFT_KEY);
             await AsyncStorage.setItem(DRAFT_KEY, '');
             setDraftClearedAt(Date.now());
@@ -84,7 +83,7 @@ export default function dashboard() {
                 showsVerticalScrollIndicator={false}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor="#7F56D9" />}
             >
-                {/* Header */}
+
 
                 <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                     <View style={[tw`flex-row items-center`]}>
@@ -107,7 +106,6 @@ export default function dashboard() {
                 </View>
 
 
-  {/* Work Orders banner */}
   <View style={[tw`px-4 mt-4`]}>
                     <View style={tw`bg-[#2D163E] rounded-2xl p-4 flex-row justify-between items-center`}>
                         <View>
@@ -135,7 +133,7 @@ export default function dashboard() {
                 </View>
 
 
-                {/* KPI Grid */}
+
                 <View style={[tw`px-4 mt-8 mb-5`]}>
                     <View style={[tw`flex-row`]}>
                         <View style={tw`flex-1 rounded-2xl p-3 mr-3 bg-white`}>
@@ -160,7 +158,7 @@ export default function dashboard() {
 
               
 
-                {/* Work Orders list header */}
+
                 <View style={[tw`px-4 mt-5 flex-row items-center justify-between`]}>
                     <Text style={[tw`text-black font-bold text-[16px]`]}>Recent Tasks</Text>
                     <TouchableOpacity
@@ -183,7 +181,6 @@ export default function dashboard() {
                 />
                </View>
 
-                {/* Work Orders list */}
                 <View style={[tw`px-4 mb-28`]}>
                     {(showAll ? [
                         { id: 1, title: 'UXroom2', subtitle: 'AS--1683', status: 'In progress' as const },
@@ -230,8 +227,6 @@ export default function dashboard() {
 }
 
 
-
-// Animated progress ring that starts on mount
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 type ProgressRingProps = {
@@ -264,7 +259,7 @@ function ProgressRing({ percent, size = 92, strokeWidth = 10 }: ProgressRingProp
         <View style={tw.style('', { width: size, height: size, alignItems: 'center', justifyContent: 'center' })}>
             <Svg width={size} height={size}>
                 <G rotation={-90} originX={center} originY={center}>
-                    {/* Track */}
+
                     <Circle
                         cx={center}
                         cy={center}
@@ -275,7 +270,7 @@ function ProgressRing({ percent, size = 92, strokeWidth = 10 }: ProgressRingProp
                         fill="none"
                         strokeLinecap="round"
                     />
-                    {/* Progress */}
+
                     <AnimatedCircle
                         cx={center}
                         cy={center}
@@ -289,11 +284,11 @@ function ProgressRing({ percent, size = 92, strokeWidth = 10 }: ProgressRingProp
                     />
                 </G>
             </Svg>
-            {/* Center percent */}
+
             <View style={tw`absolute items-center justify-center`}>
                 <Text style={[tw`text-white font-bold`]}>69%</Text>
             </View>
-            {/* Knob: overlay small circle positioned on arc via rotation */}
+
             <View style={tw.style('absolute', { width: size, height: size, alignItems: 'center', justifyContent: 'flex-start' })}>
                 <Animated.View
                     style={{
@@ -314,8 +309,4 @@ function ProgressRing({ percent, size = 92, strokeWidth = 10 }: ProgressRingProp
         </View>
     );
 }
-
-
-
-// Tailwind-only: removed StyleSheet block
 

@@ -116,7 +116,7 @@ export default function StepFive() {
             {confirm ? <Ionicons name="checkmark" size={16} color="#FFFFFF" /> : null}
           </Pressable>
           <View style={tw`flex-1`}>
-            <Text style={tw`text-[#2B2B2E] text-[12px]`}>
+            <Text style={tw`text-[#2B2B2E] text-[12px]`}> 
               By submitting, I confirm all information is accurate and complete.
             </Text>
           </View>

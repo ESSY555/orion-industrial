@@ -13,7 +13,7 @@ export default function SelectedItemsScreen() {
         <>
             <StatusBar style="dark" backgroundColor="#FFFFFF" />
             <ScrollView style={[tw`h-full`, { backgroundColor: '#F7F7F7' }]} showsVerticalScrollIndicator={false}>
-                {/* Header Actions */}
+
                 <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                     <TouchableOpacity style={[tw`w-9 h-9 rounded-full bg-white items-center justify-center`, shadow()]}>
                         <Ionicons name="chevron-back" size={20} color="#3A3A3A" />
@@ -28,7 +28,7 @@ export default function SelectedItemsScreen() {
                     </View>
                 </View>
 
-                {/* Segmented Tabs */}
+
                 <View style={[tw`px-4`]}>
                     <View style={[tw`flex-row bg-white rounded-2xl p-2`, shadow()]}> 
                         {(['yesterday', 'today', 'tomorrow'] as const).map((tab) => (
@@ -47,7 +47,6 @@ export default function SelectedItemsScreen() {
                     </View>
                 </View>
 
-                {/* Filters Row */}
                 <View style={[tw`px-4 mt-4 flex-row items-center justify-between`]}>
                     <TouchableOpacity style={[pill()]}> 
                         <Text style={[tw`text-gray-700`, { fontWeight: '600' }]}>All</Text>
@@ -65,9 +64,9 @@ export default function SelectedItemsScreen() {
                     </View>
                 </View>
 
-                {/* List */}
+
                 <View style={[tw`px-4 mt-4`]}>
-                    {/* Selected card */}
+
                     <TouchableOpacity
                         activeOpacity={0.9}
                         onPress={() => setSelectedFirst(!selectedFirst)}
@@ -87,7 +86,6 @@ export default function SelectedItemsScreen() {
                         <Text style={[{ color: '#E74C3C', fontWeight: '600' }, tw`text-[12px]`]}>Not Cleaned</Text>
                     </TouchableOpacity>
 
-                    {/* Normal card */}
                     <View style={[tw`flex-row items-center bg-white rounded-2xl px-3 py-3`, shadowLight(), { marginBottom: 28 }]}> 
                         <View style={[tw`w-9 h-9 rounded-full items-center justify-center`, { backgroundColor: '#F3F1F4' }]}>
                             <Text style={tw`text-black`}>3</Text>

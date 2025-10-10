@@ -54,7 +54,7 @@ export default function StepTwo({ areaName }: { areaName?: string }) {
     const h = Math.floor(diff / 3600);
     const m = Math.floor((diff % 3600) / 60);
     const s = diff % 60;
-    const hLabel = `${h} hr${h === 1 ? '' : 's'} `; // always show hours, even 0
+    const hLabel = `${h} hr${h === 1 ? '' : 's'} `; 
     const mLabel = `${m} min${m === 1 ? '' : 's'} `;
     const sLabel = `${s} sec${s === 1 ? '' : 's'}`;
     return `${hLabel}${mLabel}${sLabel}`;
