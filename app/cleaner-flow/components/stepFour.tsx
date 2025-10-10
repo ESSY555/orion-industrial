@@ -100,8 +100,8 @@ export default function StepFour() {
       quality: 0.8,
       selectionLimit: remaining,
     });
-    // @ts-ignore supports both old/new result shapes
-    if (!result.canceled && result.assets?.length) {
+    if (!('canceled' in result) || result.canceled) return;
+    if (Array.isArray(result.assets) && result.assets.length) {
       setUploads((prev) => {
         const added = result.assets.map((a: any) => a.uri).slice(0, remaining);
         return [...prev, ...added].slice(0, 3);

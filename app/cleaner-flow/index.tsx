@@ -32,12 +32,12 @@ function Stepper({ steps, current, onPress }: { steps: number; current: number; 
   return (
     <View style={tw`mt-3 mb-1.5`}>
       <View style={tw.style('', { height: circleSize, justifyContent: 'center' })}>
-        {/* Base line */}
+
         <View style={tw.style('absolute rounded-full', { left: circleSize / 2, right: circleSize / 2, height: lineHeight, backgroundColor: baseColor, top: (circleSize - lineHeight) / 2 })} />
-        {/* Active line */}
+
         <View style={tw.style('absolute rounded-full', { left: circleSize / 2, width: `${activeWidthPercent}%`, height: lineHeight, backgroundColor: activeColor, top: (circleSize - lineHeight) / 2 })} />
 
-        {/* Circles */}
+
         <View style={tw`flex-row justify-between`}>
           {Array.from({ length: steps }).map((_, idx) => {
             const step = idx + 1;
@@ -137,7 +137,7 @@ export default function CleanerFlowScreen() {
   const [step, setStep] = useState<number>(1);
 
   const scale = (size: number) => {
-    const guidelineBaseWidth = 375; // iPhone X width
+    const guidelineBaseWidth = 375; 
     const scaled = (width / guidelineBaseWidth) * size;
     return Math.round(PixelRatio.roundToNearestPixel(Math.min(size * 1.25, Math.max(size * 0.85, scaled))));
   };

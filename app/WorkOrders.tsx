@@ -67,7 +67,6 @@ export default function WorkOrders() {
         });
     }
     useLayoutEffect(() => {
-        // @ts-ignore setOptions exists on any stack screen
         navigation.setOptions?.({ headerShown: false, title: '' });
     }, [navigation]);
     return (
