@@ -7,6 +7,15 @@ import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '@/routes/homeStack';
 import { StatusBar } from 'expo-status-bar';
+import cupp from '../../assets/images/cupp.png';
+import ladyHome from '../../assets/images/lady-home.png';
+import refresh from '../../assets/images/refresh.png';
+import newBell from '../../assets/images/new-bell.png';
+import experimentOne from '../../assets/images/experiment-one.png';
+import labImg from '../../assets/images/scientists-look-orange-chemicals-glass-laboratory 1.png';
+import jugn from '../../assets/images/jugn.png';
+import book from '../../assets/images/book.png';
+import clock1 from '../../assets/images/clock1.png';
 
 export default function requiredCourses() {
     const route = useRoute<RouteProp<RootStackParamList, 'RequiredCourses'>>();
@@ -29,7 +38,7 @@ export default function requiredCourses() {
 
                 <View style={[tw`px-4 pt-14 pb-3 flex-row items-center justify-between`]}>
                         <View style={[tw`flex-row items-center`]}>
-                        <Image source={require('../../assets/images/lady-home.png')} style={{ width: 42, height: 42, borderRadius: 21 }} />
+                            <Image source={ladyHome} style={{ width: 42, height: 42, borderRadius: 21 }} />
                         <View style={[tw`pl-3`]}>
                             <Text style={[tw`text-black font-bold text-[18px]`]}>Hello {username ? String(username) : 'Emmanuella'}</Text>
                             <Text style={[tw`text-gray-600 text-[13px]`]}>Pandas Factory</Text>
@@ -37,10 +46,10 @@ export default function requiredCourses() {
                     </View>
                     <View style={[tw`flex-row items-center pt-5`]}>
                         <TouchableOpacity style={[tw`mr-3 bg-white rounded-full shadow-lg p-2`]}>
-                            <Image source={require('../../assets/images/refresh.png')} style={[tw`w-6 h-6 p-2 bg-white rounded-full`]} />
+                                <Image source={refresh} style={[tw`w-6 h-6 p-2 bg-white rounded-full`]} />
                         </TouchableOpacity>
                         <TouchableOpacity style={[tw`bg-white rounded-full shadow-lg p-2`]}>
-                            <Image source={require('../../assets/images/new-bell.png')} style={[tw`w-6 h-6 bg-white rounded-full`]} />
+                                <Image source={newBell} style={[tw`w-6 h-6 bg-white rounded-full`]} />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -55,7 +64,7 @@ export default function requiredCourses() {
                             <Text style={tw`absolute top-3 right-3 text-[#2B2140] text-[11px] opacity-90 text-right`}>Courses{"\n"}Completed</Text>
                             <Text style={tw`text-[#2B2140] font-extrabold text-[28px] mt-4`}>14</Text>
                         <Image
-                            source={require('../../assets/images/experiment-one.png')}
+                                source={experimentOne}
                                 style={tw`absolute right-[10px] bottom-[-6px] w-16 h-16 opacity-80`}
                         />
                     </View>
@@ -67,7 +76,7 @@ export default function requiredCourses() {
                             <Text style={tw`absolute top-3 right-3 text-[#2B2140] text-[11px] opacity-90 text-right`}>Courses{"\n"}Remaining</Text>
                             <Text style={tw`text-[#2B2140] font-extrabold text-[28px] mt-4`}>3</Text>
                         <Image
-                            source={require('../../assets/images/experiment-one.png')}
+                                source={experimentOne}
                                 style={tw`absolute right-[10px] bottom-[-6px] w-16 h-16 opacity-80`}
                         />
                     </View>
@@ -102,7 +111,7 @@ export default function requiredCourses() {
                     dueText="Due in 3 days"
                     title="Chemical Handling SK-250"
                     actionText="Continue"
-                    thumb={require('../../assets/images/scientists-look-orange-chemicals-glass-laboratory 1.png')}
+                        thumb={labImg}
                     modulesCount={8}
                     durationText="1h 30m"
                     points={10}
@@ -112,7 +121,7 @@ export default function requiredCourses() {
                     dueText="Due in 3 days"
                     title="LOTO Procedure SK-250"
                     actionText="Continue"
-                    thumb={require('../../assets/images/jugn.png')}
+                    thumb={jugn}
                     modulesCount={4}
                     durationText="30 minutes"
                     points={10}
@@ -127,7 +136,7 @@ export default function requiredCourses() {
                     subtitle="Available in Level 3"
                     title="Advanced Sanitation"
                     actionText="Start"
-                    thumb={require('../../assets/images/scientists-look-orange-chemicals-glass-laboratory 1.png')}
+                    thumb={labImg}
                     modulesCount={8}
                     durationText="1h 30m"
                     points={10}
@@ -170,17 +179,17 @@ function CourseCard({ badgeText, dueText, subtitle, title, actionText, thumb, mo
                         </View>
                         <View style={[tw`flex-row items-center mt-3`]}>
                             <View style={[tw`flex-row items-center`]}>
-                                <Image source={require('../../assets/images/book.png')} style={tw`w-3 h-3 mr-1.5`} />
+                                <Image source={book} style={tw`w-3 h-3 mr-1.5`} />
                                 <Text style={tw`text-[#7A7A86] text-[11px] text-black font-bold`}>{modulesCount} Modules</Text>
                             </View>
                             <View style={tw`w-1 h-1 rounded bg-[#E5E7EB] mx-2`} />
                             <View style={[tw`flex-row items-center`]}>
-                                <Image source={require('../../assets/images/clock1.png')} style={tw`w-3 h-3 mr-1.5`} />
+                                <Image source={clock1} style={tw`w-3 h-3 mr-1.5`} />
                                 <Text style={tw`text-[#7A7A86] text-[11px] text-black font-bold`}>{durationText}</Text>
                             </View>
                             <View style={tw`w-1 h-1 rounded bg-[#E5E7EB] mx-2`} />
                             <View style={[tw`flex-row items-center`]}>
-                                <Image source={require('../../assets/images/cupp.png')} style={tw`w-3 h-3 mr-1.5`} />
+                                <Image source={cupp} style={tw`w-3 h-3 mr-1.5`} />
                                 <Text style={tw`text-[#7A7A86] text-[11px] text-[#FBA82C] font-bold pt-2`}>+ {points} points</Text>
                             </View>
                         </View>

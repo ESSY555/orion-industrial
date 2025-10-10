@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '@/routes/homeStack';
+import experimentOne from '../../assets/images/experiment-one.png';
 
 export default function LevelsScreen() {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Levels'>>();
@@ -73,7 +74,7 @@ export default function LevelsScreen() {
                                 <View style={tw`absolute right-2 -top-1.5 w-10 h-2 rounded bg-white opacity-80`} />
                             </View>
                         )}
-                        <Image source={require('../../assets/images/experiment-one.png')} style={tw`absolute w-[160px] h-[130px] right-[-10px] top-[-8px] opacity-60`} resizeMode="contain" />
+                        <Image source={experimentOne} style={tw`absolute w-[160px] h-[130px] right-[-10px] top-[-8px] opacity-60`} resizeMode="contain" />
                     </View>
                 </View>
 

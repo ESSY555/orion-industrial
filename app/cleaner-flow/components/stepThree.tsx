@@ -3,6 +3,8 @@ import { View, Text, Pressable, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'twrnc';
 import { Image } from 'react-native';
+import bulb from '../../../assets/images/bulb.png';
+import confask from '../../../assets/images/confask.png';
 type Chemical = {
   id: string;
     name: string;
@@ -23,7 +25,7 @@ function CounterRow({ label, value, onInc, onDec }: { label: string; value: numb
   return (
         <View style={tw`bg-[#F6F6F6] rounded-2xl border border-[#EEF0F3] px-4 py-3 mb-3 flex-row items-center`}>
             <View style={tw`h-10 w-10 rounded-full bg-[#FFFFFF] items-center justify-center mr-3`}>
-              <Image source={require('@/assets/images/confask.png')} style={tw`h-5 w-5`} />
+              <Image source={confask} style={tw`h-5 w-5`} />
             </View>
             <Text style={tw`flex-1 text-[12px] text-[#2B2B2E] font-semibold`}>{label}</Text>
             <Pressable onPress={onDec} style={tw`h-8 w-8 rounded-lg border-[1.4px] bg-white border-[#8B4CE8] items-center justify-center mr-3`}>
@@ -126,7 +128,7 @@ export default function StepThree() {
                   </View>
                   <View style={tw`mt-4 bg-[#EFE7FF] rounded-2xl border border-[#E3DBFF] p-4`}>
                       <View style={tw`flex-row items-center mb-3`}>
-                          <Image source={require('@/assets/images/bulb.png')} style={tw`h-5 w-5`} />
+                          <Image source={bulb} style={tw`h-5 w-5`} />
                           <Text style={tw`ml-2 text-[14px] text-[#2B2B2E] font-semibold`}>Special Activities</Text>
                       </View>
                       <DropdownSelect

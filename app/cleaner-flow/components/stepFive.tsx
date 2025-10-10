@@ -3,6 +3,8 @@ import { View, Text, Pressable, ScrollView, TextInput, Image } from 'react-nativ
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'twrnc';
 import areasCleaned from '../../../assets/images/areas-cleaned.png';
+import newPot from '../../../assets/images/new-pot.png';
+
 
 function Dropdown({ label, value, options, onChange }: { label: string; value: string; options: string[]; onChange: (v: string) => void }) {
   const [open, setOpen] = useState(false);
@@ -33,9 +35,7 @@ function Dropdown({ label, value, options, onChange }: { label: string; value: s
 function SummaryCard({ label, value, tint }: { label: string; value: string; tint: 'left' | 'right' }) {
   const bgClass = tint === 'left' ? 'bg-[#F4F1FF]' : 'bg-[#EFE8FF]';
   const iconBgClass = tint === 'left' ? 'bg-[#2B2140]' : 'bg-black';
-  const iconSrc = tint === 'left'
-    ? <Image source={areasCleaned} />
-    : require('../../../assets/images/new-pot.png');
+  const iconSrc = tint === 'left' ? areasCleaned : newPot;
   return (
     <View style={tw`flex-1`}> 
       <View style={tw.style('rounded-2xl p-4', bgClass)}> 

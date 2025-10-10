@@ -6,6 +6,7 @@ import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '@/routes/homeStack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import experimentOne from '../../assets/images/experiment-one.png';
 
 export default function Certification() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Certification'>>();
@@ -106,7 +107,7 @@ export default function Certification() {
                         <View key={idx} style={tw.style('bg-white rounded-xl border border-[#EFEFEF] p-3 flex-row items-center justify-between', idx === 0 && 'mb-3')}> 
                               <View style={[tw`flex-row items-center flex-1`]}>
                             <View style={tw`w-[46px] h-8 rounded-lg bg-[#F6F6FA] items-center justify-center`}>
-                              <Image source={require('../../assets/images/experiment-one.png')} style={tw`w-[52px] h-8`} resizeMode="contain" />
+                              <Image source={experimentOne} style={tw`w-[52px] h-8`} resizeMode="contain" />
                   </View>
                                   <View style={[tw`ml-3`, { flexShrink: 1 }]}>
                                       <Text style={[tw`text-black font-semibold text-[14px]`]} numberOfLines={1} ellipsizeMode="tail">{row.title}</Text>

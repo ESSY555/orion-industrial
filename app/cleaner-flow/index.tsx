@@ -10,6 +10,7 @@ import StepTwo from './components/stepTwo';
 import StepThree from './components/stepThree';
 import StepFour from './components/stepFour';
 import StepFive from './components/stepFive';
+import element3 from '../../assets/images/element-3.png';
 
 type Area = {
   id: string;
@@ -221,7 +222,7 @@ export default function CleanerFlowScreen() {
             </Text>
           </View>
               <View style={tw`h-11 w-11 rounded-full bg-white border border-[#EEEFF3] items-center justify-center ml-2`}>
-                <Image source={require('../../assets/images/element-3.png')} style={tw`h-5 w-5`} />
+                <Image source={element3} style={tw`h-5 w-5`} />
           </View>
         </View>
 

@@ -46,7 +46,7 @@ export const mockAssignment: CourseAssignment = {
   completed: false,
   score: 0,
   attempts: 0,
-  maxAttempts: 3,
+  maxAttempts: 100,
 };
 
 export const mockCourseWithAssignment: CourseWithCourseAssignment = {

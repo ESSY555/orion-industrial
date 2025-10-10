@@ -5,6 +5,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '@/routes/homeStack';
+import lamp from '../../assets/images/lamp.png';
+import scientistsLookOrangeChemicalsGlassLaboratory from '../../assets/images/scientists-look-orange-chemicals-glass-laboratory 1.png';
+import conflask from '../../assets/images/conflask.png';
 
 export default function ModulsScreen() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Moduls'>>();
@@ -35,7 +38,7 @@ export default function ModulsScreen() {
         <View style={[tw`px-4`]}>
 
           <View style={tw`bg-white p-2 rounded-xl`}>
-            <Image source={require('../../assets/images/scientists-look-orange-chemicals-glass-laboratory 1.png')} style={tw`w-full h-40 rounded-xl`} resizeMode="cover" />
+            <Image source={scientistsLookOrangeChemicalsGlassLaboratory} style={tw`w-full h-40 rounded-xl`} resizeMode="cover" />
             <View style={tw`absolute inset-0 items-center justify-center`}>
               <Ionicons name="play" size={28} color="#FFFFFF" />
             </View>
@@ -67,7 +70,7 @@ export default function ModulsScreen() {
             <View style={tw`bg-[#F6F6F6] rounded-xl p-3 mt-2`}>
               {['1:128 - General cleaning', '1:128 - General cleaning', '1:128 - General cleaning'].map((t, i) => (
                 <View key={i} style={[tw`flex-row items-center mt-2`]}>
-                  <Image source={require('../../assets/images/conflask.png')} style={tw`w-[25px] h-[25px]`} resizeMode="contain" />
+                  <Image source={conflask} style={tw`w-[25px] h-[25px]`} resizeMode="contain" />
                   <Text style={[tw`ml-2 text-[#6B7280] text-[12px]`]}>{t}</Text>
                 </View>
               ))}
@@ -80,7 +83,7 @@ export default function ModulsScreen() {
 
           <View style={tw`mt-3 bg-[#8B4CE81A] rounded-xl p-3`}>
             <View style={[tw`flex-row items-center`]}>
-              <Image source={require('../../assets/images/lamp.png')} style={tw`w-[25px] h-[25px]`} resizeMode="contain" />
+              <Image source={lamp} style={tw`w-[25px] h-[25px]`} resizeMode="contain" />
               <Text style={[tw`ml-2 text-[#7C5CFF] font-bold`]}>Quick Knowledge Check</Text>
             </View>
             <Text style={[tw`text-[#6B7280] mt-2 `]}>
