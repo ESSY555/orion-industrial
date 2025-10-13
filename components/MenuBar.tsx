@@ -34,7 +34,7 @@ export default function MenuBar() {
             <View style={[tw`flex-row items-center justify-between px-6 py-4 rounded-2xl`, { width: '92%', backgroundColor: '#2B2140', shadowColor: '#000', shadowOpacity: 0.18, shadowOffset: { width: 0, height: 6 }, shadowRadius: 16, elevation: 8 }]}>
                 <Button icon="home" label="Home" active={!!isHome} onPress={() => navigation.navigate('CleanerDashboard')} />
                 <Button style={[tw`text-white`]} imageSrc={scanner} label="Scan" active={!!isScan} onPress={() => { }} />
-                <Button style={[tw`text-white`]} imageSrc={note} label="Work order" active={!!isWorkOrders} onPress={() => navigation.navigate('WorkOrders')} />
+                <Button style={[tw`text-white`]} imageSrc={note} label="Work order" active={!!isWorkOrders} onPress={() => navigation.navigate('TrainingLevels')} />
             
             </View>
         </View>
