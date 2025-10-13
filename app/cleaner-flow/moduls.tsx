@@ -11,7 +11,7 @@ import conflask from '../../assets/images/conflask.png';
 
 export default function ModulsScreen() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Moduls'>>();
-  const params = useRoute<RouteProp<RootStackParamList, 'Moduls'>>().params ?? ({} as any);
+  const params = useRoute<RouteProp<RootStackParamList, 'Moduls'>>().params ?? {};
   const moduleNum = params.module ? Number(params.module) : 1;
   const total = params.total ? Number(params.total) : 6;
   const title = params.title || 'Chemical Handling SK-250';

@@ -37,8 +37,8 @@ export type RootStackParamList = {
     Levels: { level?: string; title?: string; courses?: string; time?: string; progress?: string; locked?: string } | undefined;
     Moduls: { module?: string; total?: string; title?: string } | undefined;
     Certification: { username?: string } | undefined;
-    TestQuestion: { username?: string } | undefined;
-    FinalTest: undefined;
+    TestQuestion: { username?: string; courseId?: string } | undefined;
+    FinalTest: { courseId?: string } | undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

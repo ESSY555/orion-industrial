@@ -67,8 +67,8 @@ export default function TrainingLevels() {
                                 l.time.toLowerCase().includes(q)
                             )
                             : levels;
-                        return filtered.map(props => (
-                            <LevelCard key={props.level} {...(props as any)} />
+                        return filtered.map((props) => (
+                            <LevelCard key={props.level} {...props} />
                         ));
                     }, [query])}
                 </View>

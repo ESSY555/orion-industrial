@@ -13,7 +13,7 @@ export default function TestQuestion() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'TestQuestion'>>();
   const route = useRoute<RouteProp<RootStackParamList, 'TestQuestion'>>();
   const username = route.params?.username;
-  const routeCourseId = (route.params as any)?.courseId as string | undefined;
+  const routeCourseId = route.params?.courseId as string | undefined;
   const { course, getCourseById, submitAssessment } = useLMS();
   useKeepAwake();
   const [currentIndex, setCurrentIndex] = useState(0);

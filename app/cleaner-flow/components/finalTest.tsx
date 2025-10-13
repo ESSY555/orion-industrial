@@ -11,7 +11,7 @@ export default function FinalTest() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'FinalTest'>>();
   const route = useRoute<RouteProp<RootStackParamList, 'FinalTest'>>();
   const { course, getCourseById } = useLMS();
-  const routeCourseId = (route.params && (route.params as any).courseId) as string | undefined;
+  const routeCourseId = route.params?.courseId;
 
   useLayoutEffect(() => {
     navigation.setOptions?.({ headerShown: false });
@@ -90,7 +90,7 @@ export default function FinalTest() {
               <Ionicons name="chevron-back" size={16} color="#111827" />
               <Text style={[tw`ml-2 text-black text-[12px]`]}>Go Back to Courses</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={tw`bg-[#7C5CFF] rounded-2xl px-4 py-3 flex-row items-center`} onPress={() => navigation.navigate('TestQuestion' as any, { courseId: selectedCourse?._id } as any)}>
+            <TouchableOpacity style={tw`bg-[#7C5CFF] rounded-2xl px-4 py-3 flex-row items-center`} onPress={() => navigation.navigate('TestQuestion', { courseId: selectedCourse?._id })}>
               <Text style={[tw`text-white mr-2 text-[12px]`]}>Start Test</Text>
               <Ionicons name="arrow-forward" size={16} color="#FFFFFF" />
             </TouchableOpacity>
