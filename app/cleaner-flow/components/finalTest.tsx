@@ -64,7 +64,11 @@ export default function FinalTest() {
             } />
             <BulletRow icon="create-outline" text={
               <Text style={tw`text-black`}>
-                You have only <Text style={tw`text-black font-bold text-[12px]`}>{(selectedCourse as any)?.courseAssignment?.maxAttempts ?? 1} attemps</Text>
+                You have only <Text style={tw`text-black font-bold text-[12px]`}>
+                  {((selectedCourse as any)?.courseAssignment?.maxAttempts ?? undefined) === undefined
+                    ? 'Unlimited'
+                    : (selectedCourse as any)?.courseAssignment?.maxAttempts}
+                </Text> attempts
               </Text>
             } />
           </View>
