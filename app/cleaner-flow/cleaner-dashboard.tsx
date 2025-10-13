@@ -14,6 +14,7 @@ import { DeviceEventEmitter } from 'react-native';
 import ladyHome from '../../assets/images/lady-home.png';
 import newBell from '../../assets/images/new-bell.png';
 import teamsAssigned from '../../assets/images/teams-assigned.png';
+import refreshImg from '../../assets/images/refresh.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function dashboard() {
@@ -99,7 +100,7 @@ export default function dashboard() {
                     </View>
                     <View style={[tw`flex-row items-center`]}>
                         <TouchableOpacity style={[tw`mr-3 bg-white rounded-full shadow-lg p-2`]} onPress={handleRefresh}>
-                            <Image source={require('../../assets/images/refresh.png')} style={[tw`w-6 h-6 p-2 bg-white rounded-full`]} />
+                            <Image source={refreshImg} style={[tw`w-6 h-6 p-2 bg-white rounded-full`]} />
                         </TouchableOpacity>
                         <TouchableOpacity style={[tw`bg-white rounded-full shadow-lg p-2`]}> 
                             <Image source={newBell} style={[tw`w-6 h-6 bg-white rounded-full`]} />

@@ -1,5 +1,7 @@
 import React, { useLayoutEffect, useState, useMemo } from 'react';
 import { View, Text, ScrollView, Image, TextInput, TouchableOpacity } from 'react-native';
+import newClock from '../../../assets/images/newclock.png';
+import experimentOne from '../../../assets/images/experiment-one.png';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -23,7 +25,7 @@ export default function TrainingLevels() {
                 </TouchableOpacity>
                 <Text style={[tw`text-black font-bold text-[18px]`]}>Training Levels</Text>
                 <TouchableOpacity style={tw`w-8 h-8 rounded-full bg-white items-center justify-center`}>
-                    <Image source={require('../../../assets/images/newclock.png')} style={tw`w-4 h-4`} />
+                    <Image source={newClock} style={tw`w-4 h-4`} />
                 </TouchableOpacity>
             </View>
 
@@ -138,7 +140,7 @@ function LevelCard({ level, title, courses, time, progress, locked, tint, bg }: 
                 </View>
             )}
 
-                <Image source={require('../../../assets/images/experiment-one.png')} style={tw.style('absolute w-[200px] h-[180px] right-[-12px] top-[-12px] opacity-50', { tintColor: tint })} resizeMode="contain" />
+                <Image source={experimentOne} style={tw.style('absolute w-[200px] h-[180px] right-[-12px] top-[-12px] opacity-50', { tintColor: tint })} resizeMode="contain" />
         </View>
         </TouchableOpacity>
     );
