@@ -36,7 +36,6 @@ export default function Certification() {
 
   return (
     <View style={[tw`flex-1 bg-[#F7F7F7]`]}> 
-      {/* Header */}
       <View style={[tw`px-4 pt-14 flex-row items-center justify-between`]}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={tw`w-9 h-9 rounded-full bg-white items-center justify-center`}>
           <Ionicons name="chevron-back" size={18} color="#111827" />

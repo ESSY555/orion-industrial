@@ -73,7 +73,6 @@ export default function WorkOrders() {
         <>
            <StatusBar style="dark" backgroundColor="#FFFFFF" />
             <ScrollView style={[tw`h-full`, { backgroundColor: '#F7F7F7' }]} showsVerticalScrollIndicator={false}>
-                {/* Header */}
                 {showSearch ? (
                     <View style={[tw`px-4 pt-14 pb-3`]}>
                         <View style={[tw`flex-row items-center bg-white rounded-2xl px-3 py-2`, { shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 8, elevation: 2 }]}>
@@ -281,7 +280,6 @@ export default function WorkOrders() {
 
             </ScrollView>
 
-            {/* Filter Modal */}
             <Modal
                 transparent
                 animationType="slide"
@@ -344,7 +342,6 @@ export default function WorkOrders() {
                 <Image source={floating} style={[tw`w-20 h-20`]} />
             </TouchableOpacity>
 
-            {/* Native Date Picker */}
             {showNativePicker && (
                 <DateTimePicker
                     value={pickerDate}

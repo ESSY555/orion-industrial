@@ -112,7 +112,7 @@ export default function requiredCourses() {
                     title="Chemical Handling SK-250"
                     actionText="Continue"
                         thumb={labImg}
-                    modulesCount={8}
+                        coursesCount={8}
                     durationText="1h 30m"
                     points={10}
                 />
@@ -122,7 +122,7 @@ export default function requiredCourses() {
                     title="LOTO Procedure SK-250"
                     actionText="Continue"
                     thumb={jugn}
-                    modulesCount={4}
+                        coursesCount={4}
                     durationText="30 minutes"
                     points={10}
                     progress={50}
@@ -137,7 +137,7 @@ export default function requiredCourses() {
                     title="Advanced Sanitation"
                     actionText="Start"
                     thumb={labImg}
-                    modulesCount={8}
+                        coursesCount={8}
                     durationText="1h 30m"
                     points={10}
                 />
@@ -155,13 +155,13 @@ type CourseCardProps = {
     title: string;
     actionText: string;
     thumb: any;
-    modulesCount: number;
+    coursesCount: number;
     durationText: string;
     points: number;
     progress?: number;
 };
 
-function CourseCard({ badgeText, dueText, subtitle, title, actionText, thumb, modulesCount, durationText, points, progress }: CourseCardProps) {
+function CourseCard({ badgeText, dueText, subtitle, title, actionText, thumb, coursesCount, durationText, points, progress }: CourseCardProps) {
     return (
         <View style={[tw`px-4 mt-3`]}>
             <View style={tw`bg-white rounded-2xl p-3`}>
@@ -180,7 +180,7 @@ function CourseCard({ badgeText, dueText, subtitle, title, actionText, thumb, mo
                         <View style={[tw`flex-row items-center mt-3`]}>
                             <View style={[tw`flex-row items-center`]}>
                                 <Image source={book} style={tw`w-3 h-3 mr-1.5`} />
-                                <Text style={tw`text-[#7A7A86] text-[11px] text-black font-bold`}>{modulesCount} Courses</Text>
+                                <Text style={tw`text-[#7A7A86] text-[11px] text-black font-bold`}>{coursesCount} Courses</Text>
                             </View>
                             <View style={tw`w-1 h-1 rounded bg-[#E5E7EB] mx-2`} />
                             <View style={[tw`flex-row items-center`]}>

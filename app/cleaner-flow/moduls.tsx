@@ -12,7 +12,7 @@ import conflask from '../../assets/images/conflask.png';
 export default function ModulsScreen() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Moduls'>>();
   const params = useRoute<RouteProp<RootStackParamList, 'Moduls'>>().params ?? {};
-  const moduleNum = params.module ? Number(params.module) : 1;
+  const moduleNum = params.module ? Number(params.module) : 1; // keep route name but semantics are courses
   const total = params.total ? Number(params.total) : 6;
   const title = params.title || 'Chemical Handling SK-250';
   const [selected, setSelected] = useState<string | null>(null);
@@ -28,7 +28,7 @@ export default function ModulsScreen() {
         <TouchableOpacity onPress={() => navigation.goBack()} style={tw`w-8 h-8 rounded-full bg-white items-center justify-center`}>
           <Ionicons name="chevron-back" size={18} color="#111827" />
         </TouchableOpacity>
-        <Text style={[tw`text-black font-bold text-[18px]`]}>Module {moduleNum} of {total}</Text>
+        <Text style={[tw`text-black font-bold text-[18px]`]}>Course {moduleNum} of {total}</Text>
         <TouchableOpacity style={tw`w-8 h-8 rounded-full bg-white items-center justify-center`}>
           <Ionicons name="time-outline" size={18} color="#111827" />
         </TouchableOpacity>
@@ -111,13 +111,13 @@ export default function ModulsScreen() {
           <View style={[tw`mt-3 flex-row items-center justify-between`]}>
             <TouchableOpacity style={tw`bg-white border border-[#EFEFEF] rounded-2xl px-3.5 py-5 flex-row items-center`} onPress={() => navigation.goBack()}>
               <Ionicons name="chevron-back" size={16} color="#111827" />
-              <Text style={[tw`ml-2 text-black`]}>Previous Module</Text>
+              <Text style={[tw`ml-2 text-black`]}>Previous Course</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={tw`bg-[#7C5CFF] rounded-2xl px-3.5 py-5 flex-row items-center`}
               onPress={() => navigation.navigate('FinalTest')}
             >
-              <Text style={[tw`text-white mr-2`]}>Next Module</Text>
+              <Text style={[tw`text-white mr-2`]}>Next Course</Text>
               <Ionicons name="chevron-forward" size={16} color="#FFFFFF" />
             </TouchableOpacity>
           </View>
