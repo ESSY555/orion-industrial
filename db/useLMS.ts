@@ -2,7 +2,6 @@
 // BaseUrlContext shim: dynamically require to avoid alias/typing issues
 let useBaseURL: () => { baseURL: string };
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const ctx = require("@/contexts/BaseUrlContext");
   if (ctx && typeof ctx.useBaseURL === "function") {
     useBaseURL = ctx.useBaseURL;
@@ -19,7 +18,6 @@ import { mockCourses, mockCoursesWithAssignments, mockLevels } from "./mock-db";
 // Toast shim: try dynamic require, fall back to console
 let Toast: { show: (msg: string) => void } = { show: (msg: string) => console.log(msg) };
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const mod = require("react-native-root-toast");
   Toast = mod?.default ? mod.default : mod;
 } catch (e) {
