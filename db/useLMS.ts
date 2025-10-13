@@ -107,13 +107,16 @@ const useLMS = () => {
 
   /**
    * Fetches a course by its ID.
-   * @param {string} courseId - The ID of the course to fetch.
+   * In mock mode, if no ID is provided or not found, falls back to the first mock course.
    */
-  const getCourseById = async (courseId: string) => {
+  const getCourseById = async (courseId?: string) => {
     setLoading(true);
     if (isMock) {
       try {
-        const found = (mockCourses || []).find((c: any) => c._id === courseId) || null;
+        const fallback = (mockCourses || [])[0] || null;
+        const found = courseId
+          ? (mockCourses || []).find((c: any) => c._id === courseId) || fallback
+          : fallback;
         setCourse(found);
       } finally {
         setLoading(false);

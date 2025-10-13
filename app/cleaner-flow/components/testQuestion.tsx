@@ -8,7 +8,6 @@ import type { RootStackParamList } from '@/routes/homeStack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useKeepAwake } from 'expo-keep-awake';
 import useLMS from '@/db/useLMS';
-import { mockCourses } from '@/db/mock-db';
 
 export default function TestQuestion() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'TestQuestion'>>();
@@ -20,15 +19,14 @@ export default function TestQuestion() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedByIndex, setSelectedByIndex] = useState<Record<number, string | null>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   // Load course via LMS (fallback to mock if absent)
   useEffect(() => {
-    const fallbackId = mockCourses[0]?._id;
-    const targetId = (routeCourseId as string) || fallbackId;
-    if (targetId) getCourseById(targetId);
+    getCourseById(routeCourseId);
   }, [routeCourseId]);
 
-  const selectedCourse = (course as any) || mockCourses[0];
+  const selectedCourse = course as any;
   const QUESTIONS = selectedCourse?.questionsAndOptions || [];
   const RIGHT_ANSWERS = selectedCourse?.answers || [];
   const courseId = selectedCourse?._id as string;
@@ -39,6 +37,7 @@ export default function TestQuestion() {
 
   const totalDurationSec = ((selectedCourse?.assessmentDuration as number) || 0) * 60;
   const [remainingSec, setRemainingSec] = useState<number>(totalDurationSec);
+  const [timerArmed, setTimerArmed] = useState<boolean>(totalDurationSec > 0);
 
   useLayoutEffect(() => {
     navigation.setOptions?.({ headerShown: false, gestureEnabled: false });
@@ -60,6 +59,17 @@ export default function TestQuestion() {
       backHandler.remove();
     };
   }, [navigation, submitted, blocked]);
+
+  // Ensure timer starts as soon as course duration is known
+  useEffect(() => {
+    const duration = ((selectedCourse?.assessmentDuration as number) || 0) * 60;
+    if (duration > 0) {
+      setRemainingSec(duration);
+      setTimerArmed(true);
+    } else {
+      setTimerArmed(false);
+    }
+  }, [selectedCourse?.assessmentDuration]);
 
 
   React.useEffect(() => {
@@ -105,6 +115,7 @@ export default function TestQuestion() {
 
   const handleSubmit = () => {
     if (submitted) return;
+    if (submitting) return;
     setSubmitted(true);
     const total = QUESTIONS.length;
     const chosen = Array.from({ length: total }, (_, idx) => selectedByIndex[idx] ?? null);
@@ -113,15 +124,20 @@ export default function TestQuestion() {
     if (!hasClientAnswers) {
       (async () => {
         try {
+          setSubmitting(true);
           const payload = {
             answers: chosen.map((ans) => (ans ? [ans] : [])),
             courseId,
             isForLevelAssessment: false,
           };
           await submitAssessment(payload);
-          await addCertificate(selectedCourse.title);
+          await addCertificate(selectedCourse?.title as string);
+          setSubmitting(false);
           navigation.navigate('Certification', { username: username ? String(username) : undefined });
         } catch (e) {
+          setSubmitting(false);
+          setSubmitted(false);
+          Alert.alert('Submit failed', 'Could not submit your assessment. Please try again.');
           try {
             const next = attempts + 1;
             setAttempts(next);
@@ -174,17 +190,20 @@ export default function TestQuestion() {
 
 
   React.useEffect(() => {
+    if (!timerArmed) return;
     if (submitted) return;
     if (blocked) return;
     if (remainingSec <= 0) {
-      handleSubmit();
+      if (total > 0) {
+        handleSubmit();
+      }
       return;
     }
     const id = setInterval(() => {
       setRemainingSec((s) => (s > 0 ? s - 1 : 0));
     }, 1000);
     return () => clearInterval(id);
-  }, [remainingSec, submitted, blocked]);
+  }, [remainingSec, submitted, blocked, timerArmed, total]);
 
   React.useEffect(() => {
     if (blocked) {
@@ -241,8 +260,8 @@ export default function TestQuestion() {
               <Text style={[tw`ml-2`, { color: '#2D1B3D', fontWeight: '600', fontSize: 12 }]}>Previous</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={tw.style('bg-[#7C5CFF] rounded-2xl px-4 py-3 flex-row items-center', (!selected || total === 0) && 'opacity-50')}
-              disabled={!selected || total === 0}
+              style={tw.style('bg-[#7C5CFF] rounded-2xl px-4 py-3 flex-row items-center', ((!selected || total === 0) || submitting) && 'opacity-50')}
+              disabled={!selected || total === 0 || submitting}
               onPress={() => {
                 if (!isLast) {
                   setCurrentIndex((i) => (total > 0 && i < total - 1 ? i + 1 : i));
@@ -251,7 +270,7 @@ export default function TestQuestion() {
                 handleSubmit();
               }}
             >
-              <Text style={[tw`mr-2`, { color: '#FFFFFF', fontWeight: '700', fontSize: 12 }]}>{isLast ? 'Submit' : 'Next Question'}</Text>
+              <Text style={[tw`mr-2`, { color: '#FFFFFF', fontWeight: '700', fontSize: 12 }]}>{submitting ? 'Submitting...' : (isLast ? 'Submit' : 'Next Question')}</Text>
               <Ionicons name="chevron-forward" size={16} color="#FFFFFF" />
             </TouchableOpacity>
           </View>

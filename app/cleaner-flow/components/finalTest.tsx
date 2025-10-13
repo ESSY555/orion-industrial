@@ -6,7 +6,6 @@ import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '@/routes/homeStack';
 import useLMS from '@/db/useLMS';
-import { mockCourses } from '@/db/mock-db';
 
 export default function FinalTest() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'FinalTest'>>();
@@ -19,14 +18,10 @@ export default function FinalTest() {
   }, [navigation]);
 
   useEffect(() => {
-    const fallbackId = mockCourses[0]?._id;
-    const targetId: string = (routeCourseId ?? fallbackId) as unknown as string;
-    if (targetId) {
-      getCourseById(targetId);
-    }
+    getCourseById(routeCourseId);
   }, [routeCourseId]);
 
-  const selectedCourse = (course as any) || mockCourses[0];
+  const selectedCourse = course as any;
   const totalDurationSec = (selectedCourse?.assessmentDuration || 0) * 60;
 
   const formatTime = (sec: number) => {
@@ -91,7 +86,7 @@ export default function FinalTest() {
               <Ionicons name="chevron-back" size={16} color="#111827" />
               <Text style={[tw`ml-2 text-black text-[12px]`]}>Go Back to Courses</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={tw`bg-[#7C5CFF] rounded-2xl px-4 py-3 flex-row items-center`} onPress={() => navigation.navigate('TestQuestion' as any, { courseId: selectedCourse?._id || mockCourses[0]?._id } as any)}>
+            <TouchableOpacity style={tw`bg-[#7C5CFF] rounded-2xl px-4 py-3 flex-row items-center`} onPress={() => navigation.navigate('TestQuestion' as any, { courseId: selectedCourse?._id } as any)}>
               <Text style={[tw`text-white mr-2 text-[12px]`]}>Start Test</Text>
               <Ionicons name="arrow-forward" size={16} color="#FFFFFF" />
             </TouchableOpacity>
