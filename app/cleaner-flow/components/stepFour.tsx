@@ -3,7 +3,6 @@ import { View, Text, Pressable, ScrollView, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'twrnc';
-// Tailwind-only: removed StyleSheet types
 
 function DropdownSelect({
   label,

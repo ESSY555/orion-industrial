@@ -180,7 +180,7 @@ function CourseCard({ badgeText, dueText, subtitle, title, actionText, thumb, mo
                         <View style={[tw`flex-row items-center mt-3`]}>
                             <View style={[tw`flex-row items-center`]}>
                                 <Image source={book} style={tw`w-3 h-3 mr-1.5`} />
-                                <Text style={tw`text-[#7A7A86] text-[11px] text-black font-bold`}>{modulesCount} Modules</Text>
+                                <Text style={tw`text-[#7A7A86] text-[11px] text-black font-bold`}>{modulesCount} Courses</Text>
                             </View>
                             <View style={tw`w-1 h-1 rounded bg-[#E5E7EB] mx-2`} />
                             <View style={[tw`flex-row items-center`]}>

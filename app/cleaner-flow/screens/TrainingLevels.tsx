@@ -51,17 +51,17 @@ export default function TrainingLevels() {
                 <View style={[tw`px-4 mt-3`]}>
                     {useMemo(() => {
                         const levels = [
-                            { level: 1, title: 'Entry Level (Yellow Badge)', modules: '8 Modules', time: '1hr 30min', progress: 100, tint: '#EDE7FF', bg: 'rgba(239,234,249,0.6)' },
-                            { level: 2, title: 'Basic Skills (Orange Badge)', modules: '8 Modules', time: '1hr 30min', progress: 100, tint: '#FBD1E6', bg: 'rgba(245,211,228,0.65)' },
-                            { level: 3, title: 'Quality Assurance (Green Badge)', modules: '8 Modules', time: '1hr 30min', progress: 50, tint: '#EDE7FF', bg: 'rgba(239,234,249,0.6)' },
-                            { level: 4, title: 'Advanced Sanitation (Blue Badge)', modules: '8 Modules', time: '1hr 30min', locked: true, tint: '#E5E7EB', bg: 'rgba(233,233,238,0.6)' },
+                            { level: 1, title: 'Entry Level (Yellow Badge)', courses: '8 Courses', time: '1hr 30min', progress: 100, tint: '#EDE7FF', bg: 'rgba(239,234,249,0.6)' },
+                            { level: 2, title: 'Basic Skills (Orange Badge)', courses: '8 Courses', time: '1hr 30min', progress: 100, tint: '#FBD1E6', bg: 'rgba(245,211,228,0.65)' },
+                            { level: 3, title: 'Quality Assurance (Green Badge)', courses: '8 Courses', time: '1hr 30min', progress: 50, tint: '#EDE7FF', bg: 'rgba(239,234,249,0.6)' },
+                            { level: 4, title: 'Advanced Sanitation (Blue Badge)', courses: '8 Courses', time: '1hr 30min', locked: true, tint: '#E5E7EB', bg: 'rgba(233,233,238,0.6)' },
                         ];
                         const q = (query ?? '').trim().toLowerCase();
                         const filtered = q
                             ? levels.filter(l =>
                                 `${l.level}`.includes(q) ||
                                 l.title.toLowerCase().includes(q) ||
-                                l.modules.toLowerCase().includes(q) ||
+                                (l as any).courses.toLowerCase().includes(q) ||
                                 l.time.toLowerCase().includes(q)
                             )
                             : levels;
@@ -78,7 +78,7 @@ export default function TrainingLevels() {
 type LevelCardProps = {
     level: number;
     title: string;
-    modules: string;
+    courses: string;
     time: string;
     progress?: number; 
     locked?: boolean;
@@ -86,7 +86,7 @@ type LevelCardProps = {
     bg: string;
 };
 
-function LevelCard({ level, title, modules, time, progress, locked, tint, bg }: LevelCardProps) {
+function LevelCard({ level, title, courses, time, progress, locked, tint, bg }: LevelCardProps) {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Levels'>>();
     return (
         <TouchableOpacity
@@ -94,7 +94,7 @@ function LevelCard({ level, title, modules, time, progress, locked, tint, bg }: 
             onPress={() => navigation.navigate('Levels', {
                 level: String(level),
                 title,
-                modules,
+                courses,
                 time,
                 progress: typeof progress === 'number' ? String(progress) : undefined,
                 locked: locked ? 'true' : 'false',
@@ -122,7 +122,7 @@ function LevelCard({ level, title, modules, time, progress, locked, tint, bg }: 
             <View style={[tw`mt-3 flex-row items-center`]}>
                 <View style={[tw`flex-row items-center`]}>
                     <Ionicons name="book" size={12} color="#6B7280" />
-                        <Text style={tw`text-[#6B7280] text-[12px] ml-1.5`}>{modules}</Text>
+                        <Text style={tw`text-[#6B7280] text-[12px] ml-1.5`}>{courses}</Text>
                 </View>
                     <View style={tw`w-1 h-1 rounded-full bg-[#E5E7EB] mx-2.5`} />
                 <View style={[tw`flex-row items-center`]}>

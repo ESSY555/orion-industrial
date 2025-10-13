@@ -3,14 +3,28 @@
 let useBaseURL: () => { baseURL: string };
 try {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  useBaseURL = require("@/contexts/BaseUrlContext").useBaseURL;
+  const ctx = require("@/contexts/BaseUrlContext");
+  if (ctx && typeof ctx.useBaseURL === "function") {
+    useBaseURL = ctx.useBaseURL;
+  } else {
+    useBaseURL = () => ({ baseURL: "" });
+  }
 } catch (e) {
   useBaseURL = () => ({ baseURL: "" });
 }
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useState } from "react";
-import Toast from "react-native-root-toast";
+import { mockCourses, mockCoursesWithAssignments, mockLevels } from "./mock-db";
+// Toast shim: try dynamic require, fall back to console
+let Toast: { show: (msg: string) => void } = { show: (msg: string) => console.log(msg) };
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const mod = require("react-native-root-toast");
+  Toast = mod?.default ? mod.default : mod;
+} catch (e) {
+  // noop: console fallback already set
+}
 
 export type Course = {
   _id: string;
@@ -59,6 +73,7 @@ export type Level = {
 
 const useLMS = () => {
   const { baseURL } = useBaseURL();
+  const isMock = !baseURL;
 
   const [userCourses, setUserCourses] = useState<CourseWithCourseAssignment[]>(
     []
@@ -96,6 +111,15 @@ const useLMS = () => {
    */
   const getCourseById = async (courseId: string) => {
     setLoading(true);
+    if (isMock) {
+      try {
+        const found = (mockCourses || []).find((c: any) => c._id === courseId) || null;
+        setCourse(found);
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
     const access_token = await AsyncStorage.getItem("auth-token");
     try {
       const path = `/v1/lms/course/${courseId}`;
@@ -119,6 +143,10 @@ const useLMS = () => {
     courseId: string,
     isForLevelAssessment: boolean
   ) => {
+    if (isMock) {
+      Toast.show("Assessment started successfully");
+      return { ok: true } as any;
+    }
     const requestFunc = async () => {
       const access_token = await AsyncStorage.getItem("auth-token");
       const path = "/v1/lms/start-assessment";
@@ -138,6 +166,10 @@ const useLMS = () => {
     courseId: string;
     isForLevelAssessment?: boolean;
   }) => {
+    if (isMock) {
+      Toast.show("Assessment submitted successfully");
+      return { ok: true } as any;
+    }
     const requestFunc = async () => {
       const access_token = await AsyncStorage.getItem("auth-token");
       const path = "/v1/lms/submit-assessment";
@@ -154,6 +186,17 @@ const useLMS = () => {
    */
   const getUserCourses = async (userId: string) => {
     setLoading(true);
+    if (isMock) {
+      try {
+        const list = (mockCoursesWithAssignments || []).filter((c: any) =>
+          (c as any).courseAssignment ? (c as any).courseAssignment.userId === userId : true
+        );
+        setUserCourses(list);
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
     const access_token = await AsyncStorage.getItem("auth-token");
     try {
       const path = `/v1/lms/user-courses/${userId}`;
@@ -177,6 +220,14 @@ const useLMS = () => {
 
   const getUserLevel = async (userId: string) => {
     setLoading(true);
+    if (isMock) {
+      try {
+        setUserLevel((mockLevels || [null])[0]);
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
     const access_token = await AsyncStorage.getItem("auth-token");
     try {
       const path = `/v1/lms/level/user/${userId}`;
@@ -200,6 +251,14 @@ const useLMS = () => {
 
   const getLevels = async () => {
     setLoading(true);
+    if (isMock) {
+      try {
+        setLevels(mockLevels || []);
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
     const access_token = await AsyncStorage.getItem("auth-token");
     try {
       const path = `/v1/lms/level`;

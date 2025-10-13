@@ -6,70 +6,47 @@ import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '@/routes/homeStack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// Tailwind-only: removed StyleSheet and unused UiButton
-import { mockCourseWithAssignment } from '@/db/mock-db';
 import { useKeepAwake } from 'expo-keep-awake';
-
-type Question = {
-  text: string;
-  options: string[];
-};
-
-const QUESTIONS: Question[] = [
-  {
-    text:
-      'When using SK-250 for heavy soil cleaning, which of the following safety equipment is required? (Select all that apply)',
-    options: ['2.23', '1.16', '5.95', '1.34'],
-  },
-  {
-    text: 'What is the recommended dilution ratio for general cleaning with SK-250?',
-    options: ['1:64', '1:128', '1:32', '1:8'],
-  },
-  {
-    text: 'Which step should be performed BEFORE applying SK-250 to a surface?',
-    options: ['Rinse with hot water', 'Don PPE', 'Turn off ventilation', 'Dilute with oil'],
-  },
-  {
-    text: 'Select the correct storage guideline for SK-250:',
-    options: ['Store near heat', 'Keep sealed and labeled', 'Expose to sunlight', 'Mix with acids'],
-  },
-];
-
-// Right answers for the mock (same index order as QUESTIONS)
-const RIGHT_ANSWERS: string[] = [
-  '1.16',     // for Q1
-  '1:128',    // for Q2
-  'Don PPE',  // for Q3
-  'Keep sealed and labeled', // for Q4
-];
+import useLMS from '@/db/useLMS';
+import { mockCourses } from '@/db/mock-db';
 
 export default function TestQuestion() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'TestQuestion'>>();
   const route = useRoute<RouteProp<RootStackParamList, 'TestQuestion'>>();
   const username = route.params?.username;
+  const routeCourseId = (route.params as any)?.courseId as string | undefined;
+  const { course, getCourseById, submitAssessment } = useLMS();
   useKeepAwake();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedByIndex, setSelectedByIndex] = useState<Record<number, string | null>>({});
   const [submitted, setSubmitted] = useState(false);
 
-  // Attempts handling: if maxAttempts is undefined -> unlimited/open attempts until user passes
-  const courseId = mockCourseWithAssignment._id;
-  const maxAttempts = mockCourseWithAssignment.courseAssignment?.maxAttempts; // undefined => unlimited
+  // Load course via LMS (fallback to mock if absent)
+  useEffect(() => {
+    const fallbackId = mockCourses[0]?._id;
+    const targetId = (routeCourseId as string) || fallbackId;
+    if (targetId) getCourseById(targetId);
+  }, [routeCourseId]);
+
+  const selectedCourse = (course as any) || mockCourses[0];
+  const QUESTIONS = selectedCourse?.questionsAndOptions || [];
+  const RIGHT_ANSWERS = selectedCourse?.answers || [];
+  const courseId = selectedCourse?._id as string;
+  const maxAttempts = selectedCourse?.courseAssignment?.maxAttempts as number | undefined; // undefined => unlimited
   const ATTEMPTS_KEY = `sanitrack:attempts:${courseId}`;
   const [attempts, setAttempts] = useState<number>(0);
   const [blocked, setBlocked] = useState<boolean>(false);
 
-  const totalDurationSec = (mockCourseWithAssignment.assessmentDuration || 0) * 60;
+  const totalDurationSec = ((selectedCourse?.assessmentDuration as number) || 0) * 60;
   const [remainingSec, setRemainingSec] = useState<number>(totalDurationSec);
 
   useLayoutEffect(() => {
     navigation.setOptions?.({ headerShown: false, gestureEnabled: false });
   }, [navigation]);
 
-  // Prevent navigating away or using hardware back until submitted
   useEffect(() => {
     const beforeRemove = navigation.addListener('beforeRemove', (e: any) => {
-      if (submitted || blocked) return; // allow leaving if submitted or blocked
+      if (submitted || blocked) return; 
       e.preventDefault();
       Alert.alert('Finish test', 'You must submit the test before leaving this screen.');
     });
@@ -84,7 +61,7 @@ export default function TestQuestion() {
     };
   }, [navigation, submitted, blocked]);
 
-  // Load attempts and enforce cap only if maxAttempts is defined
+
   React.useEffect(() => {
     (async () => {
       try {
@@ -101,10 +78,10 @@ export default function TestQuestion() {
   }, [ATTEMPTS_KEY, maxAttempts]);
 
   const total = QUESTIONS.length;
-  const q = QUESTIONS[currentIndex];
+  const q = (total > 0 && currentIndex >= 0 && currentIndex < total) ? QUESTIONS[currentIndex] : null;
   const selected = selectedByIndex[currentIndex] ?? null;
   const setSelected = (opt: string) => setSelectedByIndex((prev) => ({ ...prev, [currentIndex]: opt }));
-  const progressPct = Math.round(((currentIndex + 1) / total) * 100);
+  const progressPct = total > 0 ? Math.round(((currentIndex + 1) / total) * 100) : 0;
   const isLast = currentIndex === total - 1;
 
     const CERTS_KEY = 'sanitrack:certificates';
@@ -131,7 +108,38 @@ export default function TestQuestion() {
     setSubmitted(true);
     const total = QUESTIONS.length;
     const chosen = Array.from({ length: total }, (_, idx) => selectedByIndex[idx] ?? null);
-    const correct = chosen.reduce((acc, ans, idx) => (ans === RIGHT_ANSWERS[idx] ? acc + 1 : acc), 0);
+
+    const hasClientAnswers = Array.isArray(RIGHT_ANSWERS) && RIGHT_ANSWERS.length > 0;
+    if (!hasClientAnswers) {
+      (async () => {
+        try {
+          const payload = {
+            answers: chosen.map((ans) => (ans ? [ans] : [])),
+            courseId,
+            isForLevelAssessment: false,
+          };
+          await submitAssessment(payload);
+          await addCertificate(selectedCourse.title);
+          navigation.navigate('Certification', { username: username ? String(username) : undefined });
+        } catch (e) {
+          try {
+            const next = attempts + 1;
+            setAttempts(next);
+            await AsyncStorage.setItem(ATTEMPTS_KEY, String(next));
+            if (typeof maxAttempts === 'number' && maxAttempts > 0 && next >= maxAttempts) {
+              setBlocked(true);
+              setRemainingSec(0);
+              Alert.alert('Attempts exhausted', 'You have reached the maximum attempts for this assessment.');
+            }
+          } catch { }
+        }
+      })();
+      return;
+    }
+
+    const correct = chosen.reduce((acc, ans, idx) => (
+      RIGHT_ANSWERS[idx]?.includes(ans ?? '') ? acc + 1 : acc
+    ), 0);
     const pct = (correct / total) * 100;
     Alert.alert('Result', `Score: ${Math.round(pct)}%`, [
       {
@@ -139,13 +147,13 @@ export default function TestQuestion() {
         onPress: () => {
           setSelectedByIndex({});
           setCurrentIndex(0);
-          if (pct >= 70) {
+          const passMark = (selectedCourse?.minimumPassScore as number) ?? 70;
+          if (pct >= passMark) {
             (async () => {
-              await addCertificate('Chemical Handling Sk-148');
+              await addCertificate(selectedCourse?.title as string);
               navigation.navigate('Certification', { username: username ? String(username) : undefined });
             })();
           } else {
-            // Failed attempt: increment attempts; only block if maxAttempts is defined and reached
             (async () => {
               try {
                 const next = attempts + 1;
@@ -164,7 +172,7 @@ export default function TestQuestion() {
     ]);
   };
 
-  // countdown effect
+
   React.useEffect(() => {
     if (submitted) return;
     if (blocked) return;
@@ -190,7 +198,7 @@ export default function TestQuestion() {
         <TouchableOpacity onPress={() => navigation.goBack()} style={tw`w-9 h-9 rounded-full bg-white items-center justify-center`}>
           <Ionicons name="chevron-back" size={18} color="#111827" />
         </TouchableOpacity>
-        <Text style={[tw`text-black font-bold text-[18px]`]}>Question {currentIndex + 1} of {total}</Text>
+        <Text style={[tw`text-black font-bold text-[18px]`]}>Question {total > 0 ? currentIndex + 1 : 0} of {total}</Text>
         <View style={tw`w-9 h-9 rounded-full bg-white items-center justify-center flex-row`}>
           <Ionicons name="time-outline" size={16} color="#111827" />
           <Text style={[tw`ml-1 text-black`, { fontSize: 12 }]}>{formatTime(remainingSec)}</Text>
@@ -203,10 +211,14 @@ export default function TestQuestion() {
             <View style={[tw`h-2 bg-[#7C5CFF] rounded-lg` as any, { width: `${progressPct}%` }]} />
           </View>
 
-          <Text style={[tw`text-black mt-4`, { fontSize: 15, lineHeight: 22 }]}>{q.text}</Text>
+          {total === 0 ? (
+            <Text style={[tw`text-black mt-4 text-center`, { fontSize: 15, lineHeight: 22 }]}>No questions available.</Text>
+          ) : (
+            <Text style={[tw`text-black mt-4`, { fontSize: 15, lineHeight: 22 }]}>{q?.question}</Text>
+          )}
 
           <View style={[tw`mt-4`]}>
-            {q.options.map((opt) => {
+            {(q?.options ?? []).map((opt: string) => {
               const isSelected = selected === opt;
               return (
                 <TouchableOpacity key={opt} onPress={() => setSelected(opt)} style={tw.style('rounded-2xl py-4 px-4 mt-3 flex-row items-center justify-between', isSelected ? 'bg-[#E8DDFE] border-2 border-[#7C5CFF]' : 'bg-white border border-[#E5E7EB]')}>
@@ -223,17 +235,17 @@ export default function TestQuestion() {
             <TouchableOpacity
               style={tw`bg-[#EEEEEE] border border-[#E5E7EB] rounded-2xl px-3.5 py-2.5 flex-row items-center`}
               onPress={() => setCurrentIndex((i) => (i > 0 ? i - 1 : 0))}
-              disabled={currentIndex === 0}
+              disabled={currentIndex === 0 || total === 0}
             >
               <Ionicons name="chevron-back" size={16} color="#2D1B3D" />
               <Text style={[tw`ml-2`, { color: '#2D1B3D', fontWeight: '600', fontSize: 12 }]}>Previous</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={tw.style('bg-[#7C5CFF] rounded-2xl px-4 py-3 flex-row items-center', !selected && 'opacity-50')}
-              disabled={!selected}
+              style={tw.style('bg-[#7C5CFF] rounded-2xl px-4 py-3 flex-row items-center', (!selected || total === 0) && 'opacity-50')}
+              disabled={!selected || total === 0}
               onPress={() => {
                 if (!isLast) {
-                  setCurrentIndex((i) => (i < total - 1 ? i + 1 : i));
+                  setCurrentIndex((i) => (total > 0 && i < total - 1 ? i + 1 : i));
                   return;
                 }
                 handleSubmit();

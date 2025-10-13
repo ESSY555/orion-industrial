@@ -34,7 +34,7 @@ export type RootStackParamList = {
     CleanerFlow: undefined;
     CleanerDashboard: { username?: string } | undefined;
     RequiredCourses: { username?: string } | undefined;
-    Levels: { level?: string; title?: string; modules?: string; time?: string; progress?: string; locked?: string } | undefined;
+    Levels: { level?: string; title?: string; courses?: string; time?: string; progress?: string; locked?: string } | undefined;
     Moduls: { module?: string; total?: string; title?: string } | undefined;
     Certification: { username?: string } | undefined;
     TestQuestion: { username?: string } | undefined;
@@ -58,7 +58,7 @@ const StackScreen = () => (
         <Stack.Screen name="CleanerDashboard" component={CleanerDashboard} options={{ headerShown: false, title: 'Cleaner Dashboard' }} />
         <Stack.Screen name="RequiredCourses" component={RequiredCourses} options={{ headerShown: false, title: 'Required Courses' }} />
         <Stack.Screen name="Levels" component={LevelsScreen} options={{ headerShown: false, title: 'Levels' }} />
-        <Stack.Screen name="Moduls" component={ModulsScreen} options={{ headerShown: false, title: 'Modules' }} />
+        <Stack.Screen name="Moduls" component={ModulsScreen} options={{ headerShown: false, title: 'Courses' }} />
         <Stack.Screen name="Certification" component={Certification} options={{ headerShown: false, title: 'Certification' }} />
         <Stack.Screen name="TestQuestion" component={TestQuestion} options={{ headerShown: false, title: 'Test Question' }} />
         <Stack.Screen name="FinalTest" component={FinalTest} options={{ headerShown: false, title: 'Final Test' }} />

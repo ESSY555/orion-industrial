@@ -1,20 +1,33 @@
-import React, { useLayoutEffect, useMemo, useEffect, useState } from 'react';
+import React, { useLayoutEffect, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RootStackParamList } from '@/routes/homeStack';
-import { mockCourseWithAssignment } from '@/db/mock-db';
+import useLMS from '@/db/useLMS';
+import { mockCourses } from '@/db/mock-db';
 
 export default function FinalTest() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'FinalTest'>>();
+  const route = useRoute<RouteProp<RootStackParamList, 'FinalTest'>>();
+  const { course, getCourseById } = useLMS();
+  const routeCourseId = (route.params && (route.params as any).courseId) as string | undefined;
 
   useLayoutEffect(() => {
     navigation.setOptions?.({ headerShown: false });
   }, [navigation]);
 
-  const totalDurationSec = (mockCourseWithAssignment.assessmentDuration || 0) * 60;
+  useEffect(() => {
+    const fallbackId = mockCourses[0]?._id;
+    const targetId: string = (routeCourseId ?? fallbackId) as unknown as string;
+    if (targetId) {
+      getCourseById(targetId);
+    }
+  }, [routeCourseId]);
+
+  const selectedCourse = (course as any) || mockCourses[0];
+  const totalDurationSec = (selectedCourse?.assessmentDuration || 0) * 60;
 
   const formatTime = (sec: number) => {
     const m = Math.floor(sec / 60).toString().padStart(2, '0');
@@ -41,22 +54,22 @@ export default function FinalTest() {
           <View style={tw`bg-white rounded-2xl p-4`}>
             <BulletRow icon="help-circle-outline" text={
               <Text style={tw`text-black`}>
-                There are <Text style={tw`text-black font-bold text-[12px]`}>{mockCourseWithAssignment.questionsAndOptions.length} Questions</Text>
+                There are <Text style={tw`text-black font-bold text-[12px]`}>{selectedCourse?.questionsAndOptions.length ?? 0} Questions</Text>
               </Text>
             } />
             <BulletRow icon="time-outline" text={
               <Text style={tw`text-black`}>
-                You have <Text style={tw`text-black font-bold text-[12px]`}>{mockCourseWithAssignment.assessmentDuration} minutes</Text> to finish
+                You have <Text style={tw`text-black font-bold text-[12px]`}>{selectedCourse?.assessmentDuration ?? 0} minutes</Text> to finish
               </Text>
             } />
             <BulletRow icon="checkmark-circle-outline" text={
               <Text style={tw`text-black`}>
-                The pass mark is <Text style={tw`text-black font-bold text-[12px]`}>{mockCourseWithAssignment.minimumPassScore}%</Text>
+                The pass mark is <Text style={tw`text-black font-bold text-[12px]`}>{selectedCourse?.minimumPassScore ?? 0}%</Text>
               </Text>
             } />
             <BulletRow icon="create-outline" text={
               <Text style={tw`text-black`}>
-                You have only <Text style={tw`text-black font-bold text-[12px]`}>{mockCourseWithAssignment.courseAssignment?.maxAttempts ?? 1} attemps</Text>
+                You have only <Text style={tw`text-black font-bold text-[12px]`}>{(selectedCourse as any)?.courseAssignment?.maxAttempts ?? 1} attemps</Text>
               </Text>
             } />
           </View>
@@ -76,9 +89,9 @@ export default function FinalTest() {
           <View style={[tw`mt-6 flex-row items-center justify-between`]}>
             <TouchableOpacity style={tw`bg-[#EEEEEE] border border-[#E5E7EB] rounded-2xl px-3.5 py-4 flex-row items-center`} onPress={() => navigation.goBack()}>
               <Ionicons name="chevron-back" size={16} color="#111827" />
-              <Text style={[tw`ml-2 text-black text-[12px]`]}>Go Back to Modules</Text>
+              <Text style={[tw`ml-2 text-black text-[12px]`]}>Go Back to Courses</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={tw`bg-[#7C5CFF] rounded-2xl px-4 py-3 flex-row items-center`} onPress={() => navigation.navigate('TestQuestion')}>
+            <TouchableOpacity style={tw`bg-[#7C5CFF] rounded-2xl px-4 py-3 flex-row items-center`} onPress={() => navigation.navigate('TestQuestion' as any, { courseId: selectedCourse?._id || mockCourses[0]?._id } as any)}>
               <Text style={[tw`text-white mr-2 text-[12px]`]}>Start Test</Text>
               <Ionicons name="arrow-forward" size={16} color="#FFFFFF" />
             </TouchableOpacity>
