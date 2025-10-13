@@ -9,9 +9,9 @@ import lamp from '../../assets/images/lamp.png';
 import scientistsLookOrangeChemicalsGlassLaboratory from '../../assets/images/scientists-look-orange-chemicals-glass-laboratory 1.png';
 import conflask from '../../assets/images/conflask.png';
 
-export default function ModulsScreen() {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Moduls'>>();
-  const params = useRoute<RouteProp<RootStackParamList, 'Moduls'>>().params ?? {};
+export default function Courses() {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Courses'>>();
+  const params = useRoute<RouteProp<RootStackParamList, 'Courses'>>().params ?? {};
   const moduleNum = params.module ? Number(params.module) : 1; // keep route name but semantics are courses
   const total = params.total ? Number(params.total) : 6;
   const title = params.title || 'Chemical Handling SK-250';

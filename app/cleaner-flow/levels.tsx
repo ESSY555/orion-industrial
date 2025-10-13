@@ -20,7 +20,7 @@ export default function LevelsScreen() {
     const isLocked = params.locked === 'true';
 
     const progress = params.progress ? Number(params.progress) : undefined;
-    const [activeTab, setActiveTab] = useState<'about' | 'modules' | 'download'>('modules');
+    const [activeTab, setActiveTab] = useState<'about' | 'courses' | 'download'>('courses');
     const activeColor = '#8B4CE8';
 
     return (
@@ -60,7 +60,7 @@ export default function LevelsScreen() {
                         <View style={[tw`mt-3 flex-row items-center`]}>
                             <View style={[tw`flex-row items-center`]}>
                                 <Ionicons name="book" size={12} color="#6B7280" />
-                                <Text style={tw`text-[#6B7280] text-[12px] ml-1.5`}>{params.modules}</Text>
+                                <Text style={tw`text-[#6B7280] text-[12px] ml-1.5`}>{params.courses}</Text>
                             </View>
                             <View style={tw`w-1 h-1 rounded-full bg-[#E5E7EB] mx-2.5`} />
                             <View style={[tw`flex-row items-center`]}>
@@ -88,10 +88,10 @@ export default function LevelsScreen() {
                             <Text style={activeTab === 'about' ? tw`text-white text-[12px] font-bold` : tw`text-[#6B7280] text-[12px]`}>About Level</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            style={tw.style('py-2.5 px-3.5 rounded-xl flex-row items-center', activeTab === 'modules' && 'bg-[#8B4CE8]')}
-                            onPress={() => setActiveTab('modules')}
+                            style={tw.style('py-2.5 px-3.5 rounded-xl flex-row items-center', activeTab === 'courses' && 'bg-[#8B4CE8]')}
+                            onPress={() => setActiveTab('courses')}
                         >
-                            <Text style={activeTab === 'modules' ? tw`text-white text-[12px] font-bold` : tw`text-[#6B7280] text-[12px]`}>Modules</Text>
+                            <Text style={activeTab === 'courses' ? tw`text-white text-[12px] font-bold` : tw`text-[#6B7280] text-[12px]`}>Courses</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={tw.style('py-2.5 px-3.5 rounded-xl flex-row items-center', activeTab === 'download' && 'bg-[#8B4CE8]')}
@@ -107,12 +107,12 @@ export default function LevelsScreen() {
 
 
                 <View style={[tw`px-4 mt-2`]}>
-                    <ModuleRow style={[tw`mb-2`]} index={1} title="Module 1" status="done" />
-                    <ModuleRow index={2} title="Module 2" status="done" />
-                    <ModuleRow index={3} title="Module 3" status="continue" />
-                    <ModuleRow index={4} title="Module 4" status="start" />
-                    <ModuleRow index={5} title="Module 5" status="start" />
-                    <ModuleRow index={6} title="Module 6" status="start" />
+                    <ModuleRow style={[tw`mb-2`]} index={1} title="Course 1" status="done" />
+                    <ModuleRow index={2} title="Course 2" status="done" />
+                    <ModuleRow index={3} title="Course 3" status="continue" />
+                    <ModuleRow index={4} title="Course 4" status="start" />
+                    <ModuleRow index={5} title="Course 5" status="start" />
+                    <ModuleRow index={6} title="Course 6" status="start" />
                     <ModuleRow index={7} title="Final Assessment" status="start-grey" />
                 </View>
             </ScrollView>
@@ -141,7 +141,7 @@ function StatusBadge({ status, index }: { status: 'done' | 'continue' | 'start' 
     const color = status === 'start-grey' ? '#374151' : '#FFFFFF';
     const isDisabled = status === 'start-grey';
     const nav = useNavigation<StackNavigationProp<RootStackParamList, 'Levels'>>();
-    const onPress = () => nav.navigate('Moduls', { module: String(index ?? 1), total: '6' });
+    const onPress = () => nav.navigate('Courses', { module: String(index ?? 1), total: '6' });
     const Wrapper: any = isDisabled ? View : TouchableOpacity;
     return (
         <Wrapper onPress={isDisabled ? undefined : onPress} style={tw.style('py-1.5 px-3.5 rounded-lg flex-row items-center', { backgroundColor: bg })}>
