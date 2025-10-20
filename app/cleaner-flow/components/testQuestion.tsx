@@ -30,7 +30,7 @@ export default function TestQuestion() {
   const QUESTIONS = selectedCourse?.questionsAndOptions || [];
   const RIGHT_ANSWERS = selectedCourse?.answers || [];
   const courseId = selectedCourse?._id as string;
-  const maxAttempts = selectedCourse?.courseAssignment?.maxAttempts as number | undefined; // undefined => unlimited
+  const maxAttempts = selectedCourse?.courseAssignment?.maxAttempts as number | undefined; 
   const ATTEMPTS_KEY = `sanitrack:attempts:${courseId}`;
   const [attempts, setAttempts] = useState<number>(0);
   const [blocked, setBlocked] = useState<boolean>(false);

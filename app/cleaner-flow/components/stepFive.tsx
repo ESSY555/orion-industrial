@@ -3,7 +3,7 @@ import { View, Text, Pressable, ScrollView, TextInput, Image } from 'react-nativ
 import { Ionicons } from '@expo/vector-icons';
 import tw from 'twrnc';
 import areasCleaned from '../../../assets/images/areas-cleaned.png';
-import newPot from '../../../assets/images/new-pot.png';
+import newPot from '../../../assets/images/new-pot.png'; 
 
 
 function Dropdown({ label, value, options, onChange }: { label: string; value: string; options: string[]; onChange: (v: string) => void }) {
