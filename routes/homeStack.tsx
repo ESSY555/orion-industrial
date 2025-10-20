@@ -66,7 +66,7 @@ const StackScreen = () => (
         <Stack.Screen
             name="WorkOrders"
             component={WorkOrders}
-            options={{ headerShown: false, title: 'Work Orders' }}
+            options={{ headerShown: false, title: 'Work Orders' }} 
         />
         <Stack.Screen
             name="SupervisorSelectedItems"
